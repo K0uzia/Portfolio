@@ -10,13 +10,13 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 	id="about"
 	class="bg-white grid min-h-screen place-items-center dark:bg-gray-900"
 >
-	<div class="mx-auto w-screen max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+	<div class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 		<div class="grid gap-10 lg:grid-cols-[1fr_0.5fr] lg:grid-rows-[auto_1fr] lg:items-start">
 			<h1 class="text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500 font-mono mb-5 lg:col-start-1 lg:row-start-1">
 				<I18n en={aboutEn.aboutTitle} fr={aboutFr.aboutTitle} block />
 			</h1>
 
-			<div class="mx-auto max-w-2xl gap-2 flex flex-col text-start text-lg lg:mx-0 lg:col-start-1 lg:row-start-2">
+			<div class="mx-auto flex max-w-2xl flex-col gap-4 text-start text-base sm:text-lg lg:mx-0 lg:col-start-1 lg:row-start-2">
 				<p>
 					<I18n en={aboutEn.aboutDescription} fr={aboutFr.aboutDescription} />
 					<I18n en={aboutEn.aboutDescription2} fr={aboutFr.aboutDescription2} />
@@ -28,7 +28,7 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 				<p>
 					<I18n en={aboutEn.aboutDescription5} fr={aboutFr.aboutDescription5} />
 				</p>
-				<div class="grid grid-cols-2 gap-2 text-center justify-center items-center w-6/12">
+				<div class="grid w-full grid-cols-1 gap-2 text-center sm:grid-cols-2 sm:w-10/12">
 						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
 							<AboutAstroLogo class="w-4 h-4" />
 							<I18n en={aboutEn.aboutDescription5Stack} fr={aboutFr.aboutDescription5Stack} />
@@ -69,17 +69,17 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 				</div>
 			</div>
 					
-			<div class="w-max-content flex justify-center lg:justify-end lg:col-start-2 lg:row-start-2 lg:self-center">
+			<div class="flex justify-center lg:justify-end lg:col-start-2 lg:row-start-2 lg:self-center">
 				<div
 					id="profil-picture"
-					class="relative h-[350px] w-[250px] overflow-visible"
+					class="relative w-full max-w-[220px] overflow-visible sm:max-w-[250px]"
 				>
 					<span class="pointer-events-none absolute -left-3 -top-3 h-15 w-10 border-l-2 border-t-2 border-gray-900 dark:border-amber-500"></span>
 					<span class="pointer-events-none absolute -right-3 -top-3 h-5 w-10 border-r-2 border-t-2 border-gray-900 dark:border-amber-500"></span>
 					<span class="pointer-events-none absolute -bottom-3 -left-3 h-5 w-10 border-b-2 border-l-2 border-gray-900 dark:border-amber-500"></span>
 					<span class="pointer-events-none absolute -bottom-3 -right-3 h-15 w-10 border-b-2 border-r-2 border-gray-900 dark:border-amber-500"></span>
 
-					<div class="bg-white h-full w-full overflow-hidden saturate-0 hover:saturate-100 transition-all duration-250">
+					<div class="bg-white aspect-5/7 w-full overflow-hidden saturate-0 hover:saturate-100 transition-all duration-250">
 						<AboutProfilePicture />
 					</div>
 				</div>

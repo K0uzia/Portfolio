@@ -5,6 +5,7 @@ import { killStackTagChipsFx, initStackTagChips } from "./stack-chips";
 import { initLangToggle } from "./lang-toggle";
 import { initThemeToggle } from "./theme-toggle";
 import { initTooltips } from "./tooltip";
+import { initMobileMenu } from "./mobile-menu";
 
 let cleanupBoot: (() => void) | null = null;
 
@@ -24,6 +25,7 @@ export function boot() {
 	initThemeToggle(ac.signal);
 	initLangToggle(ac.signal);
 	initTooltips(ac.signal);
+	initMobileMenu(ac.signal);
 	initNavRail();
 	initStackTagChips();
 

@@ -9,18 +9,18 @@ import I18n from "./I18n.astro";
 	id="home"
 	class="bg-white lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900"
 >
-	<div class="mx-auto w-screen max-w-15xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+	<div class="mx-auto w-full max-w-15xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 		<div class="mx-auto max-w-4xl text-start">
 			<h1 class="mb-5 font-mono text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500">
 				<I18n en={heroEn.heroTitle} fr={heroFr.heroTitle} block />
 			</h1>
-			<h2 class="text-4xl font-bold text-gray-900 sm:text-4xl dark:text-white">
+			<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
 				<I18n en={heroEn.heroSubtitle} fr={heroFr.heroSubtitle} block />
 			</h2>
-			<h3 class="mb-10 text-5xl font-bold text-gray-900 sm:text-3xl dark:text-gray-400">
+			<h3 class="mb-6 text-3xl font-bold text-gray-900 sm:mb-10 sm:text-3xl lg:text-5xl dark:text-gray-400">
 				<I18n en={heroEn.heroDescription} fr={heroFr.heroDescription} block />
 			</h3>
-			<p class="max-w-1xl mb-5 text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-gray-400">
+			<p class="max-w-1xl mb-6 text-base text-pretty text-gray-700 sm:mb-5 sm:text-lg/relaxed dark:text-gray-400">
 				<I18n en={heroEn.heroSubdescription} fr={heroFr.heroSubdescription} />
 				<a
 					class="link-underline text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-amber-500"
@@ -46,7 +46,7 @@ import I18n from "./I18n.astro";
 			</p>
 			<a
 			href={withBase("#work")}
-			class="mt-10 rounded-md border border-amber-500 px-4 py-2 text-amber-500 hove"
+			class="mt-8 inline-flex items-center justify-center rounded-md border border-amber-500 px-5 py-3 text-amber-500"
 			data-nav-hash="work"
 			data-i18n-title-en={heroEn.heroButton}
 			data-i18n-title-fr={heroFr.heroButton}
