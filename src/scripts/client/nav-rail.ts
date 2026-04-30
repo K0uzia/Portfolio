@@ -44,12 +44,14 @@ export function killNavRail() {
 export function initNavRail() {
 	killNavRail();
 
-	const nav = document.getElementById("nav-rail");
-	if (!nav) return;
+	const navRail = document.getElementById("nav-rail");
+	const navMobile = document.getElementById("nav-mobile");
+	if (!navRail && !navMobile) return;
 
-	const links = Array.from(nav.querySelectorAll("a[data-nav-hash]")).filter(
-		(el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement,
-	);
+	const links = [
+		...Array.from(navRail?.querySelectorAll("a[data-nav-hash]") ?? []),
+		...Array.from(navMobile?.querySelectorAll("a[data-nav-hash]") ?? []),
+	].filter((el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement);
 	const valid = new Set<string>(SECTION_ORDER);
 
 	function idFromHash() {
@@ -85,6 +87,7 @@ export function initNavRail() {
 	const onNavClick = (e: MouseEvent) => {
 		const t = (e.target as Element | null)?.closest?.("a[data-nav-hash]");
 		if (!(t instanceof HTMLAnchorElement)) return;
+		if (!(navRail?.contains(t) || navMobile?.contains(t))) return;
 		const raw = t.getAttribute("href")?.split("#")[1];
 		if (!raw) return;
 		const id = raw.toLowerCase();
@@ -113,8 +116,10 @@ export function initNavRail() {
 			},
 		});
 	};
-	nav.addEventListener("click", onNavClick);
-	disposers.push(() => nav.removeEventListener("click", onNavClick));
+	navRail?.addEventListener("click", onNavClick);
+	navMobile?.addEventListener("click", onNavClick);
+	disposers.push(() => navRail?.removeEventListener("click", onNavClick));
+	disposers.push(() => navMobile?.removeEventListener("click", onNavClick));
 
 	syncFromHash();
 	requestAnimationFrame(() => {

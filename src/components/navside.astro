@@ -13,6 +13,13 @@ const navRailIndexPartClass =
 const navRailTitleClass =
   "min-w-0 shrink text-left text-sm text-(--fg-dim) transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
 
+const navMobileLinkClass =
+  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-center gap-2 whitespace-nowrap rounded-md font-mono text-xl leading-none tracking-[0.14em] text-white transition-colors duration-200 hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500 [&.is-active]:text-amber-500";
+const navMobileIndexPartClass =
+  "text-current transition-colors duration-200";
+const navMobileTitleClass =
+  "min-w-0 shrink text-center text-md text-current transition-colors duration-200";
+
 const mailAriaEn = `${navEn.buttonEmail} (${info.email})`;
 const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
 ---
@@ -40,7 +47,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       </span>
       <input type="checkbox" id="nav-theme-toggle" class="peer sr-only" />
       <span
-        class="pointer-events-none absolute inset-y-0 start-0 m-1 size-4 overflow-hidden rounded-full transition-[inset-inline-start] duration-200 motion-safe:transition-[inset-inline-start] peer-checked:start-4 peer-checked:[&_.knob-moon]:opacity-0 peer-checked:[&_.knob-sun]:opacity-100"
+        class="pointer-events-none absolute inset-y-0 inset-s-0 m-1 size-4 overflow-hidden rounded-full transition-[inset-inline-start] duration-200 motion-safe:transition-[inset-inline-start] peer-checked:inset-s-4 peer-checked:[&_.knob-moon]:opacity-0 peer-checked:[&_.knob-sun]:opacity-100"
         aria-hidden="true"
       >
         <span
@@ -58,7 +65,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       <button
         id="nav-burger"
         type="button"
-        class="pointer-events-auto grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) lg:hidden"
+        class="pointer-events-auto grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) lg:hidden"
         aria-label="Menu"
         aria-expanded="false"
         aria-controls="nav-mobile-panel"
@@ -78,8 +85,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         <button
           type="button"
           data-lang-pick="en"
-          aria-current="true"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
         >
           EN
         </button>
@@ -87,7 +93,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         <button
           type="button"
           data-lang-pick="fr"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
         >
           FR
         </button>
@@ -99,68 +105,30 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
   <div class="lg:hidden">
     <div
       id="nav-mobile-overlay"
-      class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 transition-opacity duration-200 [#nav-mobile-panel[data-open]+&]:pointer-events-auto [#nav-mobile-panel[data-open]+&]:opacity-100"
+      class="pointer-events-none fixed inset-0 z-30 bg-gray-900 opacity-0 transition-opacity duration-200 [#nav-mobile-panel[data-open]+&]:pointer-events-auto [#nav-mobile-panel[data-open]+&]:opacity-100"
       aria-hidden="true"
     ></div>
     <aside
       id="nav-mobile-panel"
-      class="fixed inset-y-0 right-0 z-40 w-[min(86vw,360px)] translate-x-full bg-(--void) shadow-2xl ring-1 ring-(--accent-dim) transition-transform duration-200 data-[open]:translate-x-0"
+      class="fixed inset-y-0 right-0 z-40 w-[min(86vw,250px)] translate-x-full bg-gray-900 shadow-2xl border-l border-gray-700 transition-transform duration-200 data-open:translate-x-0"
       aria-hidden="true"
     >
-      <div class="flex h-full flex-col p-5">
-        <div class="flex items-center justify-between">
-          <div class="font-mono text-sm tracking-[0.14em] text-(--fg-dim)">Menu</div>
+      <div class="flex h-full flex-col p-5 items-center">
+        <div class="flex w-full items-center justify-end">
           <button
             id="nav-mobile-close"
             type="button"
-            class="grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            class="grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
             aria-label="Fermer le menu"
           >
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
-
-        <nav class="mt-6 flex flex-col gap-4 font-mono text-base tracking-[0.14em]" aria-label={navEn.navAriaMain}>
-          <a
-            href={withBase("#home")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navHome}
-            data-i18n-title-fr={navFr.navHomeTitle}
-            data-i18n-aria-en={navEn.navHome}
-            data-i18n-aria-fr={navFr.navHomeTitle}
-            aria-label={navEn.navHome}
-          >
-            <I18n en={navEn.navHome} fr={navFr.navHome} />
-          </a>
-          <a
-            href={withBase("#about")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navAbout}
-            data-i18n-title-fr={navFr.navAboutTitle}
-            data-i18n-aria-en={navEn.navAbout}
-            data-i18n-aria-fr={navFr.navAboutTitle}
-            aria-label={navEn.navAbout}
-          >
-            <I18n en={navEn.navAbout} fr={navFr.navAbout} />
-          </a>
-          <a
-            href={withBase("#work")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navWork}
-            data-i18n-title-fr={navFr.navWorkTitle}
-            data-i18n-aria-en={navEn.navWork}
-            data-i18n-aria-fr={navFr.navWorkTitle}
-            aria-label={navEn.navWork}
-          >
-            <I18n en={navEn.navWork} fr={navFr.navWork} />
-          </a>
-        </nav>
-
-        <div class="mt-8">
+        <div class="mt-8 mb-8">
           <div
             data-lang-switch
             role="group"
-            class="flex h-7 flex-row items-center gap-2 font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim)"
+            class="flex h-7 flex-row items-center justify-center gap-2 font-mono text-sm leading-none tracking-[0.14em] text-white"
             data-i18n-title-en={navEn.titleSwitchLang}
             data-i18n-title-fr={navFr.titleSwitchLang}
             aria-label={navEn.titleSwitchLang}
@@ -170,14 +138,165 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
             <button
               type="button"
               data-lang-pick="en"
-              aria-current="true"
-              class="link-underline px-1"
+              class="link-underline flex h-7 items-center border-0 bg-transparent px-1 text-white transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
             >
               EN
             </button>
-            <button type="button" data-lang-pick="fr" class="link-underline px-1">
+            <span
+            class="m-1 block h-3 w-px shrink-0 bg-white/40"
+            aria-hidden="true"></span>
+            <button
+              type="button"
+              data-lang-pick="fr"
+              class="link-underline flex h-7 items-center border-0 bg-transparent px-1 text-white transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
+            >
               FR
             </button>
+          </div>
+        </div>
+        <nav id="nav-mobile" class="mb-6 flex flex-col font-mono text-white items-center tracking-[0.14em]" aria-label={navEn.navAriaMain}>
+        <a
+          href={withBase("#home")}
+          class={navMobileLinkClass}
+          data-nav-hash="home"
+          data-i18n-title-en={navEn.navHome}
+          data-i18n-title-fr={navFr.navHomeTitle}
+          data-i18n-aria-en={navEn.navHome}
+          data-i18n-aria-fr={navFr.navHomeTitle}
+          aria-label={navEn.navHome}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>01</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navHome} fr={navFr.navHome} />
+            </span>
+          </span>
+        </a>
+          <span
+            class="my-2 block h-3 w-px shrink-0 bg-(--fg-dim)"
+            aria-hidden="true"></span>
+        <a
+          href={withBase("#about")}
+          class={navMobileLinkClass}
+          data-nav-hash="about"
+          data-i18n-title-en={navEn.navAbout}
+          data-i18n-title-fr={navFr.navAboutTitle}
+          data-i18n-aria-en={navEn.navAbout}
+          data-i18n-aria-fr={navFr.navAboutTitle}
+          aria-label={navEn.navAbout}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>02</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navAbout} fr={navFr.navAbout} />
+            </span>
+          </span>
+        </a>
+        <span
+          class="my-2 block h-3 w-px shrink-0 bg-(--fg-dim)"
+          aria-hidden="true"></span>
+  
+        <a
+          href={withBase("#work")}
+          class={navMobileLinkClass}
+          data-nav-hash="work"
+          data-i18n-title-en={navEn.navWork}
+          data-i18n-title-fr={navFr.navWorkTitle}
+          data-i18n-aria-en={navEn.navWork}
+          data-i18n-aria-fr={navFr.navWorkTitle}
+          aria-label={navEn.navWork}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>03</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navWork} fr={navFr.navWork} />
+            </span>
+          </span>
+        </a>
+        </nav>
+
+        <div class="mt-8 flex flex-col items-center gap-3">
+          <p class="text-center font-mono text-lg leading-none tracking-[0.14em] text-white">
+            <I18n en={navEn.navContact} fr={navFr.navContact} />
+          </p>
+
+          <div class="flex flex-row items-center justify-center gap-4">
+            <a
+              href={`mailto:${info.email}`}
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-colors duration-200 hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+              data-i18n-title-en={navEn.buttonEmail}
+              data-i18n-title-fr={navFr.buttonEmail}
+              data-i18n-aria-en={mailAriaEn}
+              data-i18n-aria-fr={mailAriaFr}
+              aria-label={mailAriaEn}
+            >
+              <i class="fa-solid fa-envelope text-xl leading-none"></i>
+            </a>
+
+            <a
+              href={info.githubProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+              data-i18n-title-en={navEn.buttonGithub}
+              data-i18n-title-fr={navFr.buttonGithub}
+              data-i18n-aria-en={navEn.buttonGithub}
+              data-i18n-aria-fr={navFr.buttonGithub}
+              aria-label={navEn.buttonGithub}
+            >
+              <svg
+                class="feather feather-github h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </a>
+
+            <a
+              href={info.linkedinProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+              data-i18n-title-en={navEn.buttonLinkedin}
+              data-i18n-title-fr={navFr.buttonLinkedin}
+              data-i18n-aria-en={navEn.buttonLinkedin}
+              data-i18n-aria-fr={navFr.buttonLinkedin}
+              aria-label={navEn.buttonLinkedin}
+            >
+              <svg
+                class="feather feather-linkedin h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -228,9 +347,9 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
           </span>
         </span>
       </a>
-      <span
-        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
-        aria-hidden="true"></span>
+        <span
+          class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
+          aria-hidden="true"></span>
       <a
         href={withBase("#about")}
         class={navRailLinkClass}

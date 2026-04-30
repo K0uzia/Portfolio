@@ -56,7 +56,7 @@ export function initLangToggle(signal: AbortSignal) {
 	if (roots.length === 0) return;
 
 	const stored = localStorage.getItem(STORAGE_KEY);
-	const fr = stored === "fr";
+	const fr = stored === null ? true : stored === "fr";
 	applyDocumentLang(fr);
 
 	roots.forEach((root) => {
