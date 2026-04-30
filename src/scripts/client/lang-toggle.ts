@@ -25,16 +25,18 @@ function syncMetaAndTitles(fr: boolean) {
 }
 
 function syncLangSwitchButtons(fr: boolean) {
-	const en = document.getElementById("nav-lang-en");
-	const frBtn = document.getElementById("nav-lang-fr");
-	if (en instanceof HTMLButtonElement) {
-		if (fr) en.removeAttribute("aria-current");
-		else en.setAttribute("aria-current", "true");
-	}
-	if (frBtn instanceof HTMLButtonElement) {
-		if (fr) frBtn.setAttribute("aria-current", "true");
-		else frBtn.removeAttribute("aria-current");
-	}
+	document.querySelectorAll<HTMLElement>("[data-lang-switch]").forEach((root) => {
+		const en = root.querySelector<HTMLButtonElement>('[data-lang-pick="en"]');
+		const frBtn = root.querySelector<HTMLButtonElement>('[data-lang-pick="fr"]');
+		if (en) {
+			if (fr) en.removeAttribute("aria-current");
+			else en.setAttribute("aria-current", "true");
+		}
+		if (frBtn) {
+			if (fr) frBtn.setAttribute("aria-current", "true");
+			else frBtn.removeAttribute("aria-current");
+		}
+	});
 }
 
 export function applyDocumentLang(fr: boolean) {
@@ -50,24 +52,26 @@ export function applyDocumentLang(fr: boolean) {
 }
 
 export function initLangToggle(signal: AbortSignal) {
-	const root = document.getElementById("nav-lang-switch");
-	if (!root) return;
+	const roots = Array.from(document.querySelectorAll<HTMLElement>("[data-lang-switch]"));
+	if (roots.length === 0) return;
 
 	const stored = localStorage.getItem(STORAGE_KEY);
 	const fr = stored === "fr";
 	applyDocumentLang(fr);
 
-	root.addEventListener(
-		"click",
-		(e) => {
-			const t = (e.target as HTMLElement | null)?.closest("[data-lang-pick]");
-			if (!(t instanceof HTMLButtonElement)) return;
-			const pick = t.dataset.langPick;
-			if (pick !== "en" && pick !== "fr") return;
-			const nextFr = pick === "fr";
-			applyDocumentLang(nextFr);
-			localStorage.setItem(STORAGE_KEY, nextFr ? "fr" : "en");
-		},
-		{ signal },
-	);
+	roots.forEach((root) => {
+		root.addEventListener(
+			"click",
+			(e) => {
+				const t = (e.target as HTMLElement | null)?.closest("[data-lang-pick]");
+				if (!(t instanceof HTMLButtonElement)) return;
+				const pick = t.dataset.langPick;
+				if (pick !== "en" && pick !== "fr") return;
+				const nextFr = pick === "fr";
+				applyDocumentLang(nextFr);
+				localStorage.setItem(STORAGE_KEY, nextFr ? "fr" : "en");
+			},
+			{ signal },
+		);
+	});
 }

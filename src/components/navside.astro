@@ -19,40 +19,9 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
 
 <section>
   <div
-    class="pointer-events-none fixed top-10 right-8 z-10 hidden flex-row items-center gap-2.5 lg:flex xl:right-13"
+    class="pointer-events-none fixed top-4 right-4 z-20 flex flex-row items-center gap-2.5 lg:top-10 lg:right-8 xl:right-13"
   >
-    <div
-      id="nav-lang-switch"
-      role="group"
-      class="pointer-events-auto flex h-6 flex-row items-center gap-0 font-mono text-sm leading-none tracking-[0.14em] [-webkit-tap-highlight-color:transparent]"
-      data-i18n-title-en={navEn.titleSwitchLang}
-      data-i18n-title-fr={navFr.titleSwitchLang}
-      aria-label={navEn.titleSwitchLang}
-      data-i18n-aria-en={navEn.titleSwitchLang}
-      data-i18n-aria-fr={navFr.titleSwitchLang}
-    >
-      <button
-        type="button"
-        id="nav-lang-en"
-        data-lang-pick="en"
-        aria-current="true"
-        class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
-      >
-        EN
-      </button>
-      <span
-        class="flex h-6 items-center text-(--fg-dim) opacity-60 select-none"
-        aria-hidden="true">|</span
-      >
-      <button
-        type="button"
-        id="nav-lang-fr"
-        data-lang-pick="fr"
-        class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
-      >
-        FR
-      </button>
-    </div>
+    <div class="pointer-events-auto flex flex-row items-center gap-2">
     <label
       for="nav-theme-toggle"
       class="pointer-events-auto relative block h-6 w-10 shrink-0 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:transparent] has-checked:bg-amber-500 dark:bg-gray-600 dark:has-checked:bg-amber-500"
@@ -86,6 +55,133 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         </span>
       </span>
     </label>
+      <button
+        id="nav-burger"
+        type="button"
+        class="pointer-events-auto grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) lg:hidden"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="nav-mobile-panel"
+      >
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+      <div
+        data-lang-switch
+        role="group"
+        class="pointer-events-auto hidden h-6 flex-row items-center gap-0 font-mono text-sm leading-none tracking-[0.14em] [-webkit-tap-highlight-color:transparent] lg:flex"
+        data-i18n-title-en={navEn.titleSwitchLang}
+        data-i18n-title-fr={navFr.titleSwitchLang}
+        aria-label={navEn.titleSwitchLang}
+        data-i18n-aria-en={navEn.titleSwitchLang}
+        data-i18n-aria-fr={navFr.titleSwitchLang}
+      >
+        <button
+          type="button"
+          data-lang-pick="en"
+          aria-current="true"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+        >
+          EN
+        </button>
+        <span class="flex h-6 items-center text-(--fg-dim) opacity-60 select-none" aria-hidden="true">|</span>
+        <button
+          type="button"
+          data-lang-pick="fr"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+        >
+          FR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile off-canvas menu -->
+  <div class="lg:hidden">
+    <div
+      id="nav-mobile-overlay"
+      class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 transition-opacity duration-200 [#nav-mobile-panel[data-open]+&]:pointer-events-auto [#nav-mobile-panel[data-open]+&]:opacity-100"
+      aria-hidden="true"
+    ></div>
+    <aside
+      id="nav-mobile-panel"
+      class="fixed inset-y-0 right-0 z-40 w-[min(86vw,360px)] translate-x-full bg-(--void) shadow-2xl ring-1 ring-(--accent-dim) transition-transform duration-200 data-[open]:translate-x-0"
+      aria-hidden="true"
+    >
+      <div class="flex h-full flex-col p-5">
+        <div class="flex items-center justify-between">
+          <div class="font-mono text-sm tracking-[0.14em] text-(--fg-dim)">Menu</div>
+          <button
+            id="nav-mobile-close"
+            type="button"
+            class="grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            aria-label="Fermer le menu"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <nav class="mt-6 flex flex-col gap-4 font-mono text-base tracking-[0.14em]" aria-label={navEn.navAriaMain}>
+          <a
+            href={withBase("#home")}
+            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            data-i18n-title-en={navEn.navHome}
+            data-i18n-title-fr={navFr.navHomeTitle}
+            data-i18n-aria-en={navEn.navHome}
+            data-i18n-aria-fr={navFr.navHomeTitle}
+            aria-label={navEn.navHome}
+          >
+            <I18n en={navEn.navHome} fr={navFr.navHome} />
+          </a>
+          <a
+            href={withBase("#about")}
+            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            data-i18n-title-en={navEn.navAbout}
+            data-i18n-title-fr={navFr.navAboutTitle}
+            data-i18n-aria-en={navEn.navAbout}
+            data-i18n-aria-fr={navFr.navAboutTitle}
+            aria-label={navEn.navAbout}
+          >
+            <I18n en={navEn.navAbout} fr={navFr.navAbout} />
+          </a>
+          <a
+            href={withBase("#work")}
+            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            data-i18n-title-en={navEn.navWork}
+            data-i18n-title-fr={navFr.navWorkTitle}
+            data-i18n-aria-en={navEn.navWork}
+            data-i18n-aria-fr={navFr.navWorkTitle}
+            aria-label={navEn.navWork}
+          >
+            <I18n en={navEn.navWork} fr={navFr.navWork} />
+          </a>
+        </nav>
+
+        <div class="mt-8">
+          <div
+            data-lang-switch
+            role="group"
+            class="flex h-7 flex-row items-center gap-2 font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim)"
+            data-i18n-title-en={navEn.titleSwitchLang}
+            data-i18n-title-fr={navFr.titleSwitchLang}
+            aria-label={navEn.titleSwitchLang}
+            data-i18n-aria-en={navEn.titleSwitchLang}
+            data-i18n-aria-fr={navFr.titleSwitchLang}
+          >
+            <button
+              type="button"
+              data-lang-pick="en"
+              aria-current="true"
+              class="link-underline px-1"
+            >
+              EN
+            </button>
+            <button type="button" data-lang-pick="fr" class="link-underline px-1">
+              FR
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
   <div
     class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 after:block after:h-32 after:w-px after:shrink-0 after:bg-(--fg-dim) after:opacity-55 after:content-[''] lg:flex xl:right-10"
