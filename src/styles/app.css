@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@import "./theme.css";
+@import "./normalize.css";
+@import "./base.css";
+@import "./i18n.css";
+@import "./icons.css";
+@import "./link.css";
+@import "./tooltip.css";

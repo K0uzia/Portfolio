@@ -1,0 +1,15 @@
+---
+import { Picture } from "astro:assets";
+import profil from "../images/about/profil.jpg";
+---
+
+<Picture
+	src={profil}
+	alt="Profil"
+	widths={[250, 500]}
+	sizes="250px"
+	formats={["avif", "webp", "jpg"]}
+	loading="lazy"
+	decoding="async"
+	class="h-full w-full object-cover"
+/>

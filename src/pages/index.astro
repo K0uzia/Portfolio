@@ -1,20 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/portfolio/Hero.astro";
-import About from "../components/portfolio/About.astro";
-import Stack from "../components/portfolio/Stack.astro";
-import Projects from "../components/portfolio/Projects.astro";
-import Contact from "../components/portfolio/Contact.astro";
+import Hero from "../components/hero.astro";
+import About from "../components/about.astro";
+import Work from "../components/work.astro";
 ---
 
-<Layout pageTitle="Accueil">
-	<div class="min-w-0" transition:name="main-content" transition:animate="slide">
+<Layout>
+	<main>		
 		<Hero />
-		<div class="pb-10 md:pb-14 lg:pb-16">
-			<About />
-			<Stack />
-			<Projects />
-			<Contact />
-		</div>
-	</div>
+		<About />
+		<Work />
+	</main>
 </Layout>

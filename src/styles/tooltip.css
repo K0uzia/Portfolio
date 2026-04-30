@@ -1,0 +1,9 @@
+@layer utilities {
+	/* JS-driven cursor tooltip */
+	.cursor-tooltip {
+		@apply pointer-events-none fixed z-50 w-max max-w-64 rounded-md bg-(--haze) px-2 py-1 text-xs leading-snug text-(--fg) opacity-0 shadow-lg ring-1 ring-(--accent-dim);
+		writing-mode: horizontal-tb;
+		text-orientation: mixed;
+	}
+}
+

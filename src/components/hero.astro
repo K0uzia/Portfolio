@@ -1,0 +1,61 @@
+---
+import { hero as heroEn } from "../site.ENconfig.ts";
+import { hero as heroFr } from "../site.FRconfig.ts";
+import { withBase } from "../lib/paths";
+import I18n from "./I18n.astro";
+---
+
+<section
+	id="home"
+	class="bg-white lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900"
+>
+	<div class="mx-auto w-screen max-w-15xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+		<div class="mx-auto max-w-4xl text-start">
+			<h1 class="mb-5 font-mono text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500">
+				<I18n en={heroEn.heroTitle} fr={heroFr.heroTitle} block />
+			</h1>
+			<h2 class="text-4xl font-bold text-gray-900 sm:text-4xl dark:text-white">
+				<I18n en={heroEn.heroSubtitle} fr={heroFr.heroSubtitle} block />
+			</h2>
+			<h3 class="mb-10 text-5xl font-bold text-gray-900 sm:text-3xl dark:text-gray-400">
+				<I18n en={heroEn.heroDescription} fr={heroFr.heroDescription} block />
+			</h3>
+			<p class="max-w-1xl mb-5 text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-gray-400">
+				<I18n en={heroEn.heroSubdescription} fr={heroFr.heroSubdescription} />
+				<a
+					class="link-underline text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-amber-500"
+					target="_blank"
+					rel="noopener noreferrer"
+					href={heroEn.heroLink1}
+					data-i18n-title-en={heroEn.heroLink1Title}
+					data-i18n-title-fr={heroFr.heroLink1Title}
+					>
+					<I18n en={heroEn.heroLink1Text} fr={heroFr.heroLink1Text} />
+				</a>
+					<I18n en={heroEn.heroSubdescription2} fr={heroFr.heroSubdescription2} />
+				<a
+					class="link-underline text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-amber-500"
+					target="_blank"
+					rel="noopener noreferrer"
+					href={heroEn.heroLink2}
+					data-i18n-title-en={heroEn.heroLink2Title}
+					data-i18n-title-fr={heroFr.heroLink2Title}
+				>
+					<I18n en={heroEn.heroLink2Text} fr={heroFr.heroLink2Text} />
+				</a>
+			</p>
+			<a
+			href={withBase("#work")}
+			class="mt-10 rounded-md border border-amber-500 px-4 py-2 text-amber-500 hove"
+			data-nav-hash="work"
+			data-i18n-title-en={heroEn.heroButton}
+			data-i18n-title-fr={heroFr.heroButton}
+			data-i18n-aria-en={heroEn.heroButton}
+			data-i18n-aria-fr={heroFr.heroButton}
+			aria-label={heroEn.heroButton}
+		  >
+			<I18n en={heroEn.heroButton} fr={heroFr.heroButton} />
+		  </a>
+		</div>
+	</div>
+</section>
