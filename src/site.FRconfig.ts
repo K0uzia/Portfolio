@@ -19,7 +19,13 @@ export const nav = {
 	navlinkWork: "#work",
 	navlinkAbout: "#about",
 	navlinkContact: "#contact",
-	/* Button Title */
+	/* Navigation Titles */
+	navHomeTitle: "Aller à l'accueil",
+	navWorkTitle: "Mes travaux",
+	navAboutTitle: "À propos de moi",
+	navContactTitle: "Me contacter",
+	/* Button Titles */
+	buttonLinkedin: "Profil LinkedIn",
 	buttonGithub: "Profil GitHub",
 	buttonEmail: "M’écrire par e-mail",
 	/** Toggle theme */
@@ -61,7 +67,8 @@ export const about = {
 	aboutDescription5: "Voici quelques technologies sur lesquelles j’ai récemment travaillé :",
 	aboutDescription5Stack: "Astro",
 	aboutDescription5Stack2: "Tailwind CSS",
-	aboutDescription5Stack3: "TypeScript"
+	aboutDescription5Stack3: "TypeScript",
+	aboutDescription5Stack4: "ElectronJS"
 } as const;
 
 export const work = {

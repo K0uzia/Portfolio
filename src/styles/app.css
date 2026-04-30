@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @import "./theme.css";
+@import "./normalize.css";
 @import "./base.css";
 @import "./i18n.css";
-@import "./glass.css";
-@import "./chips.css";
 @import "./icons.css";
-/* @import "./normalize.css"; */
+@import "./link.css";
+@import "./tooltip.css";

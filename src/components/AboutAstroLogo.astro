@@ -1,0 +1,15 @@
+---
+import { Picture } from "astro:assets";
+import astro from "../images/about/astro.svg";
+
+const { class: className = "w-4 h-4", alt = "Astro" } = Astro.props;
+---
+
+<Picture
+	src={astro}
+	alt={alt}
+	format="svg"
+	loading="lazy"
+	decoding="async"
+	class={className}
+/>

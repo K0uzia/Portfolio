@@ -13,7 +13,8 @@ function syncMetaAndTitles(fr: boolean) {
 	document.querySelectorAll<HTMLElement>("[data-i18n-title-en]").forEach((el) => {
 		const en = el.dataset.i18nTitleEn ?? "";
 		const frT = el.dataset.i18nTitleFr ?? "";
-		el.setAttribute("title", fr ? frT : en);
+		el.setAttribute("data-tooltip", fr ? frT : en);
+		el.removeAttribute("title");
 	});
 
 	document.querySelectorAll<HTMLElement>("[data-i18n-aria-en]").forEach((el) => {

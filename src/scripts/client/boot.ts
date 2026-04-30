@@ -4,6 +4,7 @@ import { killNavRail, initNavRail } from "./nav-rail";
 import { killStackTagChipsFx, initStackTagChips } from "./stack-chips";
 import { initLangToggle } from "./lang-toggle";
 import { initThemeToggle } from "./theme-toggle";
+import { initTooltips } from "./tooltip";
 
 let cleanupBoot: (() => void) | null = null;
 
@@ -22,6 +23,7 @@ export function boot() {
 
 	initThemeToggle(ac.signal);
 	initLangToggle(ac.signal);
+	initTooltips(ac.signal);
 	initNavRail();
 	initStackTagChips();
 

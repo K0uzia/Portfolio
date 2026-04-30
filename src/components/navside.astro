@@ -25,7 +25,6 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       id="nav-lang-switch"
       role="group"
       class="pointer-events-auto flex h-6 flex-row items-center gap-0 font-mono text-sm leading-none tracking-[0.14em] [-webkit-tap-highlight-color:transparent]"
-      title={navEn.titleSwitchLang}
       data-i18n-title-en={navEn.titleSwitchLang}
       data-i18n-title-fr={navFr.titleSwitchLang}
       aria-label={navEn.titleSwitchLang}
@@ -37,7 +36,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         id="nav-lang-en"
         data-lang-pick="en"
         aria-current="true"
-        class="flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+        class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
       >
         EN
       </button>
@@ -49,14 +48,13 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         type="button"
         id="nav-lang-fr"
         data-lang-pick="fr"
-        class="flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+        class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
       >
         FR
       </button>
     </div>
     <label
       for="nav-theme-toggle"
-      title={navEn.titleSwitchTheme}
       class="pointer-events-auto relative block h-6 w-10 shrink-0 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:transparent] has-checked:bg-amber-500 dark:bg-gray-600 dark:has-checked:bg-amber-500"
       aria-label={navEn.titleSwitchTheme}
       data-i18n-title-en={navEn.titleSwitchTheme}
@@ -64,6 +62,13 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       data-i18n-aria-en={navEn.titleSwitchTheme}
       data-i18n-aria-fr={navFr.titleSwitchTheme}
     >
+      <span
+        class="sr-only"
+        data-i18n-text-en={navEn.titleSwitchTheme}
+        data-i18n-text-fr={navFr.titleSwitchTheme}
+      >
+        {navEn.titleSwitchTheme}
+      </span>
       <input type="checkbox" id="nav-theme-toggle" class="peer sr-only" />
       <span
         class="pointer-events-none absolute inset-y-0 start-0 m-1 size-4 overflow-hidden rounded-full transition-[inset-inline-start] duration-200 motion-safe:transition-[inset-inline-start] peer-checked:start-4 peer-checked:[&_.knob-moon]:opacity-0 peer-checked:[&_.knob-sun]:opacity-100"
@@ -86,9 +91,8 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 after:block after:h-32 after:w-px after:shrink-0 after:bg-(--fg-dim) after:opacity-55 after:content-[''] lg:flex xl:right-10"
   >
     <a
-      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-(--accent) motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent)"
+      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-amber-500 motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500"
       href={`mailto:${info.email}`}
-      title={navEn.buttonEmail}
       data-i18n-title-en={navEn.buttonEmail}
       data-i18n-title-fr={navFr.buttonEmail}
       data-i18n-aria-en={mailAriaEn}
@@ -112,22 +116,20 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         href={withBase("#home")}
         class={navRailLinkClass}
         data-nav-hash="home"
-        title={navEn.navHome}
         data-i18n-title-en={navEn.navHome}
-        data-i18n-title-fr={navFr.navHome}
+        data-i18n-title-fr={navFr.navHomeTitle}
         data-i18n-aria-en={navEn.navHome}
-        data-i18n-aria-fr={navFr.navHome}
+        data-i18n-aria-fr={navFr.navHomeTitle}
         aria-label={navEn.navHome}
       >
-        <span
-          class="flex w-10 shrink-0 items-baseline justify-center gap-0"
-          aria-hidden="true"
-        >
-          <span class={navRailIndexPartClass}>01</span>
-          <span class={navRailIndexPartClass}>.</span>
-        </span>
-        <span class={navRailTitleClass} aria-hidden="true">
-          <I18n en={navEn.navHome} fr={navFr.navHome} />
+        <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+          <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+            <span class={navRailIndexPartClass}>01</span>
+            <span class={navRailIndexPartClass}>.</span>
+          </span>
+          <span class={navRailTitleClass}>
+            <I18n en={navEn.navHome} fr={navFr.navHome} />
+          </span>
         </span>
       </a>
       <span
@@ -137,22 +139,20 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         href={withBase("#about")}
         class={navRailLinkClass}
         data-nav-hash="about"
-        title={navEn.navAbout}
         data-i18n-title-en={navEn.navAbout}
-        data-i18n-title-fr={navFr.navAbout}
+        data-i18n-title-fr={navFr.navAboutTitle}
         data-i18n-aria-en={navEn.navAbout}
-        data-i18n-aria-fr={navFr.navAbout}
+        data-i18n-aria-fr={navFr.navAboutTitle}
         aria-label={navEn.navAbout}
       >
-        <span
-          class="flex w-10 shrink-0 items-baseline justify-center gap-0"
-          aria-hidden="true"
-        >
-          <span class={navRailIndexPartClass}>02</span>
-          <span class={navRailIndexPartClass}>.</span>
-        </span>
-        <span class={navRailTitleClass} aria-hidden="true">
-          <I18n en={navEn.navAbout} fr={navFr.navAbout} />
+        <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+          <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+            <span class={navRailIndexPartClass}>02</span>
+            <span class={navRailIndexPartClass}>.</span>
+          </span>
+          <span class={navRailTitleClass}>
+            <I18n en={navEn.navAbout} fr={navFr.navAbout} />
+          </span>
         </span>
       </a>
       <span
@@ -163,22 +163,20 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         href={withBase("#work")}
         class={navRailLinkClass}
         data-nav-hash="work"
-        title={navEn.navWork}
         data-i18n-title-en={navEn.navWork}
-        data-i18n-title-fr={navFr.navWork}
+        data-i18n-title-fr={navFr.navWorkTitle}
         data-i18n-aria-en={navEn.navWork}
-        data-i18n-aria-fr={navFr.navWork}
+        data-i18n-aria-fr={navFr.navWorkTitle}
         aria-label={navEn.navWork}
       >
-        <span
-          class="flex w-10 shrink-0 items-baseline justify-center gap-0"
-          aria-hidden="true"
-        >
-          <span class={navRailIndexPartClass}>03</span>
-          <span class={navRailIndexPartClass}>.</span>
-        </span>
-        <span class={navRailTitleClass} aria-hidden="true">
-          <I18n en={navEn.navWork} fr={navFr.navWork} />
+        <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+          <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+            <span class={navRailIndexPartClass}>03</span>
+            <span class={navRailIndexPartClass}>.</span>
+          </span>
+          <span class={navRailTitleClass}>
+            <I18n en={navEn.navWork} fr={navFr.navWork} />
+          </span>
         </span>
       </a>
     </nav>
@@ -192,7 +190,6 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       target="_blank"
       rel="noopener noreferrer"
       class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
-      title={navEn.buttonGithub}
       data-i18n-title-en={navEn.buttonGithub}
       data-i18n-title-fr={navFr.buttonGithub}
       data-i18n-aria-en={navEn.buttonGithub}
@@ -220,7 +217,6 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       target="_blank"
       rel="noopener noreferrer"
       class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
-      title={navEn.buttonLinkedin}
       data-i18n-title-en={navEn.buttonLinkedin}
       data-i18n-title-fr={navFr.buttonLinkedin}
       data-i18n-aria-en={navEn.buttonLinkedin}
@@ -243,7 +239,6 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     <circle cx="4" cy="4" r="2"></circle>
     </svg>
   </a>
-    </a>
     <span
       class="block h-32 w-px shrink-0 bg-(--fg-dim) opacity-55"
       aria-hidden="true"></span>

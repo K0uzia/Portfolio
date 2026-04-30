@@ -58,7 +58,8 @@ export const about = {
     aboutDescription5: "Here are a few technologies I’ve recently worked with:",
 	aboutDescription5Stack: "Astro",
 	aboutDescription5Stack2: "Tailwind CSS",
-	aboutDescription5Stack3: "TypeScript"
+	aboutDescription5Stack3: "TypeScript",
+	aboutDescription5Stack4: "ElectronJS"
 } as const;
 
 export const work = {
