@@ -6,6 +6,7 @@ import { initLangToggle } from "./lang-toggle";
 import { initThemeToggle } from "./theme-toggle";
 import { initTooltips } from "./tooltip";
 import { initMobileMenu } from "./mobile-menu";
+import { initImageLoaders } from "./image-loader";
 
 let cleanupBoot: (() => void) | null = null;
 
@@ -27,6 +28,7 @@ export function boot() {
 	initTooltips(ac.signal);
 	initMobileMenu(ac.signal);
 	initNavRail();
+	initImageLoaders();
 	initStackTagChips();
 
 	requestAnimationFrame(() => {

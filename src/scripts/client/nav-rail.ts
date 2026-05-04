@@ -87,13 +87,14 @@ export function initNavRail() {
 	const onNavClick = (e: MouseEvent) => {
 		const t = (e.target as Element | null)?.closest?.("a[data-nav-hash]");
 		if (!(t instanceof HTMLAnchorElement)) return;
-		if (!(navRail?.contains(t) || navMobile?.contains(t))) return;
 		const raw = t.getAttribute("href")?.split("#")[1];
 		if (!raw) return;
 		const id = raw.toLowerCase();
 		if (!valid.has(id)) return;
 		const target = document.getElementById(id);
 		if (!(target instanceof HTMLElement)) return;
+		if (e.button !== 0) return;
+		if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
 		e.preventDefault();
 		const y = scrollYToElement(target);
@@ -116,10 +117,8 @@ export function initNavRail() {
 			},
 		});
 	};
-	navRail?.addEventListener("click", onNavClick);
-	navMobile?.addEventListener("click", onNavClick);
-	disposers.push(() => navRail?.removeEventListener("click", onNavClick));
-	disposers.push(() => navMobile?.removeEventListener("click", onNavClick));
+	document.addEventListener("click", onNavClick);
+	disposers.push(() => document.removeEventListener("click", onNavClick));
 
 	syncFromHash();
 	requestAnimationFrame(() => {

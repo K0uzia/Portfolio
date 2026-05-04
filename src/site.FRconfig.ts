@@ -72,5 +72,67 @@ export const about = {
 } as const;
 
 export const work = {
-	workTitle: "03. Mes travaux",
+	workTitle: "03. Mon travail",
+	workFeaturedLabel: "Projet mis en avant",
+
+	/** Projet 1 — carte + vignette (`project1.astro`). */
+    workCardTitle: "Workspace",
+    workCardDescriptionLine1:
+        "Bureau virtuel (Electron) : un point d’accès pour les outils et liens internes.",
+    workCardDescriptionLine2:
+        "Accès, raccourcis et applications regroupés dans une même interface.",
+    workCardDescriptionLine3:
+        "Navigation vers les documents serveur, présentés par entité.",
+    workCardDescriptionLine4:
+        "Parcours de réception matérielle : lots, dons et commandes.",
+    workCardDescriptionLine5:
+        "Historique des états et journal des actions pour le suivi et l’audit.",
+    workCardDescriptionLine6:
+        "Conçu pour l’usage courant : inventaire, réception et consultation.",
+
+	/** Projet 2 — portfolio (`project2.astro`). */
+	workFeaturedLabel2: "Ce portfolio",
+	workCard2Title: "Portfolio personnel",
+	workCard2DescriptionLine1:
+		"Présentation de mon profil de designer-développeur et une sélection de réalisations représentatives de mon travail.",
+	workCard2DescriptionLine2:
+		"Permet aux recruteurs et partenaires une lecture claire, en français ou en anglais, avec un confort visuel adapté (clair ou sombre).",
+	workCard2DescriptionLine3:
+		"Met en contexte chaque projet avec des visuels, puis guider vers une prise de contact simple.",
+
+	/** Projet 3 — ConvertAllLocal (`project3.astro`). */
+	workFeaturedLabel3: "En cours de développement",
+	workCard3Title: "ConvertAllLocal - CAL",
+    workCard3DescriptionLine1: "Application 100% locale pour convertir tous vos fichiers multimédias.",
+    workCard3DescriptionLine2: "Prend en charge les formats vidéo, image et icônes incontournables du web",
+    workCard3DescriptionLine3: "et du développement. Aucune donnée envoyée : tout reste sur votre machine.",
+	workCard3StackAstro: "Astro",
+	workCard3StackTailwind: "Tailwind",
+	workCard3StackTypeScript: "TS",
+	workCard3StackGsap: "GSAP",
+
+	workGithubIconTitle: "Voir le code sur GitHub",
+	workExternalLinkTitle: "Voir la démo",
+	workImageAlt1: "Workspace - capture d'écran",
+	workImageAlt2: "Portfolio personnel — aperçu du site",
+	workImageAlt3: "Boîte à outils opérationnelle — capture d'écran",
+	workGalleryTitle: "Captures du projet",
+	workGalleryOpenLabel: "Agrandir et parcourir les captures",
+	/** Légendes lightbox : même ordre / même nombre d’entrées que `site.ENconfig.ts` → `workGalleryCaptions`. */
+	workGalleryCaptions: {
+		1: [
+			"Workspace - Page d’accueil",
+			"Workspace - Page agenda",
+			"Workspace - Page applications",
+			"Workspace - Réception et création des lots et matériels",
+			"Workspace - Historique lots/matériels et leur état",
+			"Workspace - Traçabilité lots/matériels triés par mois et année",
+		],
+		2: ["Portfolio personnel — aperçu du site"],
+		3: ["Boîte à outils opérationnelle — capture d’écran"],
+	} as const,
+	workNodejs: "Node.js",
+	workElectron: "Electron",
+	workTailwind: "Fontawesome",
+	workStackAriaLabel: "Stack utilisé",
 } as const;

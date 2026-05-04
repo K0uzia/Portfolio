@@ -4,6 +4,7 @@ import "../styles/app.css";
 import { info as infoEn } from "../site.ENconfig.ts";
 import { info as infoFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
+import { LANG_STORAGE_KEY } from "../lib/lang-storage.ts";
 import Navside from "../components/navside.astro";
 
 interface Props {
@@ -31,6 +32,30 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 		<link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
 		<meta name="description" content={descriptionEn} />
 		<title>{titleEn}</title>
+		<!-- Avant le body : applique la langue persistée pour éviter un flash EN→FR au refresh. -->
+		<script is:inline define:vars={{ LANG_STORAGE_KEY }}>
+			(function () {
+				try {
+					var s = localStorage.getItem(LANG_STORAGE_KEY);
+					var fr = s === null ? true : s === "fr";
+					var root = document.documentElement;
+					if (fr) {
+						root.setAttribute("data-lang", "fr");
+						root.setAttribute("lang", "fr");
+					} else {
+						root.removeAttribute("data-lang");
+						root.setAttribute("lang", "en");
+					}
+					var tEn = root.getAttribute("data-title-en") || "";
+					var tFr = root.getAttribute("data-title-fr") || "";
+					var dEn = root.getAttribute("data-description-en") || "";
+					var dFr = root.getAttribute("data-description-fr") || "";
+					document.title = fr ? tFr : tEn;
+					var meta = document.querySelector('meta[name="description"]');
+					if (meta) meta.setAttribute("content", fr ? dFr : dEn);
+				} catch (_) {}
+			})();
+		</script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

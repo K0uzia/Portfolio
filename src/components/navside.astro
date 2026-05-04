@@ -5,13 +5,13 @@ import { nav as navFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
 import I18n from "./I18n.astro";
 
-/** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Variants arbitraires sur la structure du `<a>` (1er span = index, 2e = libellé). */
+/** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Tout le rail en `text-xl` : l’actif ne change plus la boîte (seulement couleur + gras), donc plus de saut au refresh. */
 const navRailLinkClass =
-  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) [&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-xl [&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold [&.is-active]:[&>span:nth-child(2)]:text-xl";
+  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-lg leading-none tracking-[0.14em] text-(--fg-dim) transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) [&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold";
 const navRailIndexPartClass =
   "text-amber-500 transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
 const navRailTitleClass =
-  "min-w-0 shrink text-left text-sm text-(--fg-dim) transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
+  "min-w-0 shrink text-left text-lg text-(--fg-dim) transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
 
 const navMobileLinkClass =
   "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-center gap-2 whitespace-nowrap rounded-md font-mono text-xl leading-none tracking-[0.14em] text-white transition-colors duration-200 hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500 [&.is-active]:text-amber-500";

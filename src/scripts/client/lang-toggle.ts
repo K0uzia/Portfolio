@@ -1,4 +1,4 @@
-const STORAGE_KEY = "portfolio-lang";
+import { LANG_STORAGE_KEY, storedPreferenceIsFr } from "../../lib/lang-storage";
 
 function syncMetaAndTitles(fr: boolean) {
 	const html = document.documentElement;
@@ -55,8 +55,7 @@ export function initLangToggle(signal: AbortSignal) {
 	const roots = Array.from(document.querySelectorAll<HTMLElement>("[data-lang-switch]"));
 	if (roots.length === 0) return;
 
-	const stored = localStorage.getItem(STORAGE_KEY);
-	const fr = stored === null ? true : stored === "fr";
+	const fr = storedPreferenceIsFr();
 	applyDocumentLang(fr);
 
 	roots.forEach((root) => {
@@ -69,7 +68,7 @@ export function initLangToggle(signal: AbortSignal) {
 				if (pick !== "en" && pick !== "fr") return;
 				const nextFr = pick === "fr";
 				applyDocumentLang(nextFr);
-				localStorage.setItem(STORAGE_KEY, nextFr ? "fr" : "en");
+				localStorage.setItem(LANG_STORAGE_KEY, nextFr ? "fr" : "en");
 			},
 			{ signal },
 		);

@@ -1,0 +1,199 @@
+---
+import { work as workEn } from "../site.ENconfig.ts";
+import { work as workFr } from "../site.FRconfig.ts";
+import {
+	getProjectCardDescriptionLines,
+	getProjectCardTitle,
+} from "../lib/work-project.ts";
+import I18n from "./I18n.astro";
+import ProjectWorkGallery from "./ProjectWorkGallery.astro";
+import ElectronIcon from "./icons/ElectronIcon.astro";
+
+/**
+ * Shields : Font Awesome quand l’icône marque existe en free ; sinon SVG (ex. Electron).
+ */
+ const stackShields = [
+	{
+		key: "electron",
+		fa: undefined as string | undefined,
+		stackEn: workEn.workElectron,
+		stackFr: workFr.workElectron,
+		stackColor: "#3D5A66",
+	},
+	{
+		key: "nodejs",
+		fa: "fa-brands fa-node-js",
+		stackEn: workEn.workNodejs,
+		stackFr: workFr.workNodejs,
+		stackColor: "#2E7D32",
+	},
+	{
+		key: "fontawesome",
+		fa: "fa-brands fa-font-awesome",
+		stackEn: workEn.workTailwind,
+		stackFr: workFr.workTailwind,
+		stackColor: "#1565C0",
+	},
+] as const;
+
+const cardTitle = getProjectCardTitle(1);
+const descriptionLines = getProjectCardDescriptionLines(1);
+---
+
+<article
+class="relative mt-20"
+aria-labelledby="work-featured-heading"
+>
+<div
+    class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-0 lg:items-center"
+>
+    <div
+        class="relative order-1 flex flex-col gap-3 lg:col-span-7 lg:col-start-1 lg:row-start-1"
+    >
+        <!-- Cadre en L : `group` ici seulement → hover image (pas la colonne texte) -->
+        <div class="group relative w-full">
+            <span
+                class="pointer-events-none absolute -left-3 -top-3 z-20 h-6 w-10 border-l-2 border-t-2 border-gray-900 dark:border-amber-500 sm:-left-2 sm:-top-2"
+                aria-hidden="true"
+            />
+            <span
+                class="pointer-events-none absolute -right-3 -top-3 z-20 h-10 w-6 border-r-2 border-t-2 border-gray-900 dark:border-amber-500 sm:-right-2 sm:-top-2"
+                aria-hidden="true"
+            />
+            <span
+                class="pointer-events-none absolute -bottom-3 -left-3 z-20 h-10 w-6 border-b-2 border-l-2 border-gray-900 dark:border-amber-500 sm:-bottom-2 sm:-left-2"
+                aria-hidden="true"
+            />
+            <span
+                class="pointer-events-none absolute -bottom-3 -right-3 z-20 h-6 w-10 border-b-2 border-r-2 border-gray-900 dark:border-amber-500 sm:-bottom-2 sm:-right-2"
+                aria-hidden="true"
+            />
+            <ProjectWorkGallery project={1} labelId="work-project-shot-1" />
+        </div>
+    </div>
+
+    <div
+        class="order-2 z-5 flex flex-col items-end text-right text-gray-800 lg:col-span-6 lg:col-start-7 lg:row-start-1 dark:text-(--fg) lg:gap-0"
+    >
+        <p class="mb-2 font-mono text-sm text-amber-500">
+            <I18n en={workEn.workFeaturedLabel} fr={workFr.workFeaturedLabel} />
+        </p>
+        <h3
+            id="work-featured-heading"
+            class="mb-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white lg:mb-4"
+        >
+            <I18n en={cardTitle.en} fr={cardTitle.fr} block />
+        </h3>
+
+        <div
+            class="mb-5 w-full rounded-md border border-gray-200 bg-gray-100 p-5 text-sm leading-relaxed text-gray-700 shadow-md sm:p-6 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:shadow-lg dark:shadow-black/45 lg:relative lg:z-10 lg:-ml-12 lg:max-w-xl lg:pt-5 lg:pb-5 lg:pl-3 lg:pr-3"
+        >
+            <p class="text-right">
+                {
+                    descriptionLines.map((line) => (
+                        <I18n en={line.en} fr={line.fr} />
+                    ))
+                }
+            </p>
+        </div>
+
+        <ul
+            class="mb-5 flex max-w-full flex-wrap justify-end gap-1 sm:gap-1.5"
+            aria-label={workEn.workStackAriaLabel}
+            data-i18n-aria-en={workEn.workStackAriaLabel}
+            data-i18n-aria-fr={workFr.workStackAriaLabel}
+        >
+            {
+                stackShields.map((s) => (
+                    <li class="shrink-0">
+                        <span class="inline-flex h-6 shrink-0 items-stretch overflow-hidden rounded-md font-mono text-[11px] font-semibold leading-none tracking-tight text-white shadow-sm ring-1 ring-inset ring-black/20 sm:h-6 sm:text-xs dark:ring-white/20">
+                            <span class="flex h-full w-8 shrink-0 items-center justify-center bg-zinc-800 text-white sm:w-9 dark:bg-zinc-700">
+                                {
+                                    s.fa ? (
+                                        <i
+                                            class={`${s.fa} text-[12px] sm:text-sm`}
+                                            aria-hidden="true"
+                                        ></i>
+                                    ) : (
+                                        <ElectronIcon class="size-4 shrink-0 sm:size-[18px]" />
+                                    )
+                                }
+                            </span>
+                            <span
+                                class="flex h-full min-w-0 items-center justify-center whitespace-nowrap px-2.5 py-1 text-center"
+                                style={`background-color: ${s.stackColor}`}
+                            >
+                                <I18n en={s.stackEn} fr={s.stackFr} />
+                            </span>
+                        </span>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <div
+            class="flex gap-5 text-(--fg-dim) transition-colors [&_a]:transition-[color,transform] [&_a]:duration-200 [&_a]:hover:text-amber-500 motion-safe:[&_a]:hover:-translate-y-0.5"
+        >
+            <a
+                href="https://github.com/SandersonnDev/workspace"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+                title={workEn.workGithubIconTitle}
+                data-i18n-title-en={workEn.workGithubIconTitle}
+                data-i18n-title-fr={workFr.workGithubIconTitle}
+                data-i18n-aria-en={workEn.workGithubIconTitle}
+                data-i18n-aria-fr={workFr.workGithubIconTitle}
+                aria-label={workEn.workGithubIconTitle}
+            >
+                <svg
+                    class="feather feather-github h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    ></path>
+                </svg>
+            </a>
+            <a
+                href="https://demo.example.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+                title={workEn.workExternalLinkTitle}
+                data-i18n-title-en={workEn.workExternalLinkTitle}
+                data-i18n-title-fr={workFr.workExternalLinkTitle}
+                data-i18n-aria-en={workEn.workExternalLinkTitle}
+                data-i18n-aria-fr={workFr.workExternalLinkTitle}
+                aria-label={workEn.workExternalLinkTitle}
+            >
+                <svg
+                    class="feather feather-external-link h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    ></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+</article>
