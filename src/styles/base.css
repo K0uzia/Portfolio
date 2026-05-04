@@ -1,7 +1,7 @@
 @layer base {
 	html {
 		@apply scroll-auto overflow-x-clip antialiased;
-		@apply bg-zinc-200 font-sans text-zinc-900;
+		@apply bg-zinc-300 font-sans text-zinc-900;
 		/** Dark inchangé visuellement : fond « void » + texte comme l’ancien `--fg`. */
 		@apply dark:bg-[#070712] dark:text-[#e8eaf8];
 	}
