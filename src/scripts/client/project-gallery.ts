@@ -12,6 +12,9 @@ const UI_DURATION = 0.22;
 /** Delta cumulé (px) pour une slide ; plus haut = moins sensible. */
 const WHEEL_STEP_ACCUM = 260;
 
+/** Glissement horizontal (px) pour changer de slide au doigt. */
+const TOUCH_SWIPE_THRESHOLD = 56;
+
 function isReducedMotion(): boolean {
 	return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
@@ -228,6 +231,101 @@ function wireDialog(dialog: HTMLDialogElement): void {
 
 	trigger?.addEventListener("click", open);
 
+	const advanceNext = (): void => {
+		const w = layoutStripWidths();
+		if (w <= 0) return;
+
+		if (useWrap) {
+			if (extendedIndex === realCount) {
+				const targetX = -(realCount + 1) * w;
+				tweenStripX(targetX, true, () => {
+					gsap.set(strip, { x: -w });
+					extendedIndex = 1;
+					currentIndex = 0;
+					syncDotsFromIndex(0, dots);
+				});
+			} else {
+				const next = extendedIndex + 1;
+				tweenStripX(-next * w, true, () => {
+					extendedIndex = next;
+					currentIndex = next - 1;
+					syncDotsFromIndex(currentIndex, dots);
+				});
+			}
+		} else if (currentIndex < realCount - 1) {
+			goTo(currentIndex + 1, true);
+		} else {
+			goTo(0, true);
+		}
+	};
+
+	const advancePrev = (): void => {
+		const w = layoutStripWidths();
+		if (w <= 0) return;
+
+		if (useWrap) {
+			if (extendedIndex === 1) {
+				tweenStripX(0, true, () => {
+					gsap.set(strip, { x: -realCount * w });
+					extendedIndex = realCount;
+					currentIndex = realCount - 1;
+					syncDotsFromIndex(currentIndex, dots);
+				});
+			} else {
+				const next = extendedIndex - 1;
+				tweenStripX(-next * w, true, () => {
+					extendedIndex = next;
+					currentIndex = next - 1;
+					syncDotsFromIndex(currentIndex, dots);
+				});
+			}
+		} else if (currentIndex > 0) {
+			goTo(currentIndex - 1, true);
+		} else {
+			goTo(realCount - 1, true);
+		}
+	};
+
+	let touchStartX: number | null = null;
+
+	viewport.addEventListener(
+		"touchstart",
+		(e) => {
+			if (realCount <= 1) return;
+			touchStartX = e.touches[0]?.clientX ?? null;
+		},
+		{ passive: true },
+	);
+
+	viewport.addEventListener(
+		"touchcancel",
+		() => {
+			touchStartX = null;
+		},
+		{ passive: true },
+	);
+
+	viewport.addEventListener(
+		"touchend",
+		(e) => {
+			if (touchStartX === null || realCount <= 1) return;
+			const endX = e.changedTouches[0]?.clientX;
+			if (endX === undefined) {
+				touchStartX = null;
+				return;
+			}
+			const dx = endX - touchStartX;
+			touchStartX = null;
+			if (Math.abs(dx) < TOUCH_SWIPE_THRESHOLD) return;
+			if (dx < 0) {
+				advanceNext();
+			} else {
+				advancePrev();
+			}
+		},
+		{ passive: true },
+	);
+
 	/**
 	 * Fermer sauf clic sur une image ou une pastille (pas la zone lettre autour de l’image,
 	 * ni le fond — le fond touche `data-gallery-dismiss` ou le dialogue hors « safe »).
@@ -267,31 +365,7 @@ function wireDialog(dialog: HTMLDialogElement): void {
 					wheelAccum = 0;
 					return;
 				}
-
-				if (useWrap) {
-					if (extendedIndex === realCount) {
-						const targetX = -(realCount + 1) * w;
-						tweenStripX(targetX, true, () => {
-							gsap.set(strip, { x: -w });
-							extendedIndex = 1;
-							currentIndex = 0;
-							syncDotsFromIndex(0, dots);
-						});
-					} else {
-						const next = extendedIndex + 1;
-						tweenStripX(-next * w, true, () => {
-							extendedIndex = next;
-							currentIndex = next - 1;
-							syncDotsFromIndex(currentIndex, dots);
-						});
-					}
-				} else {
-					if (currentIndex < realCount - 1) {
-						goTo(currentIndex + 1, true);
-					} else {
-						goTo(0, true);
-					}
-				}
+				advanceNext();
 				wheelAccum = 0;
 			} else if (wheelAccum <= -WHEEL_STEP_ACCUM) {
 				const w = layoutStripWidths();
@@ -299,30 +373,7 @@ function wireDialog(dialog: HTMLDialogElement): void {
 					wheelAccum = 0;
 					return;
 				}
-
-				if (useWrap) {
-					if (extendedIndex === 1) {
-						tweenStripX(0, true, () => {
-							gsap.set(strip, { x: -realCount * w });
-							extendedIndex = realCount;
-							currentIndex = realCount - 1;
-							syncDotsFromIndex(currentIndex, dots);
-						});
-					} else {
-						const next = extendedIndex - 1;
-						tweenStripX(-next * w, true, () => {
-							extendedIndex = next;
-							currentIndex = next - 1;
-							syncDotsFromIndex(currentIndex, dots);
-						});
-					}
-				} else {
-					if (currentIndex > 0) {
-						goTo(currentIndex - 1, true);
-					} else {
-						goTo(realCount - 1, true);
-					}
-				}
+				advancePrev();
 				wheelAccum = 0;
 			}
 		},

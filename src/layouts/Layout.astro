@@ -5,6 +5,7 @@ import { info as infoEn } from "../site.ENconfig.ts";
 import { info as infoFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
 import { LANG_STORAGE_KEY } from "../lib/lang-storage.ts";
+import Footer from "../components/Footer.astro";
 import Navside from "../components/navside.astro";
 
 interface Props {
@@ -66,6 +67,7 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 	<body>
 		<Navside />
 		<slot />
+		<Footer />
 		<script>
 			import { boot } from "../scripts/client";
 			boot();

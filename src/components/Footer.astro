@@ -1,0 +1,11 @@
+---
+import { info } from "../site.ENconfig.ts";
+
+const year = new Date().getFullYear();
+---
+
+<footer class=" bg-white py-8 dark:bg-gray-900">
+	<div class="mx-auto max-w-6xl px-4 text-center font-mono text-sm text-(--fg-dim)">
+		<p>© {year} {info.name}</p>
+	</div>
+</footer>
