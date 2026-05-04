@@ -1,9 +1,10 @@
 @layer utilities {
 	/* JS-driven cursor tooltip */
 	.cursor-tooltip {
-		@apply pointer-events-none fixed z-50 w-max max-w-64 rounded-md bg-(--haze) px-2 py-1 text-xs leading-snug text-(--fg) opacity-0 shadow-lg ring-1 ring-(--accent-dim);
+		@apply pointer-events-none fixed z-50 w-max max-w-64 rounded-md px-2 py-1 text-xs leading-snug opacity-0 shadow-lg ring-1;
+		@apply bg-zinc-100 text-zinc-800 ring-zinc-400/35;
+		@apply dark:bg-gray-800 dark:text-[#e8eaf8] dark:ring-gray-600/50;
 		writing-mode: horizontal-tb;
 		text-orientation: mixed;
 	}
 }
-

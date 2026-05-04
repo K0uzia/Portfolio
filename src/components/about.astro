@@ -8,15 +8,15 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 
 <section
 	id="about"
-	class="bg-white grid min-h-screen place-items-center dark:bg-gray-900"
+	class="grid min-h-screen place-items-center bg-zinc-200 dark:bg-gray-900"
 >
 	<div class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 		<div class="grid gap-10 lg:grid-cols-[1fr_0.5fr] lg:grid-rows-[auto_1fr] lg:items-start">
-			<h1 class="text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500 font-mono mb-5 lg:col-start-1 lg:row-start-1">
+			<h1 class="text-lg font-bold text-amber-500 sm:text-xl dark:text-amber-500 font-mono mb-5 lg:col-start-1 lg:row-start-1">
 				<I18n en={aboutEn.aboutTitle} fr={aboutFr.aboutTitle} block />
 			</h1>
 
-			<div class="mx-auto flex max-w-2xl flex-col gap-4 text-start text-base sm:text-lg lg:mx-0 lg:col-start-1 lg:row-start-2">
+			<div class="mx-auto flex max-w-2xl flex-col gap-4 text-start text-base text-zinc-800 sm:text-lg lg:mx-0 lg:col-start-1 lg:row-start-2 dark:text-[#e8eaf8]">
 				<p>
 					<I18n en={aboutEn.aboutDescription} fr={aboutFr.aboutDescription} />
 					<I18n en={aboutEn.aboutDescription2} fr={aboutFr.aboutDescription2} />
@@ -34,33 +34,33 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 							<I18n en={aboutEn.aboutDescription5Stack} fr={aboutFr.aboutDescription5Stack} />
 						</span>
 						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
-							<svg class="w-4 h-4" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+							<svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
 								<g id="SVGRepo_iconCarrier">
 									<title>TypeScript</title>
-									<rect x="2" y="2" width="28" height="28" rx="1.312" style="fill:#ffffff"></rect>
-									<path d="M18.245,23.759v3.068a6.492,6.492,0,0,0,1.764.575,11.56,11.56,0,0,0,2.146.192,9.968,9.968,0,0,0,2.088-.211,5.11,5.11,0,0,0,1.735-.7,3.542,3.542,0,0,0,1.181-1.266,4.469,4.469,0,0,0,.186-3.394,3.409,3.409,0,0,0-.717-1.117,5.236,5.236,0,0,0-1.123-.877,12.027,12.027,0,0,0-1.477-.734q-.6-.249-1.08-.484a5.5,5.5,0,0,1-.813-.479,2.089,2.089,0,0,1-.516-.518,1.091,1.091,0,0,1-.181-.618,1.039,1.039,0,0,1,.162-.571,1.4,1.4,0,0,1,.459-.436,2.439,2.439,0,0,1,.726-.283,4.211,4.211,0,0,1,.956-.1,5.942,5.942,0,0,1,.808.058,6.292,6.292,0,0,1,.856.177,5.994,5.994,0,0,1,.836.3,4.657,4.657,0,0,1,.751.422V13.9a7.509,7.509,0,0,0-1.525-.4,12.426,12.426,0,0,0-1.9-.129,8.767,8.767,0,0,0-2.064.235,5.239,5.239,0,0,0-1.716.733,3.655,3.655,0,0,0-1.171,1.271,3.731,3.731,0,0,0-.431,1.845,3.588,3.588,0,0,0,.789,2.34,6,6,0,0,0,2.395,1.639q.63.26,1.175.509a6.458,6.458,0,0,1,.942.517,2.463,2.463,0,0,1,.626.585,1.2,1.2,0,0,1,.23.719,1.1,1.1,0,0,1-.144.552,1.269,1.269,0,0,1-.435.441,2.381,2.381,0,0,1-.726.292,4.377,4.377,0,0,1-1.018.105,5.773,5.773,0,0,1-1.969-.35A5.874,5.874,0,0,1,18.245,23.759Zm-5.154-7.638h4V13.594H5.938v2.527H9.92V27.375h3.171Z" style="fill:#000000;fill-rule:evenodd"></path>
+									<rect class="fill-zinc-500 dark:fill-white" x="2" y="2" width="28" height="28" rx="1.312"></rect>
+									<path class="fill-white dark:fill-black" d="M18.245,23.759v3.068a6.492,6.492,0,0,0,1.764.575,11.56,11.56,0,0,0,2.146.192,9.968,9.968,0,0,0,2.088-.211,5.11,5.11,0,0,0,1.735-.7,3.542,3.542,0,0,0,1.181-1.266,4.469,4.469,0,0,0,.186-3.394,3.409,3.409,0,0,0-.717-1.117,5.236,5.236,0,0,0-1.123-.877,12.027,12.027,0,0,0-1.477-.734q-.6-.249-1.08-.484a5.5,5.5,0,0,1-.813-.479,2.089,2.089,0,0,1-.516-.518,1.091,1.091,0,0,1-.181-.618,1.039,1.039,0,0,1,.162-.571,1.4,1.4,0,0,1,.459-.436,2.439,2.439,0,0,1,.726-.283,4.211,4.211,0,0,1,.956-.1,5.942,5.942,0,0,1,.808.058,6.292,6.292,0,0,1,.856.177,5.994,5.994,0,0,1,.836.3,4.657,4.657,0,0,1,.751.422V13.9a7.509,7.509,0,0,0-1.525-.4,12.426,12.426,0,0,0-1.9-.129,8.767,8.767,0,0,0-2.064.235,5.239,5.239,0,0,0-1.716.733,3.655,3.655,0,0,0-1.171,1.271,3.731,3.731,0,0,0-.431,1.845,3.588,3.588,0,0,0,.789,2.34,6,6,0,0,0,2.395,1.639q.63.26,1.175.509a6.458,6.458,0,0,1,.942.517,2.463,2.463,0,0,1,.626.585,1.2,1.2,0,0,1,.23.719,1.1,1.1,0,0,1-.144.552,1.269,1.269,0,0,1-.435.441,2.381,2.381,0,0,1-.726.292,4.377,4.377,0,0,1-1.018.105,5.773,5.773,0,0,1-1.969-.35A5.874,5.874,0,0,1,18.245,23.759Zm-5.154-7.638h4V13.594H5.938v2.527H9.92V27.375h3.171Z" style="fill-rule:evenodd"></path>
 								</g>
 							</svg>	
 							<I18n en={aboutEn.aboutDescription5Stack3} fr={aboutFr.aboutDescription5Stack3} />
 						</span>
 						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
-							<svg class="w-4 h-4" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="white">
+							<svg class="w-4 h-4 shrink-0 text-zinc-500 dark:text-white" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-								<g id="SVGRepo_iconCarrier">
+								<g id="SVGRepo_iconCarrier" fill="currentColor">
 									<title>Tailwind CSS</title>
-									<path d="M9,13.7q1.4-5.6,7-5.6c5.6,0,6.3,4.2,9.1,4.9q2.8.7,4.9-2.1-1.4,5.6-7,5.6c-5.6,0-6.3-4.2-9.1-4.9Q11.1,10.9,9,13.7ZM2,22.1q1.4-5.6,7-5.6c5.6,0,6.3,4.2,9.1,4.9q2.8.7,4.9-2.1-1.4,5.6-7,5.6c-5.6,0-6.3-4.2-9.1-4.9Q4.1,19.3,2,22.1Z" style="fill:white"></path>
+									<path d="M9,13.7q1.4-5.6,7-5.6c5.6,0,6.3,4.2,9.1,4.9q2.8.7,4.9-2.1-1.4,5.6-7,5.6c-5.6,0-6.3-4.2-9.1-4.9Q11.1,10.9,9,13.7ZM2,22.1q1.4-5.6,7-5.6c5.6,0,6.3,4.2,9.1,4.9q2.8.7,4.9-2.1-1.4,5.6-7,5.6c-5.6,0-6.3-4.2-9.1-4.9Q4.1,19.3,2,22.1Z"></path>
 								</g>
 							</svg>
 							<I18n en={aboutEn.aboutDescription5Stack2} fr={aboutFr.aboutDescription5Stack2} />
 						</span>
 						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
-							<svg class="w-4 h-4" viewBox="0 0 1610 1610" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff" stroke-width="45.080000000000005">
+							<svg class="w-4 h-4 shrink-0 text-zinc-500 dark:text-white" viewBox="0 0 1610 1610" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" stroke-width="45.080000000000005" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-								<g id="SVGRepo_iconCarrier">
+								<g id="SVGRepo_iconCarrier" fill="currentColor">
 									<path d="M603 382c-195-36-349 2-411 108-46 79-33 185 32 297 5 10 18 13 27 7 10-5 13-18 7-27-58-101-69-192-32-257 51-88 189-122 369-89 11 2 21-5 23-16s-4-21-15-23zM326 924a1230 1230 0 00298 235c283 163 584 207 733 106 9-6 11-19 5-28s-19-11-28-5c-133 91-419 49-690-107a1200 1200 0 01-289-228 20 20 0 00-28-1 20 20 0 00-1 28z"></path><path d="M1309 900c128-151 172-303 111-409-45-78-141-119-267-121-11 0-20 9-20 20s9 20 20 20c114 1 196 37 233 101 51 88 11 224-107 363a20 20 0 002 28 20 20 0 0028-2zM981 388a1263 1263 0 00-356 141c-293 169-483 418-457 598a21 21 0 0023 17 21 21 0 0017-23c-24-160 157-395 437-557a1228 1228 0 01345-137 20 20 0 0015-24c-3-10-13-17-24-15z"></path><path d="M508 1252c67 186 176 301 299 301 90 0 172-61 237-169 6-9 3-22-7-27-9-6-22-3-27 7-58 97-129 149-203 149-102 0-199-102-261-275a20 20 0 00-26-12 20 20 0 00-12 26zm610-36a1240 1240 0 0053-371c0-331-116-617-281-690-10-4-22 0-26 10s0 22 10 26c147 65 257 336 257 654a1230 1230 0 01-51 359 20 20 0 0013 25c10 3 21-3 25-13zm376-20a96 96 0 10-192 0 96 96 0 00192 0zm-40 0a56 56 0 11-112 0 56 56 0 01112 0zm-1241 96a96 96 0 100-192 96 96 0 000 192zm0-40a56 56 0 110-112 56 56 0 010 112z"></path><path d="M807 252a96 96 0 100-192 96 96 0 000 192zm0-40a56 56 0 110-112 56 56 0 010 112zm14 701a70 70 0 01-82-53 70 70 0 0153-82 70 70 0 0182 53 69 69 0 01-53 82z"></path>
 								</g>
 							</svg>
@@ -74,12 +74,12 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 					id="profil-picture"
 					class="relative w-full max-w-[220px] overflow-visible sm:max-w-[250px]"
 				>
-					<span class="pointer-events-none absolute -left-3 -top-3 h-15 w-10 border-l-2 border-t-2 border-gray-900 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -right-3 -top-3 h-5 w-10 border-r-2 border-t-2 border-gray-900 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -bottom-3 -left-3 h-5 w-10 border-b-2 border-l-2 border-gray-900 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -bottom-3 -right-3 h-15 w-10 border-b-2 border-r-2 border-gray-900 dark:border-amber-500"></span>
+					<span class="pointer-events-none absolute -left-3 -top-3 h-15 w-10 border-l-2 border-t-2 border-amber-500 dark:border-amber-500"></span>
+					<span class="pointer-events-none absolute -right-3 -top-3 h-5 w-10 border-r-2 border-t-2 border-amber-500 dark:border-amber-500"></span>
+					<span class="pointer-events-none absolute -bottom-3 -left-3 h-5 w-10 border-b-2 border-l-2 border-amber-500 dark:border-amber-500"></span>
+					<span class="pointer-events-none absolute -bottom-3 -right-3 h-15 w-10 border-b-2 border-r-2 border-amber-500 dark:border-amber-500"></span>
 
-					<div class="group bg-white aspect-5/7 w-full overflow-hidden">
+					<div class="group aspect-5/7 w-full overflow-hidden bg-zinc-100 dark:bg-gray-800">
 						<AboutProfilePicture class="pointer-events-none transition-transform duration-200 ease-out saturate-100 lg:saturate-40 group-hover:scale-[1.02] lg:group-hover:saturate-100 motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
 					</div>
 				</div>

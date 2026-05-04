@@ -29,6 +29,19 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 >
 	<head>
 		<meta charset="UTF-8" />
+		<script is:inline define:vars={{ themeKey: "portfolio-theme" }}>
+			(function () {
+				try {
+					var s = localStorage.getItem(themeKey);
+					var root = document.documentElement;
+					if (s === "light") root.classList.remove("dark");
+					else if (s === "dark") root.classList.add("dark");
+					else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+						root.classList.remove("dark");
+					else root.classList.add("dark");
+				} catch (_) {}
+			})();
+		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
 		<meta name="description" content={descriptionEn} />

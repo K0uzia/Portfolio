@@ -1,8 +1,8 @@
 const STORAGE_KEY = "portfolio-theme";
 
+/** Thème clair = pas de classe `dark` sur `<html>` (variantes Tailwind `dark:`). */
 function applyTheme(light: boolean) {
-	if (light) document.documentElement.setAttribute("data-theme", "light");
-	else document.documentElement.removeAttribute("data-theme");
+	document.documentElement.classList.toggle("dark", !light);
 }
 
 export function initThemeToggle(signal: AbortSignal) {

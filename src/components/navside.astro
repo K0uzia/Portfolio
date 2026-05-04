@@ -7,11 +7,11 @@ import I18n from "./I18n.astro";
 
 /** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Tout le rail en `text-xl` : l’actif ne change plus la boîte (seulement couleur + gras), donc plus de saut au refresh. */
 const navRailLinkClass =
-  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-lg leading-none tracking-[0.14em] text-(--fg-dim) transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) [&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold";
+  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-lg leading-none tracking-[0.14em] text-zinc-600 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:text-[#8b92b0] dark:focus-visible:outline-indigo-400 [&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold";
 const navRailIndexPartClass =
   "text-amber-500 transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
 const navRailTitleClass =
-  "min-w-0 shrink text-left text-lg text-(--fg-dim) transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
+  "min-w-0 shrink text-left text-lg text-zinc-600 transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500 dark:text-[#8b92b0]";
 
 const navMobileLinkClass =
   "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-center gap-2 whitespace-nowrap rounded-md font-mono text-xl leading-none tracking-[0.14em] text-white transition-colors duration-200 hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500 [&.is-active]:text-amber-500";
@@ -65,7 +65,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       <button
         id="nav-burger"
         type="button"
-        class="pointer-events-auto grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) lg:hidden"
+        class="pointer-events-auto grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400 lg:hidden"
         aria-label="Menu"
         aria-expanded="false"
         aria-controls="nav-mobile-panel"
@@ -85,15 +85,15 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         <button
           type="button"
           data-lang-pick="en"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-zinc-600 transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400 dark:text-[#8b92b0]"
         >
           EN
         </button>
-        <span class="flex h-6 items-center text-(--fg-dim) opacity-60 select-none" aria-hidden="true">|</span>
+        <span class="flex h-6 items-center text-zinc-600 opacity-60 select-none dark:text-[#8b92b0]" aria-hidden="true">|</span>
         <button
           type="button"
           data-lang-pick="fr"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-zinc-600 transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-current:text-amber-500 aria-current:hover:text-amber-400 dark:text-[#8b92b0]"
         >
           FR
         </button>
@@ -118,7 +118,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
           <button
             id="nav-mobile-close"
             type="button"
-            class="grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            class="grid size-10 place-items-center rounded-md text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
             aria-label="Fermer le menu"
           >
             <i class="fa-solid fa-xmark text-lg"></i>
@@ -176,7 +176,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
           </span>
         </a>
           <span
-            class="my-2 block h-3 w-px shrink-0 bg-(--fg-dim)"
+            class="my-2 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
             aria-hidden="true"></span>
         <a
           href={withBase("#about")}
@@ -199,7 +199,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
           </span>
         </a>
         <span
-          class="my-2 block h-3 w-px shrink-0 bg-(--fg-dim)"
+          class="my-2 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
           aria-hidden="true"></span>
   
         <a
@@ -303,10 +303,10 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     </aside>
   </div>
   <div
-    class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 after:block after:h-32 after:w-px after:shrink-0 after:bg-(--fg-dim) after:opacity-55 after:content-[''] lg:flex xl:right-10"
+    class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 after:block after:h-32 after:w-px after:shrink-0 after:bg-zinc-400 after:opacity-55 after:content-[''] dark:after:bg-[#8b92b0]/45 lg:flex xl:right-10"
   >
     <a
-      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-amber-500 motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500"
+      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-zinc-600 transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-amber-500 motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500 dark:text-[#8b92b0]"
       href={`mailto:${info.email}`}
       data-i18n-title-en={navEn.buttonEmail}
       data-i18n-title-fr={navFr.buttonEmail}
@@ -348,7 +348,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         </span>
       </a>
         <span
-          class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
+          class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
           aria-hidden="true"></span>
       <a
         href={withBase("#about")}
@@ -371,7 +371,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         </span>
       </a>
       <span
-        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
+        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
         aria-hidden="true"></span>
 
       <a
@@ -404,7 +404,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       href={info.githubProfileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
+      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-zinc-600 transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5 dark:text-[#8b92b0]"
       data-i18n-title-en={navEn.buttonGithub}
       data-i18n-title-fr={navFr.buttonGithub}
       data-i18n-aria-en={navEn.buttonGithub}
@@ -431,7 +431,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       href={info.linkedinProfileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
+      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-zinc-600 transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5 dark:text-[#8b92b0]"
       data-i18n-title-en={navEn.buttonLinkedin}
       data-i18n-title-fr={navFr.buttonLinkedin}
       data-i18n-aria-en={navEn.buttonLinkedin}
@@ -455,7 +455,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     </svg>
   </a>
     <span
-      class="block h-32 w-px shrink-0 bg-(--fg-dim) opacity-55"
+      class="block h-32 w-px shrink-0 bg-zinc-400 opacity-55 dark:bg-[#8b92b0]/45"
       aria-hidden="true"></span>
   </div>
 </section>
