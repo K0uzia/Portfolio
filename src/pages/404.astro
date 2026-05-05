@@ -1,19 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { withBase } from "../lib/paths";
+import NotFoundContent from "../components/NotFoundContent.astro";
 ---
 
-
-<Layout>
-	<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-sm h-[400px]">
-		<p class="font-medium text-lg text-amber-500">404 Error</p>
-		<h2 class="text-4xl font-semibold text-zinc-900 md:text-6xl dark:text-gray-300">Page Not Found</h2>
-		<p class="mt-4 text-base text-zinc-600 dark:text-gray-400">Sorry, we couldn’t find the page you’re looking for.</p>
-		<div class="mt-6 flex items-center gap-4">
-			<a
-				href={withBase("#home")}
-				class="inline-flex items-center justify-center rounded-md border border-amber-500 px-7 py-2.5 text-amber-500 transition-[transform,colors] active:scale-95 hover:bg-amber-500/10 dark:hover:bg-transparent"
-			>Go back home</a>
-		</div>
-	</div>
+<Layout page="404">
+	<NotFoundContent />
 </Layout>

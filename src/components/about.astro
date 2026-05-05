@@ -12,41 +12,47 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 >
 	<div class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 		<div class="grid gap-10 lg:grid-cols-[1fr_0.5fr] lg:grid-rows-[auto_1fr] lg:items-start">
-			<h1 class="text-lg font-bold text-amber-500 sm:text-xl dark:text-amber-500 font-mono mb-5 lg:col-start-1 lg:row-start-1">
+			<h1
+				data-about-title
+				class="text-lg font-bold text-indigo-600 sm:text-xl dark:text-amber-500 font-mono mb-5 lg:col-start-1 lg:row-start-1 motion-safe:opacity-0 motion-safe:scale-[0.985] motion-safe:transform-gpu"
+			>
 				<I18n en={aboutEn.aboutTitle} fr={aboutFr.aboutTitle} block />
 			</h1>
 
-			<div class="mx-auto flex max-w-2xl flex-col gap-4 text-start text-base text-zinc-800 sm:text-lg lg:mx-0 lg:col-start-1 lg:row-start-2 dark:text-[#e8eaf8]">
-				<p>
-					<I18n en={aboutEn.aboutDescription} fr={aboutFr.aboutDescription} />
-					<I18n en={aboutEn.aboutDescription2} fr={aboutFr.aboutDescription2} />
-				</p>
-				<p>
-					<I18n en={aboutEn.aboutDescription3} fr={aboutFr.aboutDescription3} />
-					<I18n en={aboutEn.aboutDescription4} fr={aboutFr.aboutDescription4} />
-				</p>
-				<p>
-					<I18n en={aboutEn.aboutDescription5} fr={aboutFr.aboutDescription5} />
-				</p>
-				<div class="grid w-full grid-cols-1 gap-2 text-center sm:grid-cols-2 sm:w-10/12">
-						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
+			<div
+				data-about-body
+				class="mx-auto flex max-w-2xl flex-col gap-4 text-start text-base text-zinc-800 sm:text-lg lg:mx-0 lg:col-start-1 lg:row-start-2 dark:text-[#e8eaf8] motion-safe:transform-gpu"
+			>
+					<p class="motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
+						<I18n en={aboutEn.aboutDescription} fr={aboutFr.aboutDescription} />
+						<I18n en={aboutEn.aboutDescription2} fr={aboutFr.aboutDescription2} />
+					</p>
+					<p class="motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
+						<I18n en={aboutEn.aboutDescription3} fr={aboutFr.aboutDescription3} />
+						<I18n en={aboutEn.aboutDescription4} fr={aboutFr.aboutDescription4} />
+					</p>
+					<p class="motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
+						<I18n en={aboutEn.aboutDescription5} fr={aboutFr.aboutDescription5} />
+					</p>
+					<div class="grid w-full grid-cols-1 gap-2 text-center sm:grid-cols-2 sm:w-10/12">
+						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 							<AboutAstroLogo class="w-4 h-4" />
 							<I18n en={aboutEn.aboutDescription5Stack} fr={aboutFr.aboutDescription5Stack} />
 						</span>
-						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
+						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 							<svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
 								<g id="SVGRepo_iconCarrier">
 									<title>TypeScript</title>
-									<rect class="fill-zinc-500 dark:fill-white" x="2" y="2" width="28" height="28" rx="1.312"></rect>
+									<rect class="fill-indigo-600 dark:fill-white" x="2" y="2" width="28" height="28" rx="1.312"></rect>
 									<path class="fill-white dark:fill-black" d="M18.245,23.759v3.068a6.492,6.492,0,0,0,1.764.575,11.56,11.56,0,0,0,2.146.192,9.968,9.968,0,0,0,2.088-.211,5.11,5.11,0,0,0,1.735-.7,3.542,3.542,0,0,0,1.181-1.266,4.469,4.469,0,0,0,.186-3.394,3.409,3.409,0,0,0-.717-1.117,5.236,5.236,0,0,0-1.123-.877,12.027,12.027,0,0,0-1.477-.734q-.6-.249-1.08-.484a5.5,5.5,0,0,1-.813-.479,2.089,2.089,0,0,1-.516-.518,1.091,1.091,0,0,1-.181-.618,1.039,1.039,0,0,1,.162-.571,1.4,1.4,0,0,1,.459-.436,2.439,2.439,0,0,1,.726-.283,4.211,4.211,0,0,1,.956-.1,5.942,5.942,0,0,1,.808.058,6.292,6.292,0,0,1,.856.177,5.994,5.994,0,0,1,.836.3,4.657,4.657,0,0,1,.751.422V13.9a7.509,7.509,0,0,0-1.525-.4,12.426,12.426,0,0,0-1.9-.129,8.767,8.767,0,0,0-2.064.235,5.239,5.239,0,0,0-1.716.733,3.655,3.655,0,0,0-1.171,1.271,3.731,3.731,0,0,0-.431,1.845,3.588,3.588,0,0,0,.789,2.34,6,6,0,0,0,2.395,1.639q.63.26,1.175.509a6.458,6.458,0,0,1,.942.517,2.463,2.463,0,0,1,.626.585,1.2,1.2,0,0,1,.23.719,1.1,1.1,0,0,1-.144.552,1.269,1.269,0,0,1-.435.441,2.381,2.381,0,0,1-.726.292,4.377,4.377,0,0,1-1.018.105,5.773,5.773,0,0,1-1.969-.35A5.874,5.874,0,0,1,18.245,23.759Zm-5.154-7.638h4V13.594H5.938v2.527H9.92V27.375h3.171Z" style="fill-rule:evenodd"></path>
 								</g>
 							</svg>	
 							<I18n en={aboutEn.aboutDescription5Stack3} fr={aboutFr.aboutDescription5Stack3} />
 						</span>
-						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
-							<svg class="w-4 h-4 shrink-0 text-zinc-500 dark:text-white" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
+						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
+							<svg class="w-4 h-4 shrink-0 text-indigo-600 dark:text-white" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
 								<g id="SVGRepo_iconCarrier" fill="currentColor">
@@ -56,8 +62,8 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 							</svg>
 							<I18n en={aboutEn.aboutDescription5Stack2} fr={aboutFr.aboutDescription5Stack2} />
 						</span>
-						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono">
-							<svg class="w-4 h-4 shrink-0 text-zinc-500 dark:text-white" viewBox="0 0 1610 1610" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" stroke-width="45.080000000000005" aria-hidden="true">
+						<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-sm font-mono motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
+							<svg class="w-4 h-4 shrink-0 text-indigo-600 dark:text-white" viewBox="0 0 1610 1610" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" stroke-width="45.080000000000005" aria-hidden="true">
 								<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 								<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
 								<g id="SVGRepo_iconCarrier" fill="currentColor">
@@ -66,20 +72,21 @@ import AboutAstroLogo from "./AboutAstroLogo.astro";
 							</svg>
 							<I18n en={aboutEn.aboutDescription5Stack4} fr={aboutFr.aboutDescription5Stack4} />
 						</span>
-				</div>
+					</div>
 			</div>
 					
 			<div class="flex justify-center lg:justify-end lg:col-start-2 lg:row-start-2 lg:self-center">
 				<div
 					id="profil-picture"
-					class="relative w-full max-w-[220px] overflow-visible sm:max-w-[250px]"
+					data-about-media
+					class="relative w-full max-w-[220px] overflow-visible sm:max-w-[250px] motion-safe:opacity-0 motion-safe:translate-x-10 motion-safe:transform-gpu"
 				>
-					<span class="pointer-events-none absolute -left-3 -top-3 h-15 w-10 border-l-2 border-t-2 border-amber-500 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -right-3 -top-3 h-5 w-10 border-r-2 border-t-2 border-amber-500 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -bottom-3 -left-3 h-5 w-10 border-b-2 border-l-2 border-amber-500 dark:border-amber-500"></span>
-					<span class="pointer-events-none absolute -bottom-3 -right-3 h-15 w-10 border-b-2 border-r-2 border-amber-500 dark:border-amber-500"></span>
+					<span data-about-frame="tl" class="pointer-events-none absolute -left-3 -top-3 h-15 w-10 border-l-2 border-t-2 border-indigo-600 origin-top-left motion-safe:scale-0 dark:border-amber-500"></span>
+					<span data-about-frame="tr" class="pointer-events-none absolute -right-3 -top-3 h-5 w-10 border-r-2 border-t-2 border-indigo-600 origin-top-right motion-safe:scale-0 dark:border-amber-500"></span>
+					<span data-about-frame="bl" class="pointer-events-none absolute -bottom-3 -left-3 h-5 w-10 border-b-2 border-l-2 border-indigo-600 origin-bottom-left motion-safe:scale-0 dark:border-amber-500"></span>
+					<span data-about-frame="br" class="pointer-events-none absolute -bottom-3 -right-3 h-15 w-10 border-b-2 border-r-2 border-indigo-600 origin-bottom-right motion-safe:scale-0 dark:border-amber-500"></span>
 
-					<div class="group aspect-5/7 w-full overflow-hidden bg-zinc-100 dark:bg-gray-800">
+					<div class="group aspect-5/7 w-full overflow-hidden bg-indigo-600 dark:bg-gray-800">
 						<AboutProfilePicture class="pointer-events-none transition-transform duration-200 ease-out saturate-100 lg:saturate-40 group-hover:scale-[1.02] lg:group-hover:saturate-100 motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
 					</div>
 				</div>

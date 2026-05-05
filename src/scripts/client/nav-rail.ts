@@ -20,6 +20,16 @@ function setActiveLink(links: HTMLAnchorElement[], id: string) {
 	}
 }
 
+function replaceUrlHash(id: string) {
+	const hash = `#${id}`;
+	try {
+		const u = new URL(window.location.href);
+		history.replaceState(null, "", `${u.pathname}${u.search}${hash}`);
+	} catch {
+		history.replaceState(null, "", hash);
+	}
+}
+
 function replaceUrlFromLink(a: HTMLAnchorElement) {
 	try {
 		const u = new URL(a.href);
@@ -31,6 +41,32 @@ function replaceUrlFromLink(a: HTMLAnchorElement) {
 
 function scrollYToElement(el: HTMLElement) {
 	return el.getBoundingClientRect().top + window.scrollY;
+}
+
+function isValidSectionId(id: string) {
+	return (SECTION_ORDER as readonly string[]).includes(id);
+}
+
+function pickActiveSectionFromViewportCenter() {
+	// Scrollspy "au centre" : on prend la section dont le centre est le plus
+	// proche du centre du viewport. Ça évite un switch trop tôt.
+	const viewportMid = window.scrollY + window.innerHeight / 2;
+	let best: (typeof SECTION_ORDER)[number] = "home";
+	let bestDist = Number.POSITIVE_INFINITY;
+
+	for (const id of SECTION_ORDER) {
+		const el = document.getElementById(id);
+		if (!(el instanceof HTMLElement)) continue;
+		const top = scrollYToElement(el);
+		const h = el.offsetHeight || 1;
+		const mid = top + h / 2;
+		const dist = Math.abs(mid - viewportMid);
+		if (dist < bestDist) {
+			bestDist = dist;
+			best = id;
+		}
+	}
+	return best;
 }
 
 export function killNavRail() {
@@ -74,11 +110,16 @@ export function initNavRail() {
 			if (!(el instanceof HTMLElement)) continue;
 			ScrollTrigger.create({
 				trigger: el,
+				// Actif quand la section traverse le centre du viewport.
 				start: "top center",
 				end: "bottom center",
-				onToggle: (self) => {
-					if (!self.isActive) return;
+				onEnter: () => {
 					setActiveLink(links, id);
+					replaceUrlHash(id);
+				},
+				onEnterBack: () => {
+					setActiveLink(links, id);
+					replaceUrlHash(id);
 				},
 			});
 		}
@@ -123,5 +164,10 @@ export function initNavRail() {
 	syncFromHash();
 	requestAnimationFrame(() => {
 		ScrollTrigger.refresh();
+		// Au chargement, on fait foi de la position réelle, pas du hash.
+		// (Le hash peut être resté sur une ancienne section.)
+		const id = pickActiveSectionFromViewportCenter();
+		setActiveLink(links, id);
+		replaceUrlHash(id);
 	});
 }

@@ -4,24 +4,72 @@ import "../styles/app.css";
 import { info as infoEn } from "../site.ENconfig.ts";
 import { info as infoFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
-import { LANG_STORAGE_KEY } from "../lib/lang-storage.ts";
-import Footer from "../components/Footer.astro";
 import Navside from "../components/navside.astro";
 
 interface Props {
 	title?: string;
 	description?: string;
+	page?: string;
 }
 
-const titleEn = Astro.props.title ?? `${infoEn.name}`;
-const titleFr = Astro.props.title ?? `${infoFr.name}`;
+const titleEn = Astro.props.title ?? infoEn.name;
+const titleFr = Astro.props.title ?? infoFr.name;
 const descriptionEn = Astro.props.description ?? infoEn.pitch;
 const descriptionFr = Astro.props.description ?? infoFr.pitch;
+
+// SEO (URL unique) : on sort FR par défaut côté serveur.
+const title = titleFr;
+const description = descriptionFr;
+
+const canonicalUrl = Astro.site ? new URL(withBase("/"), Astro.site).href : withBase("/");
+
+const ogLocale = "fr_FR";
+const ogLocaleAlt = "en_US";
+const ogImageUrl = Astro.site ? new URL(withBase("favicon.svg"), Astro.site).href : withBase("favicon.svg");
+const personSameAs = [infoEn.githubProfileUrl, infoEn.linkedinProfileUrl].filter(Boolean);
+const personEmail = Astro.site ? `mailto:${infoEn.email}` : `mailto:${infoEn.email}`;
+const personId = `${canonicalUrl}#person`;
+const websiteId = `${canonicalUrl}#website`;
+const webpageId = `${canonicalUrl}#webpage`;
+
+const personJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	"@id": personId,
+	name: infoEn.name,
+	jobTitle: infoFr.job,
+	url: canonicalUrl,
+	email: personEmail,
+	sameAs: personSameAs,
+};
+const websiteJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"@id": websiteId,
+	name: infoEn.name,
+	url: canonicalUrl,
+	inLanguage: "fr",
+};
+
+const webpageJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebPage",
+	"@id": webpageId,
+	url: canonicalUrl,
+	name: title,
+	description,
+	inLanguage: "fr",
+	isPartOf: { "@id": websiteId },
+	about: { "@id": personId },
+	primaryImageOfPage: ogImageUrl,
+};
 ---
 
 <!doctype html>
 <html
-	lang="en"
+	lang="fr"
+	data-lang="fr"
+	data-page={Astro.props.page}
 	data-title-en={titleEn}
 	data-title-fr={titleFr}
 	data-description-en={descriptionEn}
@@ -29,6 +77,7 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 >
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="google-site-verification" content="GJ5ytnBQWLymUmGkPx_2F7SBFoV5VkhLSPuIdVI-V3o" />
 		<script is:inline define:vars={{ themeKey: "portfolio-theme" }}>
 			(function () {
 				try {
@@ -44,10 +93,29 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
-		<meta name="description" content={descriptionEn} />
-		<title>{titleEn}</title>
-		<!-- Avant le body : applique la langue persistée pour éviter un flash EN→FR au refresh. -->
-		<script is:inline define:vars={{ LANG_STORAGE_KEY }}>
+		<meta name="description" content={description} />
+		<title>{title}</title>
+
+		<link rel="canonical" href={canonicalUrl} />
+
+		<meta name="robots" content="index,follow" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={infoEn.name} />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:locale:alternate" content={ogLocaleAlt} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageUrl} />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- Avant le body : applique la langue persistée et sync title/description -->
+		<script is:inline define:vars={{ LANG_STORAGE_KEY: "portfolio-lang" }}>
 			(function () {
 				try {
 					var s = localStorage.getItem(LANG_STORAGE_KEY);
@@ -70,6 +138,10 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 				} catch (_) {}
 			})();
 		</script>
+
+		<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)}></script>
+		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
+		<script type="application/ld+json" set:html={JSON.stringify(webpageJsonLd)}></script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -80,7 +152,6 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 	<body>
 		<Navside />
 		<slot />
-		<Footer />
 		<script>
 			import { boot } from "../scripts/client";
 			boot();

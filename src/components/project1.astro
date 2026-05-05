@@ -5,6 +5,7 @@ import {
 	getProjectCardDescriptionLines,
 	getProjectCardTitle,
 } from "../lib/work-project.ts";
+import { withBase } from "../lib/paths";
 import I18n from "./I18n.astro";
 import ProjectWorkGallery from "./ProjectWorkGallery.astro";
 import ElectronIcon from "./icons/ElectronIcon.astro";
@@ -38,10 +39,13 @@ import ElectronIcon from "./icons/ElectronIcon.astro";
 
 const cardTitle = getProjectCardTitle(1);
 const descriptionLines = getProjectCardDescriptionLines(1);
+
+const placeholderDemoHref = withBase("/404");
 ---
 
 <article
-class="relative mt-20"
+data-work-project="1"
+class="relative mt-20 motion-safe:opacity-0 motion-safe:translate-y-10 motion-safe:transform-gpu"
 aria-labelledby="work-featured-heading"
 >
 <div
@@ -53,19 +57,19 @@ aria-labelledby="work-featured-heading"
         <!-- Cadre en L : `group` ici seulement → hover image (pas la colonne texte) -->
         <div class="group relative w-full">
             <span
-                class="pointer-events-none absolute -left-3 -top-3 z-20 h-6 w-10 border-l-2 border-t-2 border-amber-500 dark:border-amber-500 sm:-left-2 sm:-top-2"
+                class="pointer-events-none absolute -left-3 -top-3 z-20 h-6 w-10 border-l-2 border-t-2 border-indigo-600 dark:border-amber-500 sm:-left-2 sm:-top-2"
                 aria-hidden="true"
             />
             <span
-                class="pointer-events-none absolute -right-3 -top-3 z-20 h-10 w-6 border-r-2 border-t-2 border-amber-500 dark:border-amber-500 sm:-right-2 sm:-top-2"
+                class="pointer-events-none absolute -right-3 -top-3 z-20 h-10 w-6 border-r-2 border-t-2 border-indigo-600 dark:border-amber-500 sm:-right-2 sm:-top-2"
                 aria-hidden="true"
             />
             <span
-                class="pointer-events-none absolute -bottom-3 -left-3 z-20 h-10 w-6 border-b-2 border-l-2 border-amber-500 dark:border-amber-500 sm:-bottom-2 sm:-left-2"
+                class="pointer-events-none absolute -bottom-3 -left-3 z-20 h-10 w-6 border-b-2 border-l-2 border-indigo-600 dark:border-amber-500 sm:-bottom-2 sm:-left-2"
                 aria-hidden="true"
             />
             <span
-                class="pointer-events-none absolute -bottom-3 -right-3 z-20 h-6 w-10 border-b-2 border-r-2 border-amber-500 dark:border-amber-500 sm:-bottom-2 sm:-right-2"
+                class="pointer-events-none absolute -bottom-3 -right-3 z-20 h-6 w-10 border-b-2 border-r-2 border-indigo-600 dark:border-amber-500 sm:-bottom-2 sm:-right-2"
                 aria-hidden="true"
             />
             <ProjectWorkGallery project={1} labelId="work-project-shot-1" />
@@ -75,7 +79,7 @@ aria-labelledby="work-featured-heading"
     <div
         class="order-2 z-5 flex flex-col items-end text-right text-zinc-800 dark:text-[#e8eaf8] lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:gap-0"
     >
-        <p class="mb-2 font-mono text-sm text-amber-500">
+        <p class="mb-2 font-mono text-sm text-indigo-600 dark:text-amber-500">
             <I18n en={workEn.workFeaturedLabel} fr={workFr.workFeaturedLabel} />
         </p>
         <h3
@@ -132,7 +136,7 @@ aria-labelledby="work-featured-heading"
         </ul>
 
         <div
-            class="flex gap-5 text-zinc-600 transition-colors dark:text-[#8b92b0] [&_a]:transition-[color,transform] [&_a]:duration-200 [&_a]:hover:text-amber-500 motion-safe:[&_a]:hover:-translate-y-0.5"
+            class="flex gap-5 text-zinc-600 transition-colors dark:text-[#8b92b0] [&_a]:transition-[color,transform] [&_a]:duration-200 [&_a]:hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:[&_a]:hover:-translate-y-0.5"
         >
             <a
                 href="https://github.com/SandersonnDev/workspace"
@@ -164,8 +168,8 @@ aria-labelledby="work-featured-heading"
                 </svg>
             </a>
             <a
-                href="https://demo.example.com"
-                target="_blank"
+                href={placeholderDemoHref}
+                target="_self"
                 rel="noopener noreferrer"
                 class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
                 title={workEn.workExternalLinkTitle}

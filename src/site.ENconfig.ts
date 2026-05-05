@@ -128,3 +128,10 @@ export const work = {
     workTailwind: "Fontawesome",
     workStackAriaLabel: "Tech stack used",
 } as const;
+
+export const notFound = {
+	title: "404 Error",
+	heading: "Page Not Found",
+	description: "Sorry, we couldn’t find the page you’re looking for.",
+	backHome: "Go back home",
+} as const;

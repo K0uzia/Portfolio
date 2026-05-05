@@ -43,9 +43,11 @@ function syncDotsFromIndex(
 ): void {
 	dots.forEach((dot, i) => {
 		const on = i === index;
-		dot.classList.toggle("bg-amber-500", on);
+		dot.classList.toggle("bg-indigo-600", on);
+		dot.classList.toggle("dark:bg-amber-500", on);
 		dot.classList.toggle("ring-2", on);
-		dot.classList.toggle("ring-amber-400/60", on);
+		dot.classList.toggle("ring-indigo-500/60", on);
+		dot.classList.toggle("dark:ring-amber-400/60", on);
 		dot.classList.toggle("bg-white/35", !on);
 		dot.setAttribute("aria-current", on ? "true" : "false");
 	});
