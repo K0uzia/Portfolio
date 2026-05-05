@@ -4,7 +4,7 @@ export const info = {
 	email: "kouziaeffa.pro@gmail.com",
 	githubProfileUrl: "https://github.com/SandersonnDev",
 	linkedinProfileUrl: "https://www.linkedin.com/in/alexandre-kouziaeff/",
-	pitch: "Web developer and application developer, from design to development",
+	pitch: "Alexandre Kouziaeff's portfolio, Web developer and application developer, from design to development",
 } as const;
 
 export const nav = {
