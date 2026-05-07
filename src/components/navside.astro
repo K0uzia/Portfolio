@@ -4,6 +4,7 @@ import { nav as navEn } from "../site.ENconfig.ts";
 import { nav as navFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
 import I18n from "./I18n.astro";
+import { slugFromSection } from "../lib/section-path";
 
 /** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Tout le rail en `text-xl` : l’actif ne change plus la boîte (seulement couleur + gras), donc plus de saut au refresh. */
 const navRailLinkClass =
@@ -23,11 +24,14 @@ interface Props {
 	lang?: "fr" | "en";
 }
 
-const lang = Astro.props.lang ?? (Astro.locals as { lang?: "fr" | "en" } | undefined)?.lang ?? "fr";
+const lang = Astro.props.lang ?? (Astro.locals as { lang?: "fr" | "en" } | undefined)?.lang ?? "en";
 const nav = lang === "fr" ? navFr : navEn;
 
 const mailAria = `${nav.buttonEmail} (${info.email})`;
 const langRoot = `/${lang}/`;
+const homePath = withBase(`${langRoot}${slugFromSection(lang, "home")}`);
+const aboutPath = withBase(`${langRoot}${slugFromSection(lang, "about")}`);
+const workPath = withBase(`${langRoot}${slugFromSection(lang, "work")}`);
 ---
 
 <section>
@@ -158,7 +162,7 @@ const langRoot = `/${lang}/`;
         </div>
         <nav id="nav-mobile" class="mb-6 flex flex-col font-mono text-white items-center tracking-[0.14em]" aria-label={nav.navAriaMain}>
         <a
-          href={withBase(`${langRoot}#home`)}
+          href={homePath}
           class={navMobileLinkClass}
           data-nav-hash="home"
           aria-label={nav.navHome}
@@ -181,7 +185,7 @@ const langRoot = `/${lang}/`;
             class="my-2 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
             aria-hidden="true"></span>
         <a
-          href={withBase(`${langRoot}#about`)}
+          href={aboutPath}
           class={navMobileLinkClass}
           data-nav-hash="about"
           aria-label={nav.navAbout}
@@ -205,7 +209,7 @@ const langRoot = `/${lang}/`;
           aria-hidden="true"></span>
   
         <a
-          href={withBase(`${langRoot}#work`)}
+          href={workPath}
           class={navMobileLinkClass}
           data-nav-hash="work"
           aria-label={nav.navWork}
@@ -227,10 +231,6 @@ const langRoot = `/${lang}/`;
         </nav>
 
         <div class="mt-8 flex flex-col items-center gap-3">
-          <p class="text-center font-mono text-lg leading-none tracking-[0.14em] text-white">
-            <I18n en={navEn.navContact} fr={navFr.navContact} />
-          </p>
-
           <div class="flex flex-row items-center justify-center gap-4">
             <a
               href={`mailto:${info.email}`}
@@ -321,7 +321,7 @@ const langRoot = `/${lang}/`;
       aria-label={nav.navAriaMain}
     >
       <a
-        href={withBase(`${langRoot}#home`)}
+        href={homePath}
         class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="home"
         aria-label={nav.navHome}
@@ -344,7 +344,7 @@ const langRoot = `/${lang}/`;
           class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-zinc-400 motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu dark:bg-[#8b92b0]/45"
           aria-hidden="true"></span>
       <a
-        href={withBase(`${langRoot}#about`)}
+        href={aboutPath}
         class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="about"
         aria-label={nav.navAbout}
@@ -368,7 +368,7 @@ const langRoot = `/${lang}/`;
         aria-hidden="true"></span>
 
       <a
-        href={withBase(`${langRoot}#work`)}
+        href={workPath}
         class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="work"
         aria-label={nav.navWork}

@@ -1,6 +1,7 @@
 import { LANG_STORAGE_KEY, storedPreferenceIsFr } from "../../lib/lang-storage";
 import { gsap, ScrollTrigger } from "./register-gsap";
 import { reduce } from "./env";
+import { pathFor, type SectionId, type SiteLang } from "../../lib/section-path";
 
 function syncMetaAndTitles(fr: boolean) {
 	const html = document.documentElement;
@@ -184,6 +185,16 @@ function playLangStinger(nextFr: boolean, origin?: { x: number; y: number }) {
 			const y = window.scrollY;
 			applyDocumentLang(nextFr);
 			localStorage.setItem(LANG_STORAGE_KEY, nextFr ? "fr" : "en");
+			// URL propre : /en/home ou /fr/accueil (sans hash).
+			const section = (document.documentElement.dataset.activeSection as SectionId | undefined) ?? "home";
+			const lang: SiteLang = nextFr ? "fr" : "en";
+			const next = pathFor(lang, section);
+			try {
+				const u = new URL(window.location.href);
+				history.replaceState(null, "", `${next}${u.search}`);
+			} catch {
+				history.replaceState(null, "", next);
+			}
 			requestAnimationFrame(() => {
 				window.scrollTo(0, y);
 				ScrollTrigger.refresh();

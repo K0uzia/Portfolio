@@ -51,7 +51,26 @@ import I18n from "./I18n.astro";
 			</div>
 			<a
 			href={withBase("#work")}
-			class="mt-8 inline-flex items-center justify-center rounded-md border border-indigo-600 px-5 py-3 text-indigo-600 dark:text-amber-500 dark:border-amber-500 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:transform-gpu"
+			class="
+			mt-8
+			inline-flex 
+			items-center
+			justify-center
+			rounded-md border
+			px-5 py-3
+		  text-indigo-600
+		  border-indigo-600
+		  focus-visible:outline-indigo-600
+		  hover:text-indigo-600
+		  dark:text-amber-500
+		  dark:border-amber-500
+		  dark:focus-visible:outline-amber-500
+		  dark:hover:text-amber-500
+		    transition-[color,transform]
+			duration-200
+			motion-safe:hover:-translate-y-0.5
+			motion-safe:opacity-0
+			motion-safe:transform-gpu"
 			data-hero-cta
 			data-nav-hash="work"
 			data-i18n-title-en={heroEn.heroButton}

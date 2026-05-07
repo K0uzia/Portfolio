@@ -1,9 +1,10 @@
 import { gsap } from "./register-gsap";
 import { reduce } from "./env";
 
-const TEXT_DURATION = 0.34;
-const CTA_DURATION = 0.34;
-const STAGGER = 0.3;
+// UI: on reste dans une fenêtre courte (0.15–0.25s) pour éviter l'effet "lent puis snap".
+const TEXT_DURATION = 0.22;
+const CTA_DURATION = 0.18;
+const STAGGER = 0.12;
 
 export function initHeroAppear(signal: AbortSignal, delaySeconds = 0): void {
 	if (typeof window === "undefined") return;
@@ -24,12 +25,15 @@ export function initHeroAppear(signal: AbortSignal, delaySeconds = 0): void {
 			gsap.set(items, { opacity: 0, y: 24, scale: 0.985 });
 		}
 		if (cta) {
+			// Évite tout conflit Tailwind (classes "pré-anim") vs GSAP.
+			cta.classList.remove("motion-safe:opacity-0");
+			cta.classList.remove("motion-safe:translate-y-6");
 			gsap.killTweensOf(cta);
-			gsap.set(cta, { opacity: 0, y: 24, scale: 0.985 });
+			gsap.set(cta, { opacity: 0, y: 16, scale: 0.985, force3D: true, willChange: "transform" });
 		}
 
 		const tl = gsap.timeline({
-			defaults: { ease: "power3.out" },
+			defaults: { ease: "power2.out" },
 			delay: Math.max(0, delaySeconds),
 		});
 
@@ -53,8 +57,16 @@ export function initHeroAppear(signal: AbortSignal, delaySeconds = 0): void {
 					y: 0,
 					scale: 1,
 					duration: CTA_DURATION,
+					// Mouvement linéaire (pas d'accélération / décélération).
+					ease: "none",
 					overwrite: true,
+					onComplete: () => {
+						// Nettoie les styles inline posés par GSAP (et laisse Tailwind gérer les hovers).
+						gsap.set(cta, { clearProps: "opacity,transform,willChange" });
+					},
 				},
+				// Réduit l'attente après le texte : léger overlap avec la fin.
+				">-0.10",
 			);
 		}
 	});

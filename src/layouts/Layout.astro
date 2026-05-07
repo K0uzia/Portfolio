@@ -17,14 +17,14 @@ const titleFr = Astro.props.title ?? infoFr.name;
 const descriptionEn = Astro.props.description ?? infoEn.pitch;
 const descriptionFr = Astro.props.description ?? infoFr.pitch;
 
-// SEO (URL unique) : on sort FR par défaut côté serveur.
-const title = titleFr;
-const description = descriptionFr;
+// SEO (URL unique) : EN par défaut côté serveur (home).
+const title = titleEn;
+const description = descriptionEn;
 
 const canonicalUrl = Astro.site ? new URL(withBase("/"), Astro.site).href : withBase("/");
 
-const ogLocale = "fr_FR";
-const ogLocaleAlt = "en_US";
+const ogLocale = "en_US";
+const ogLocaleAlt = "fr_FR";
 const ogImageUrl = Astro.site ? new URL(withBase("favicon.svg"), Astro.site).href : withBase("favicon.svg");
 const personSameAs = [infoEn.githubProfileUrl, infoEn.linkedinProfileUrl].filter(Boolean);
 const personEmail = Astro.site ? `mailto:${infoEn.email}` : `mailto:${infoEn.email}`;
@@ -48,7 +48,7 @@ const websiteJsonLd = {
 	"@id": websiteId,
 	name: infoEn.name,
 	url: canonicalUrl,
-	inLanguage: "fr",
+	inLanguage: "en",
 };
 
 const webpageJsonLd = {
@@ -58,7 +58,7 @@ const webpageJsonLd = {
 	url: canonicalUrl,
 	name: title,
 	description,
-	inLanguage: "fr",
+	inLanguage: "en",
 	isPartOf: { "@id": websiteId },
 	about: { "@id": personId },
 	primaryImageOfPage: ogImageUrl,
@@ -67,8 +67,7 @@ const webpageJsonLd = {
 
 <!doctype html>
 <html
-	lang="fr"
-	data-lang="fr"
+	lang="en"
 	data-page={Astro.props.page}
 	data-title-en={titleEn}
 	data-title-fr={titleFr}
@@ -119,7 +118,10 @@ const webpageJsonLd = {
 			(function () {
 				try {
 					var s = localStorage.getItem(LANG_STORAGE_KEY);
-					var fr = s === null ? true : s === "fr";
+					// Priorité: localStorage > URL (/fr/* ou /en/*) > défaut EN.
+					var p = (window.location && window.location.pathname) || "/";
+					var urlLang = p === "/fr" || p.startsWith("/fr/") ? "fr" : p === "/en" || p.startsWith("/en/") ? "en" : null;
+					var fr = s === null ? urlLang === "fr" : s === "fr";
 					var root = document.documentElement;
 					if (fr) {
 						root.setAttribute("data-lang", "fr");
@@ -158,12 +160,12 @@ const webpageJsonLd = {
 		</script>
 		<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QPM4KWVXN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6QPM4KWVXN');
-</script>
+		<script>
+			const w = window as unknown as { dataLayer?: unknown[][] };
+			w.dataLayer = w.dataLayer ?? [];
+			const gtag = (...args: unknown[]) => w.dataLayer?.push(args);
+			gtag("js", new Date());
+			gtag("config", "G-6QPM4KWVXN");
+		</script>
 	</body>
 </html>

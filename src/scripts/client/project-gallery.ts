@@ -6,7 +6,7 @@
 import { gsap, ScrollTrigger } from "./register-gsap";
 import { refreshImageLoadersIn } from "./image-loader";
 
-const NAV_SECTION_IDS = new Set(["home", "about", "work", "contact"]);
+const NAV_SECTION_IDS = new Set(["home", "about", "work"]);
 
 const UI_DURATION = 0.22;
 /** Delta cumulé (px) pour une slide ; plus haut = moins sensible. */

@@ -14,12 +14,10 @@ export const nav = {
 	navHome: "Home",
 	navWork: "Work",
 	navAbout: "About",
-	navContact: "Contact",
 	/* Navigation links */
 	navlinkHome: "#home",
 	navlinkWork: "#work",
 	navlinkAbout: "#about",
-	navlinkContact: "#contact",
 	/* Button Title */
 	buttonLinkedin: "LinkedIn profile",
 	buttonGithub: "GitHub profile",

@@ -11,19 +11,16 @@ export const nav = {
 	navAriaMain: "Navigation principale",
 	/* Navigation */
 	navHome: "Accueil",
-	navWork: "Travaux",
 	navAbout: "À propos",
-	navContact: "Contact",
+	navWork: "Projets",
 	/* Navigation links */
 	navlinkHome: "#home",
 	navlinkWork: "#work",
 	navlinkAbout: "#about",
-	navlinkContact: "#contact",
 	/* Navigation Titles */
 	navHomeTitle: "Aller à l'accueil",
-	navWorkTitle: "Mes travaux",
+	navWorkTitle: "Mes projets",
 	navAboutTitle: "À propos de moi",
-	navContactTitle: "Me contacter",
 	/* Button Titles */
 	buttonLinkedin: "Profil LinkedIn",
 	buttonGithub: "Profil GitHub",
@@ -47,7 +44,7 @@ export const hero = {
 		"Formé au design et à la chaîne graphique, avec une licence en ,",
 	heroSubdescription2:
 		"Je développe des applications web de bout en bout, de la conception au déploiement en production pour des entreprises de services du numérique",
-	heroButton: "Voir mes travaux",
+	heroButton: "Voir mes projets",
 	heroLink1:
 		"https://www.onisep.fr/ressources/univers-metier/metiers/ui-designer-concepteur-conceptrice-d-interface-utilisateur",
 	heroLink2:

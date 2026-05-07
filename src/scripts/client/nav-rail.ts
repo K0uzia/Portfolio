@@ -1,8 +1,9 @@
 import { gsap } from "./register-gsap";
 import { ScrollTrigger } from "./register-gsap";
 import { reduce } from "./env";
+import { parsePathname, pathFor, sectionFromSlug, type SectionId, type SiteLang } from "../../lib/section-path";
 
-const SECTION_ORDER = ["home", "about", "work", "contact"] as const;
+const SECTION_ORDER = ["home", "about", "work"] as const;
 
 let activeScrollTween: gsap.core.Tween | null = null;
 let navCtx: gsap.Context | null = null;
@@ -20,22 +21,17 @@ function setActiveLink(links: HTMLAnchorElement[], id: string) {
 	}
 }
 
-function replaceUrlHash(id: string) {
-	const hash = `#${id}`;
-	try {
-		const u = new URL(window.location.href);
-		history.replaceState(null, "", `${u.pathname}${u.search}${hash}`);
-	} catch {
-		history.replaceState(null, "", hash);
-	}
+function currentLangFromDocument(): SiteLang {
+	return document.documentElement.getAttribute("data-lang") === "fr" ? "fr" : "en";
 }
 
-function replaceUrlFromLink(a: HTMLAnchorElement) {
+function replaceUrlSection(lang: SiteLang, section: SectionId) {
+	const next = pathFor(lang, section);
 	try {
-		const u = new URL(a.href);
-		history.replaceState(null, "", `${u.pathname}${u.search}${u.hash}`);
+		const u = new URL(window.location.href);
+		history.replaceState(null, "", `${next}${u.search}`);
 	} catch {
-		history.replaceState(null, "", a.getAttribute("href") ?? "#");
+		history.replaceState(null, "", next);
 	}
 }
 
@@ -90,19 +86,16 @@ export function initNavRail() {
 	].filter((el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement);
 	const valid = new Set<string>(SECTION_ORDER);
 
-	function idFromHash() {
+	function idFromPathOrFallback(): (typeof SECTION_ORDER)[number] {
+		const { lang, section } = parsePathname(window.location.pathname);
+		const fromPath = section;
+		if (fromPath && valid.has(fromPath)) return fromPath;
+
+		// Compat: si quelqu’un arrive encore via un vieux hash.
 		let h = (window.location.hash || "#home").replace(/^#/, "").toLowerCase();
-		if (!valid.has(h)) h = "home";
-		return h;
+		if (valid.has(h)) return h as (typeof SECTION_ORDER)[number];
+		return "home";
 	}
-
-	function syncFromHash() {
-		setActiveLink(links, idFromHash());
-	}
-
-	const onHashChange = () => syncFromHash();
-	window.addEventListener("hashchange", onHashChange);
-	disposers.push(() => window.removeEventListener("hashchange", onHashChange));
 
 	navCtx = gsap.context(() => {
 		for (const id of SECTION_ORDER) {
@@ -115,11 +108,13 @@ export function initNavRail() {
 				end: "bottom center",
 				onEnter: () => {
 					setActiveLink(links, id);
-					replaceUrlHash(id);
+					(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+					replaceUrlSection(currentLangFromDocument(), id);
 				},
 				onEnterBack: () => {
 					setActiveLink(links, id);
-					replaceUrlHash(id);
+					(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+					replaceUrlSection(currentLangFromDocument(), id);
 				},
 			});
 		}
@@ -128,9 +123,7 @@ export function initNavRail() {
 	const onNavClick = (e: MouseEvent) => {
 		const t = (e.target as Element | null)?.closest?.("a[data-nav-hash]");
 		if (!(t instanceof HTMLAnchorElement)) return;
-		const raw = t.getAttribute("href")?.split("#")[1];
-		if (!raw) return;
-		const id = raw.toLowerCase();
+		const id = (t.dataset.navHash ?? "").toLowerCase();
 		if (!valid.has(id)) return;
 		const target = document.getElementById(id);
 		if (!(target instanceof HTMLElement)) return;
@@ -153,7 +146,8 @@ export function initNavRail() {
 			onComplete: () => {
 				activeScrollTween = null;
 				setActiveLink(links, id);
-				replaceUrlFromLink(t);
+				(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+				replaceUrlSection(currentLangFromDocument(), id as SectionId);
 				ScrollTrigger.refresh();
 			},
 		});
@@ -161,13 +155,24 @@ export function initNavRail() {
 	document.addEventListener("click", onNavClick);
 	disposers.push(() => document.removeEventListener("click", onNavClick));
 
-	syncFromHash();
+	setActiveLink(links, idFromPathOrFallback());
 	requestAnimationFrame(() => {
 		ScrollTrigger.refresh();
-		// Au chargement, on fait foi de la position réelle, pas du hash.
-		// (Le hash peut être resté sur une ancienne section.)
+		// Si l’URL contient une section (/en/work), on y va.
+		const fromPath = idFromPathOrFallback();
+		const target = document.getElementById(fromPath);
+		if (target instanceof HTMLElement) {
+			window.scrollTo(0, scrollYToElement(target));
+			setActiveLink(links, fromPath);
+			(document.documentElement.dataset as { activeSection?: string }).activeSection = fromPath;
+			replaceUrlSection(currentLangFromDocument(), fromPath);
+			return;
+		}
+
+		// Sinon on fait foi de la position réelle.
 		const id = pickActiveSectionFromViewportCenter();
 		setActiveLink(links, id);
-		replaceUrlHash(id);
+		(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+		replaceUrlSection(currentLangFromDocument(), id);
 	});
 }
