@@ -1,12 +1,12 @@
 # Portfolio - Alexandre Kouziaeff
 
-Astro
-Tailwind CSS
-GSAP
-TypeScript
-Font Awesome
-Node
-Deploy
+![Astro](https://img.shields.io/npm/v/astro?label=astro&color=111827)
+![Tailwind CSS](https://img.shields.io/npm/v/tailwindcss?label=tailwindcss&color=0ea5e9)
+![GSAP](https://img.shields.io/npm/v/gsap?label=gsap&color=16a34a)
+![TypeScript](https://img.shields.io/npm/v/typescript?label=typescript&color=2563eb)
+![Font Awesome](https://img.shields.io/npm/v/%40fortawesome/fontawesome-free?label=fontawesome&color=111827)
+![Node](https://img.shields.io/badge/node-%E2%89%A522.12-22c55e)
+![Deploy](https://img.shields.io/badge/deploy-Netlify-00c7b7)
 
 Portfolio bilingue **EN/FR** avec navigation “rail”, mode **clair/sombre**, animations **GSAP**, et une URL “propre” par section (ex. `/fr/accueil`, `/en/work`) tout en conservant un rendu **Astro** rapide et SEO-friendly.
 
