@@ -1,4 +1,4 @@
-# Portfolio — extrait minimal
+# Portfolio
 
 Ce dépôt ne contient plus que :
 
