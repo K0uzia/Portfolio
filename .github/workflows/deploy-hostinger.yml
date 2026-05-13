@@ -50,13 +50,32 @@ jobs:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_SKIP_DNS_CHECK: ${{ secrets.FTP_SKIP_DNS_CHECK }}
         run: |
-          set -euo pipefail
+          set -eu
           raw="${FTP_SERVER//$'\r'/}"
           raw="$(printf '%s' "$raw" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          # BOM UTF-8 éventuel (copier-coller depuis le navigateur)
+          raw="$(printf '%s' "$raw" | sed $'1s/^\xef\xbb\xbf//')"
           host="$raw"
           host="$(printf '%s' "$host" | sed -E 's#^ftps?://##I')"
-          host="$(printf '%s' "$host" | sed -E 's#/.*##')"
+          # Ne pas couper une IPv6 : enlever un suffixe /chemin seulement si ça ressemble à une URL (contient / après un nom)
+          if printf '%s' "$host" | grep -q '/'; then
+            host="$(printf '%s' "$host" | sed -E 's#/.*##')"
+          fi
           host="$(printf '%s' "$host" | sed -E 's/:([0-9]{1,5})$//')"
+          # Caractères parasites (UI) : ne garder que chiffres et points ; si ça forme une IPv4, on l’utilise
+          clean_ip="$(printf '%s' "$host" | LC_ALL=C tr -cd '0-9.')"
+          is_ipv4() {
+            local h="$1" a b c d
+            [[ "$h" =~ ^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$ ]] || return 1
+            a="${BASH_REMATCH[1]}"; b="${BASH_REMATCH[2]}"; c="${BASH_REMATCH[3]}"; d="${BASH_REMATCH[4]}"
+            for x in "$a" "$b" "$c" "$d"; do
+              (( 10#$x <= 255 )) || return 1
+            done
+            return 0
+          }
+          if is_ipv4 "$clean_ip"; then
+            host="$clean_ip"
+          fi
           if [ -z "$host" ]; then
             echo "::error::Hôte FTP vide après normalisation. Mets dans FTP_SERVER une IP (recommandé Hostinger) ou un nom d'hôte seul, sans URL."
             exit 1
@@ -68,17 +87,26 @@ jobs:
             exit 0
           fi
 
+          # IPv4 littéral : pas de DNS à vérifier (évite faux négatifs / masquage logs)
+          if is_ipv4 "$host"; then
+            echo "::notice::IPv4 littéral : pas de test DNS (inutile pour une IP)."
+            echo "host=$host" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          set +e
           resolves=0
           if getent hosts "$host" >/dev/null 2>&1; then resolves=1; fi
           if [ "$resolves" -eq 0 ] && command -v dig >/dev/null 2>&1; then
-            if dig +short A "$host" @1.1.1.1 | head -n1 | grep -qE '^[0-9.]+$'; then resolves=1; fi
+            dig +short A "$host" @1.1.1.1 | head -n1 | grep -qE '^[0-9.]+$' && resolves=1
           fi
           if [ "$resolves" -eq 0 ] && command -v dig >/dev/null 2>&1; then
-            if dig +short A "$host" @8.8.8.8 | head -n1 | grep -qE '^[0-9.]+$'; then resolves=1; fi
+            dig +short A "$host" @8.8.8.8 | head -n1 | grep -qE '^[0-9.]+$' && resolves=1
           fi
+          set -e
 
           if [ "$resolves" -eq 0 ]; then
-            echo "::error::DNS : « $host » ne se résout pas depuis Internet (comme le ferait GitHub Actions). Sur Hostinger, ouvre hPanel → Comptes FTP et mets dans le secret FTP_SERVER la ligne « FTP IP » (adresse IPv4), pas le nom de ton site si le DNS n’est pas encore correct. Réf. Hostinger : « FTP IP – Your hosting IP, used as hostname to connect via FTP ». Vérifie aussi qu’il n’y a pas d’espace ou de retour à la ligne dans le secret."
+            echo "::error::DNS : impossible de résoudre cet hôte depuis Internet. Pour Hostinger, mets dans FTP_SERVER uniquement les 4 nombres séparés par des points (ex. 93.184.216.34), sans ftp:// — idéalement en les retapant à la main pour éviter les caractères invisibles. Si c’est bien une IP et que le message persiste, ouvre une issue : le workflow a peut-être besoin d’être mis à jour."
             exit 1
           fi
           echo "host=$host" >> "$GITHUB_OUTPUT"
