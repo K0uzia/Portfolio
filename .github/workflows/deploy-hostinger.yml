@@ -1,8 +1,11 @@
 # Déploiement automatique : build Astro sur GitHub, envoi du dist/ vers Hostinger (FTP/FTPS).
 # Secrets (Settings → Secrets and variables → Actions) :
 #   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
-#   FTP_SERVER = uniquement le nom d'hôte (ex. ftp.tondomaine.com), sans ftps://, sans chemin, sans espace en trop.
-# Optionnel : FTP_SERVER_DIR (dossier distant, finit par /), FTP_PORT (défaut 21), FTP_PROTOCOL (ftp ou ftps, défaut ftps).
+#   FTP_SERVER = hôte FTP uniquement. Hostinger : utilise surtout la valeur « FTP IP » (adresse IPv4) affichée
+#     dans hPanel → Comptes FTP ; évite un nom de domaine qui ne résout pas encore en public.
+#     Pas de ftps://, pas de chemin, pas d’espace en trop.
+# Optionnel : FTP_SERVER_DIR, FTP_PORT (défaut 21), FTP_PROTOCOL (ftp ou ftps, défaut ftps),
+#   FTP_SKIP_DNS_CHECK = true pour ignorer le test DNS (dépannage seulement).
 
 name: Deploy Hostinger (branche V4)
 
@@ -45,6 +48,7 @@ jobs:
         id: ftp_host
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_SKIP_DNS_CHECK: ${{ secrets.FTP_SKIP_DNS_CHECK }}
         run: |
           set -euo pipefail
           raw="${FTP_SERVER//$'\r'/}"
@@ -54,11 +58,27 @@ jobs:
           host="$(printf '%s' "$host" | sed -E 's#/.*##')"
           host="$(printf '%s' "$host" | sed -E 's/:([0-9]{1,5})$//')"
           if [ -z "$host" ]; then
-            echo "::error::Hôte FTP vide après normalisation. Mets dans FTP_SERVER seulement le nom (ex. ftp.example.com), pas une URL complète."
+            echo "::error::Hôte FTP vide après normalisation. Mets dans FTP_SERVER une IP (recommandé Hostinger) ou un nom d'hôte seul, sans URL."
             exit 1
           fi
-          if ! getent hosts "$host" >/dev/null 2>&1; then
-            echo "::error::DNS : impossible de résoudre l'hôte « $host » (erreur ENOTFOUND). Dans hPanel (Fichiers / FTP), copie l'hôte FTP exact. Pas de https:// ni de chemin type /public_html. Si besoin, utilise l'adresse IP indiquée par Hostinger. Si ton domaine est tout neuf, attends la propagation DNS ou teste avec l'IP."
+
+          if [ "${FTP_SKIP_DNS_CHECK:-}" = "true" ]; then
+            echo "::warning::FTP_SKIP_DNS_CHECK=true : le test DNS est ignoré."
+            echo "host=$host" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          resolves=0
+          if getent hosts "$host" >/dev/null 2>&1; then resolves=1; fi
+          if [ "$resolves" -eq 0 ] && command -v dig >/dev/null 2>&1; then
+            if dig +short A "$host" @1.1.1.1 | head -n1 | grep -qE '^[0-9.]+$'; then resolves=1; fi
+          fi
+          if [ "$resolves" -eq 0 ] && command -v dig >/dev/null 2>&1; then
+            if dig +short A "$host" @8.8.8.8 | head -n1 | grep -qE '^[0-9.]+$'; then resolves=1; fi
+          fi
+
+          if [ "$resolves" -eq 0 ]; then
+            echo "::error::DNS : « $host » ne se résout pas depuis Internet (comme le ferait GitHub Actions). Sur Hostinger, ouvre hPanel → Comptes FTP et mets dans le secret FTP_SERVER la ligne « FTP IP » (adresse IPv4), pas le nom de ton site si le DNS n’est pas encore correct. Réf. Hostinger : « FTP IP – Your hosting IP, used as hostname to connect via FTP ». Vérifie aussi qu’il n’y a pas d’espace ou de retour à la ligne dans le secret."
             exit 1
           fi
           echo "host=$host" >> "$GITHUB_OUTPUT"
