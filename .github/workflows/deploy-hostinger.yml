@@ -1,5 +1,5 @@
-  # Déploiement automatique : build Astro sur GitHub, envoi du dossier dist/ vers Hostinger (FTP).
-# Configure les secrets du dépôt (Settings → Secrets and variables → Actions) :
+# Déploiement automatique : build Astro sur GitHub, envoi du dossier dist/ vers Hostinger (FTP).
+# Secrets (Settings → Secrets and variables → Actions), noms exacts :
 #   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
 # Optionnel : FTP_SERVER_DIR (dossier distant, doit finir par /). Souvent ./ si la connexion FTP ouvre déjà public_html.
 
@@ -19,13 +19,34 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Vérifier les secrets FTP
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          err=0
+          if [ -z "$FTP_SERVER" ]; then
+            echo "::error::Le secret FTP_SERVER est vide ou absent. Crée un secret nommé exactement FTP_SERVER (hôte FTP depuis hPanel Hostinger, ex. ftp.tondomaine.com)."
+            err=1
+          fi
+          if [ -z "$FTP_USERNAME" ]; then
+            echo "::error::Le secret FTP_USERNAME est vide ou absent."
+            err=1
+          fi
+          if [ -z "$FTP_PASSWORD" ]; then
+            echo "::error::Le secret FTP_PASSWORD est vide ou absent."
+            err=1
+          fi
+          exit $err
+
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           ref: V4
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: "22"
           cache: npm
@@ -36,7 +57,7 @@ jobs:
           npm run build
 
       - name: Deploy dist via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
