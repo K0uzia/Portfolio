@@ -4,8 +4,12 @@
 #   FTP_SERVER = hôte FTP uniquement. Hostinger : utilise surtout la valeur « FTP IP » (adresse IPv4) affichée
 #     dans hPanel → Comptes FTP ; évite un nom de domaine qui ne résout pas encore en public.
 #     Pas de ftps://, pas de chemin, pas d’espace en trop.
-# Optionnel : FTP_SERVER_DIR, FTP_PORT (défaut 21), FTP_PROTOCOL (ftp ou ftps, défaut ftps),
-#   FTP_SKIP_DNS_CHECK = true pour ignorer le test DNS (dépannage seulement).
+# Optionnel :
+#   FTP_SERVER_DIR — nom du secret GitHub EXACT (pas « server-dir »). Dossier distant pour le contenu de dist/.
+#     Défaut ./ = racine du compte FTP. Repli si vide : secret SERVER_DIR (même valeur).
+#     Ex. Hostinger : domains/kouzia.com/public_html/portfolio/ (relatif à /home/TON_USER/).
+#     Tu peux coller le chemin absolu hPanel (/home/.../domains/.../portfolio) : le workflow enlève le préfixe /home/USER/.
+#   FTP_PORT (défaut 21), FTP_PROTOCOL (ftp ou ftps, défaut ftps), FTP_SKIP_DNS_CHECK = true (dépannage DNS seulement).
 
 name: Deploy Hostinger (branche V4)
 
@@ -127,6 +131,31 @@ jobs:
           npm ci
           npm run build
 
+      - name: Normaliser le dossier FTP distant (server-dir)
+        id: ftp_dir
+        env:
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+          SERVER_DIR: ${{ secrets.SERVER_DIR }}
+        run: |
+          set -eu
+          d="${FTP_SERVER_DIR:-}"
+          if [ -z "$d" ]; then d="${SERVER_DIR:-}"; fi
+          d="${d//$'\r'/}"
+          d="$(printf '%s' "$d" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          # Chemin absolu type /home/u…/domains/... → relatif attendu par le serveur FTP Hostinger
+          if [ -n "$d" ] && [[ "$d" == /home/* ]]; then
+            d="$(printf '%s' "$d" | sed -E 's#^/home/[^/]+/##')"
+          fi
+          if [ -z "$d" ]; then
+            d="./"
+          fi
+          case "$d" in
+            */) ;;
+            *) d="${d}/" ;;
+          esac
+          echo "::notice::Dossier FTP cible (server-dir) : $d"
+          echo "dir=$d" >> "$GITHUB_OUTPUT"
+
       - name: Deploy dist via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
@@ -134,7 +163,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          server-dir: ${{ steps.ftp_dir.outputs.dir }}
           protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
           port: ${{ secrets.FTP_PORT || '21' }}
           timeout: 600000
