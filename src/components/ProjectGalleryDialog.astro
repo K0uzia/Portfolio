@@ -128,26 +128,58 @@ const firstCaption = captionPairs[0] ?? { en: "", fr: "" };
 				</div>
 			</div>
 			<div
-				class="flex shrink-0 flex-wrap items-center justify-center gap-2.5 pb-1"
-				role="tablist"
-				aria-label="Slides"
+				class="flex w-full max-w-6xl shrink-0 flex-row flex-wrap items-center justify-center gap-2 px-1 pb-1 sm:gap-4"
 			>
 				{
-					slides.map((_, i) => (
+					slideCount > 1 && (
 						<button
 							type="button"
-							data-gallery-dot
-							data-gallery-dot-index={i}
-							class:list={[
-								"h-2.5 w-2.5 shrink-0 rounded-full transition-colors duration-200",
-								i === 0
-									? "bg-indigo-600 dark:bg-amber-500 ring-2 ring-indigo-500/60 dark:ring-amber-400/60"
-									: "bg-white/35 hover:bg-white/55",
-							]}
-							aria-label={`${i + 1} / ${slides.length}`}
-							aria-current={i === 0 ? "true" : "false"}
-						/>
-					))
+							data-gallery-prev
+							class="inline-flex h-12 w-12 hover:scale-110 shrink-0 items-center justify-center dark:text-white hover:text-indigo-500 dark:hover:text-amber-500 text-white transition-colors duration-200"
+							aria-label={workEn.workGalleryPrevSlide}
+							data-i18n-aria-en={workEn.workGalleryPrevSlide}
+							data-i18n-aria-fr={workFr.workGalleryPrevSlide}
+						>
+							<i class="fa-solid fa-chevron-left text-sm" aria-hidden="true" />
+						</button>
+					)
+				}
+				<div
+					class="flex max-w-[min(100%,22rem)] flex-wrap items-center justify-center gap-2.5 sm:max-w-none"
+					role="tablist"
+					aria-label="Slides"
+				>
+					{
+						slides.map((_, i) => (
+							<button
+								type="button"
+								data-gallery-dot
+								data-gallery-dot-index={i}
+								class:list={[
+									"h-2.5 w-2.5 shrink-0 rounded-full transition-colors duration-200",
+									i === 0
+										? "bg-indigo-600 dark:bg-amber-500 ring-2 ring-indigo-500/60 dark:ring-amber-400/60"
+										: "bg-white/35 hover:bg-white/55",
+								]}
+								aria-label={`${i + 1} / ${slides.length}`}
+								aria-current={i === 0 ? "true" : "false"}
+							/>
+						))
+					}
+				</div>
+				{
+					slideCount > 1 && (
+						<button
+							type="button"
+							data-gallery-next
+							class="inline-flex h-12 w-12 hover:scale-110 shrink-0 items-center justify-center dark:text-white hover:text-indigo-500 dark:hover:text-amber-500 text-white transition-colors duration-200"
+							aria-label={workEn.workGalleryNextSlide}
+							data-i18n-aria-en={workEn.workGalleryNextSlide}
+							data-i18n-aria-fr={workFr.workGalleryNextSlide}
+						>
+							<i class="fa-solid fa-chevron-right text-sm" aria-hidden="true" />
+						</button>
+					)
 				}
 			</div>
 		</div>

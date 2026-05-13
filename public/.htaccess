@@ -1,0 +1,10 @@
+# Hostinger (Apache) : routes « SPA » /en/… et /fr/… (pas de fichiers réels → servir la home).
+# Sans cela, F5 sur /en/work ou ouverture directe d’URL → 404.
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} -f [OR]
+	RewriteCond %{REQUEST_FILENAME} -d
+	RewriteRule ^ - [L]
+	RewriteRule ^(en|fr)(/.*)?$ /index.html [L]
+</IfModule>

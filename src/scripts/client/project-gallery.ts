@@ -164,17 +164,14 @@ function wireDialog(dialog: HTMLDialogElement): void {
 		currentIndex = Math.max(0, Math.min(realCount - 1, nextIndex));
 		const w = layoutStripWidths();
 		if (w <= 0) return;
+		syncDotsFromIndex(currentIndex, dots);
 		if (useWrap) {
 			extendedIndex = currentIndex + 1;
 			const x = -extendedIndex * w;
-			tweenStripX(x, animate, () => {
-				syncDotsFromIndex(currentIndex, dots);
-			});
+			tweenStripX(x, animate);
 		} else {
 			const x = -currentIndex * w;
-			tweenStripX(x, animate, () => {
-				syncDotsFromIndex(currentIndex, dots);
-			});
+			tweenStripX(x, animate);
 		}
 	};
 
@@ -238,6 +235,9 @@ function wireDialog(dialog: HTMLDialogElement): void {
 		if (w <= 0) return;
 
 		if (useWrap) {
+			// Recaler sur la diapo logique courante avant tout nouveau tween (appuis clavier / molette rapides).
+			gsap.killTweensOf(strip);
+			gsap.set(strip, { x: -extendedIndex * w });
 			if (extendedIndex === realCount) {
 				const targetX = -(realCount + 1) * w;
 				tweenStripX(targetX, true, () => {
@@ -248,11 +248,10 @@ function wireDialog(dialog: HTMLDialogElement): void {
 				});
 			} else {
 				const next = extendedIndex + 1;
-				tweenStripX(-next * w, true, () => {
-					extendedIndex = next;
-					currentIndex = next - 1;
-					syncDotsFromIndex(currentIndex, dots);
-				});
+				extendedIndex = next;
+				currentIndex = next - 1;
+				syncDotsFromIndex(currentIndex, dots);
+				tweenStripX(-next * w, true);
 			}
 		} else if (currentIndex < realCount - 1) {
 			goTo(currentIndex + 1, true);
@@ -266,6 +265,8 @@ function wireDialog(dialog: HTMLDialogElement): void {
 		if (w <= 0) return;
 
 		if (useWrap) {
+			gsap.killTweensOf(strip);
+			gsap.set(strip, { x: -extendedIndex * w });
 			if (extendedIndex === 1) {
 				tweenStripX(0, true, () => {
 					gsap.set(strip, { x: -realCount * w });
@@ -275,11 +276,10 @@ function wireDialog(dialog: HTMLDialogElement): void {
 				});
 			} else {
 				const next = extendedIndex - 1;
-				tweenStripX(-next * w, true, () => {
-					extendedIndex = next;
-					currentIndex = next - 1;
-					syncDotsFromIndex(currentIndex, dots);
-				});
+				extendedIndex = next;
+				currentIndex = next - 1;
+				syncDotsFromIndex(currentIndex, dots);
+				tweenStripX(-next * w, true);
 			}
 		} else if (currentIndex > 0) {
 			goTo(currentIndex - 1, true);
@@ -336,6 +336,7 @@ function wireDialog(dialog: HTMLDialogElement): void {
 		const el = target as HTMLElement | null;
 		if (!el) return false;
 		if (el.closest("[data-gallery-dot]")) return true;
+		if (el.closest("[data-gallery-prev]") || el.closest("[data-gallery-next]")) return true;
 		const img = el.closest("[data-gallery-slide] img");
 		return Boolean(img);
 	}
@@ -387,6 +388,31 @@ function wireDialog(dialog: HTMLDialogElement): void {
 		dot.addEventListener("click", () => {
 			goTo(idx, true);
 		});
+	});
+
+	const prevBtn = dialog.querySelector<HTMLButtonElement>("[data-gallery-prev]");
+	const nextBtn = dialog.querySelector<HTMLButtonElement>("[data-gallery-next]");
+	prevBtn?.addEventListener("click", (e) => {
+		e.stopPropagation();
+		if (realCount <= 1) return;
+		advancePrev();
+	});
+	nextBtn?.addEventListener("click", (e) => {
+		e.stopPropagation();
+		if (realCount <= 1) return;
+		advanceNext();
+	});
+
+	dialog.addEventListener("keydown", (e) => {
+		if (!dialog.open || realCount <= 1) return;
+		const k = e.key;
+		if (k === "ArrowLeft" || k === "q" || k === "Q") {
+			e.preventDefault();
+			advancePrev();
+		} else if (k === "ArrowRight" || k === "d" || k === "D") {
+			e.preventDefault();
+			advanceNext();
+		}
 	});
 }
 

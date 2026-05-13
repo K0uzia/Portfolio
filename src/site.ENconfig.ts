@@ -105,6 +105,8 @@ export const work = {
 	workImageAlt3: "Operations toolkit — screenshot",
 	workGalleryTitle: "Project screenshots",
 	workGalleryOpenLabel: "Open screenshots gallery",
+	workGalleryPrevSlide: "Previous screenshot",
+	workGalleryNextSlide: "Next screenshot",
 	/**
 	 * Légendes lightbox : même ordre que les images (`projectImages`).
 	 * Traductions FR : `site.FRconfig.ts` → `work.workGalleryCaptions` (mêmes clés `1` | `2` | `3`, mêmes longueurs de tableaux).

@@ -115,6 +115,8 @@ export const work = {
 	workImageAlt3: "Boîte à outils opérationnelle — capture d'écran",
 	workGalleryTitle: "Captures du projet",
 	workGalleryOpenLabel: "Agrandir et parcourir les captures",
+	workGalleryPrevSlide: "Capture précédente",
+	workGalleryNextSlide: "Capture suivante",
 	/** Légendes lightbox : même ordre / même nombre d’entrées que `site.ENconfig.ts` → `workGalleryCaptions`. */
 	workGalleryCaptions: {
 		1: [
