@@ -1,7 +1,8 @@
-# Déploiement automatique : build Astro sur GitHub, envoi du dossier dist/ vers Hostinger (FTP).
-# Secrets (Settings → Secrets and variables → Actions), noms exacts :
+# Déploiement automatique : build Astro sur GitHub, envoi du dist/ vers Hostinger (FTP/FTPS).
+# Secrets (Settings → Secrets and variables → Actions) :
 #   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
-# Optionnel : FTP_SERVER_DIR (dossier distant, doit finir par /). Souvent ./ si la connexion FTP ouvre déjà public_html.
+#   FTP_SERVER = uniquement le nom d'hôte (ex. ftp.tondomaine.com), sans ftps://, sans chemin, sans espace en trop.
+# Optionnel : FTP_SERVER_DIR (dossier distant, finit par /), FTP_PORT (défaut 21), FTP_PROTOCOL (ftp ou ftps, défaut ftps).
 
 name: Deploy Hostinger (branche V4)
 
@@ -27,7 +28,7 @@ jobs:
         run: |
           err=0
           if [ -z "$FTP_SERVER" ]; then
-            echo "::error::Le secret FTP_SERVER est vide ou absent. Crée un secret nommé exactement FTP_SERVER (hôte FTP depuis hPanel Hostinger, ex. ftp.tondomaine.com)."
+            echo "::error::Le secret FTP_SERVER est vide ou absent."
             err=1
           fi
           if [ -z "$FTP_USERNAME" ]; then
@@ -39,6 +40,28 @@ jobs:
             err=1
           fi
           exit $err
+
+      - name: Normaliser l'hôte FTP et vérifier la DNS
+        id: ftp_host
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          set -euo pipefail
+          raw="${FTP_SERVER//$'\r'/}"
+          raw="$(printf '%s' "$raw" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          host="$raw"
+          host="$(printf '%s' "$host" | sed -E 's#^ftps?://##I')"
+          host="$(printf '%s' "$host" | sed -E 's#/.*##')"
+          host="$(printf '%s' "$host" | sed -E 's/:([0-9]{1,5})$//')"
+          if [ -z "$host" ]; then
+            echo "::error::Hôte FTP vide après normalisation. Mets dans FTP_SERVER seulement le nom (ex. ftp.example.com), pas une URL complète."
+            exit 1
+          fi
+          if ! getent hosts "$host" >/dev/null 2>&1; then
+            echo "::error::DNS : impossible de résoudre l'hôte « $host » (erreur ENOTFOUND). Dans hPanel (Fichiers / FTP), copie l'hôte FTP exact. Pas de https:// ni de chemin type /public_html. Si besoin, utilise l'adresse IP indiquée par Hostinger. Si ton domaine est tout neuf, attends la propagation DNS ou teste avec l'IP."
+            exit 1
+          fi
+          echo "host=$host" >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@v6.0.2
@@ -59,11 +82,11 @@ jobs:
       - name: Deploy dist via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ${{ steps.ftp_host.outputs.host }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
-          protocol: ftps
-          port: 21
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
+          port: ${{ secrets.FTP_PORT || '21' }}
           timeout: 600000
