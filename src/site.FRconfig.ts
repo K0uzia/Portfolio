@@ -2,7 +2,7 @@ export const info = {
 	name: "Alexandre Kouziaeff",
 	job: "Designer·développeur",
 	email: "kouziaeffa.pro@gmail.com",
-	githubProfileUrl: "https://github.com/SandersonnDev",
+	githubProfileUrl: "https://github.com/K0uzia",
 	pitch: "Portfolio de Alexandre Kouziaeff, Développeur web et applications, du design au développement",
 } as const;
 
