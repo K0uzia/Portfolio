@@ -1,17 +1,13 @@
 @layer base {
 	html {
-		font-family: var(--font-display);
-		color-scheme: dark;
-		background: var(--void);
-		color: var(--fg);
-		scroll-behavior: auto;
-		overflow-x: clip;
-		@apply antialiased;
+		@apply scroll-auto overflow-x-clip antialiased;
+		@apply bg-zinc-300 font-sans text-zinc-900;
+		/** Dark inchangé visuellement : fond « void » + texte comme l’ancien `--fg`. */
+		@apply dark:bg-[#070712] dark:text-[#e8eaf8];
 	}
 
 	body {
-		@apply min-h-dvh;
+		@apply min-h-dvh overflow-x-clip;
 		margin: 0;
-		overflow-x: clip;
 	}
 }

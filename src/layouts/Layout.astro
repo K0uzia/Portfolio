@@ -9,17 +9,66 @@ import Navside from "../components/navside.astro";
 interface Props {
 	title?: string;
 	description?: string;
+	page?: string;
 }
 
-const titleEn = Astro.props.title ?? `${infoEn.name}`;
-const titleFr = Astro.props.title ?? `${infoFr.name}`;
+const titleEn = Astro.props.title ?? infoEn.name;
+const titleFr = Astro.props.title ?? infoFr.name;
 const descriptionEn = Astro.props.description ?? infoEn.pitch;
 const descriptionFr = Astro.props.description ?? infoFr.pitch;
+
+// SEO (URL unique) : EN par défaut côté serveur (home).
+const title = titleEn;
+const description = descriptionEn;
+
+const canonicalUrl = Astro.site ? new URL(withBase("/"), Astro.site).href : withBase("/");
+
+const ogLocale = "en_US";
+const ogLocaleAlt = "fr_FR";
+const ogImageUrl = Astro.site ? new URL(withBase("favicon.svg"), Astro.site).href : withBase("favicon.svg");
+const personSameAs = [infoEn.githubProfileUrl, infoEn.linkedinProfileUrl].filter(Boolean);
+const personEmail = Astro.site ? `mailto:${infoEn.email}` : `mailto:${infoEn.email}`;
+const personId = `${canonicalUrl}#person`;
+const websiteId = `${canonicalUrl}#website`;
+const webpageId = `${canonicalUrl}#webpage`;
+
+const personJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	"@id": personId,
+	name: infoEn.name,
+	jobTitle: infoFr.job,
+	url: canonicalUrl,
+	email: personEmail,
+	sameAs: personSameAs,
+};
+const websiteJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"@id": websiteId,
+	name: infoEn.name,
+	url: canonicalUrl,
+	inLanguage: "en",
+};
+
+const webpageJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebPage",
+	"@id": webpageId,
+	url: canonicalUrl,
+	name: title,
+	description,
+	inLanguage: "en",
+	isPartOf: { "@id": websiteId },
+	about: { "@id": personId },
+	primaryImageOfPage: ogImageUrl,
+};
 ---
 
 <!doctype html>
 <html
 	lang="en"
+	data-page={Astro.props.page}
 	data-title-en={titleEn}
 	data-title-fr={titleFr}
 	data-description-en={descriptionEn}
@@ -27,10 +76,74 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 >
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="google-site-verification" content="GJ5ytnBQWLymUmGkPx_2F7SBFoV5VkhLSPuIdVI-V3o" />
+		<script is:inline define:vars={{ themeKey: "portfolio-theme" }}>
+			(function () {
+				try {
+					var s = localStorage.getItem(themeKey);
+					var root = document.documentElement;
+					if (s === "light") root.classList.remove("dark");
+					else if (s === "dark") root.classList.add("dark");
+					else if (window.matchMedia("(prefers-color-scheme: light)").matches)
+						root.classList.remove("dark");
+					else root.classList.add("dark");
+				} catch (_) {}
+			})();
+		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
-		<meta name="description" content={descriptionEn} />
-		<title>{titleEn}</title>
+		<meta name="description" content={description} />
+		<title>{title}</title>
+
+		<link rel="canonical" href={canonicalUrl} />
+
+		<meta name="robots" content="index,follow" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={infoEn.name} />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:locale:alternate" content={ogLocaleAlt} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageUrl} />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- Avant le body : applique la langue persistée et sync title/description -->
+		<script is:inline define:vars={{ LANG_STORAGE_KEY: "portfolio-lang" }}>
+			(function () {
+				try {
+					var s = localStorage.getItem(LANG_STORAGE_KEY);
+					// Priorité: localStorage > URL (/fr/* ou /en/*) > défaut EN.
+					var p = (window.location && window.location.pathname) || "/";
+					var urlLang = p === "/fr" || p.startsWith("/fr/") ? "fr" : p === "/en" || p.startsWith("/en/") ? "en" : null;
+					var fr = s === null ? urlLang === "fr" : s === "fr";
+					var root = document.documentElement;
+					if (fr) {
+						root.setAttribute("data-lang", "fr");
+						root.setAttribute("lang", "fr");
+					} else {
+						root.removeAttribute("data-lang");
+						root.setAttribute("lang", "en");
+					}
+					var tEn = root.getAttribute("data-title-en") || "";
+					var tFr = root.getAttribute("data-title-fr") || "";
+					var dEn = root.getAttribute("data-description-en") || "";
+					var dFr = root.getAttribute("data-description-fr") || "";
+					document.title = fr ? tFr : tEn;
+					var meta = document.querySelector('meta[name="description"]');
+					if (meta) meta.setAttribute("content", fr ? dFr : dEn);
+				} catch (_) {}
+			})();
+		</script>
+
+		<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)}></script>
+		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
+		<script type="application/ld+json" set:html={JSON.stringify(webpageJsonLd)}></script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -44,6 +157,15 @@ const descriptionFr = Astro.props.description ?? infoFr.pitch;
 		<script>
 			import { boot } from "../scripts/client";
 			boot();
+		</script>
+		<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QPM4KWVXN"></script>
+		<script>
+			const w = window as unknown as { dataLayer?: unknown[][] };
+			w.dataLayer = w.dataLayer ?? [];
+			const gtag = (...args: unknown[]) => w.dataLayer?.push(args);
+			gtag("js", new Date());
+			gtag("config", "G-6QPM4KWVXN");
 		</script>
 	</body>
 </html>

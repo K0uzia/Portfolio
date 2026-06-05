@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/** Mode sombre : classe `dark` sur `<html>` (voir `theme-toggle.ts` + script inline dans Layout). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "./theme.css";
 @import "./normalize.css";
 @import "./base.css";

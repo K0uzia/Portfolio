@@ -2,17 +2,44 @@
 import { work as workEn } from "../site.ENconfig.ts";
 import { work as workFr } from "../site.FRconfig.ts";
 import I18n from "./I18n.astro";
+import Project1 from "./project1.astro";
+import Project2 from "./project2.astro";
+import Project3 from "./project3.astro";
 ---
 
 <section
 	id="work"
-	class="bg-white lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900"
+	class="bg-zinc-300 px-0 dark:bg-gray-900"
 >
-	<div class="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-		<div class="mx-auto max-w-prose text-start">
-			<h1 class="text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500 font-mono mb-5">
-				<I18n en={workEn.workTitle} fr={workFr.workTitle} block />
-			</h1>
+	<div
+		class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+	>
+		<h1
+			class="mb-10 font-mono text-lg font-bold text-indigo-600 sm:mb-12 sm:text-xl dark:text-amber-500"
+		>
+			<I18n en={workEn.workTitle} fr={workFr.workTitle} block />
+		</h1>
+
+		<div class="relative overflow-visible">
+			<!-- z-0 : sous les blocs projet (z-10) ; pas de négatif/isolate pour éviter flash au reload -->
+			<div
+				data-work-line
+				class="pointer-events-none absolute inset-y-0 left-1/2 z-0 w-0.5 -translate-x-1/2 bg-indigo-600 dark:bg-amber-500 motion-safe:scale-y-0 motion-safe:origin-top motion-safe:transform-gpu"
+				aria-hidden="true"
+			/>
+			<div class="relative z-10">
+				<Project1 />
+			</div>
+			<div class="relative z-10">
+				<Project2 />
+			</div>
+			<div class="relative z-10">
+				<Project3 />
+			</div>
 		</div>
 	</div>
 </section>
+
+<script>
+	import "../scripts/client/project-gallery.ts";
+</script>

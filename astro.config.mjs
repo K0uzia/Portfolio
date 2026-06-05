@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
 
 function normalizeBase(base) {
     if (!base || base === "/")
@@ -26,13 +27,14 @@ function resolveBase() {
 function resolveSite() {
     if (process.env.ASTRO_SITE)
         return process.env.ASTRO_SITE.replace(/\/$/, "");
-    if (process.env.DEPLOY_TARGET !== "github-pages")
-        return undefined;
-    const repo = process.env.GITHUB_REPOSITORY;
-    if (!repo)
-        return undefined;
-    const [owner] = repo.split("/");
-    return owner ? `https://${owner}.github.io` : undefined;
+    if (process.env.DEPLOY_TARGET === "github-pages") {
+        const repo = process.env.GITHUB_REPOSITORY;
+        if (!repo)
+            return undefined;
+        const [owner] = repo.split("/");
+        return owner ? `https://${owner}.github.io` : undefined;
+    }
+    return "https://portfolio.kouzia.com";
 }
 
 export default defineConfig({
@@ -41,4 +43,5 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()],
     },
+    integrations: [sitemap()],
 });

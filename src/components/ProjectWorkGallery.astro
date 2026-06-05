@@ -1,0 +1,85 @@
+---
+import { getImage } from "astro:assets";
+import I18n from "./I18n.astro";
+import ProjectGalleryDialog from "./ProjectGalleryDialog.astro";
+import ProjectPicture from "./ProjectPicture.astro";
+import { getProjectGallery, type ProjectId } from "../data/projectImages.ts";
+import { getProjectImageAlt } from "../lib/work-project.ts";
+import { work as workEn } from "../site.ENconfig.ts";
+import { work as workFr } from "../site.FRconfig.ts";
+
+interface Props {
+	project: ProjectId;
+	labelId: string;
+	/**
+	 * `screenshot` : recadrage type capture (cover, ancrage haut-gauche).
+	 * `centered-cover` : remplit tout le cadre sans bandes, recadrage centré (logos / visuels non 16/10).
+	 */
+	coverStyle?: "screenshot" | "centered-cover";
+}
+
+const { project, labelId, coverStyle = "screenshot" } = Astro.props;
+
+const objectPositioningClass =
+	coverStyle === "centered-cover"
+		? "object-cover object-center"
+		: "object-cover object-top-left";
+
+const galleryId = `work-gallery-${project}`;
+const dialogDomId = `${galleryId}-dialog`;
+const titleDomId = `${galleryId}-title`;
+
+const slides = await Promise.all(
+	getProjectGallery(project).map((src) => getImage({ src, width: 1920, format: "webp" })),
+);
+
+const capEn = workEn.workGalleryCaptions[project];
+const capFr = workFr.workGalleryCaptions[project];
+const captionPairs = slides.map((_, i) => ({
+	en: capEn[i] ?? "",
+	fr: capFr[i] ?? "",
+}));
+
+const imageAlt = getProjectImageAlt(project);
+---
+
+<div class="relative overflow-hidden bg-zinc-300 dark:bg-gray-900">
+	<div class="relative aspect-16/10 w-full">
+		<span id={labelId} class="sr-only">
+			<I18n en={imageAlt.en} fr={imageAlt.fr} />
+		</span>
+		<button
+			type="button"
+			class="group relative block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500"
+			data-project-gallery-open={galleryId}
+			aria-expanded="false"
+			aria-haspopup="dialog"
+			aria-controls={dialogDomId}
+			title={workEn.workGalleryOpenLabel}
+			data-i18n-title-en={workEn.workGalleryOpenLabel}
+			data-i18n-title-fr={workFr.workGalleryOpenLabel}
+		>
+			<ProjectPicture
+				project={project}
+				alt={imageAlt.en}
+				aria-labelledby={labelId}
+				class:list={[
+					"pointer-events-none h-full w-full saturate-100 lg:saturate-40 transition-transform duration-200 ease-out group-hover:scale-[1.02] lg:group-hover:saturate-100 motion-reduce:transition-none motion-reduce:group-hover:scale-100",
+					objectPositioningClass,
+				]}
+			/>
+			<div
+				class="pointer-events-none absolute inset-0 z-1 bg-zinc-900/15 mix-blend-multiply transition-[background-color] duration-200 ease-out group-hover:bg-transparent dark:bg-black/25 dark:group-hover:bg-transparent motion-reduce:transition-none"
+				aria-hidden="true"
+			/>
+		</button>
+	</div>
+</div>
+
+<ProjectGalleryDialog
+	galleryId={galleryId}
+	dialogDomId={dialogDomId}
+	titleDomId={titleDomId}
+	slides={slides}
+	captionPairs={captionPairs}
+/>

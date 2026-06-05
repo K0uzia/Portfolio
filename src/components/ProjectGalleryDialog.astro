@@ -1,0 +1,187 @@
+---
+import { getImage } from "astro:assets";
+import I18n from "./I18n.astro";
+import ProjectGallerySlideImage from "./ProjectGallerySlideImage.astro";
+import { work as workEn } from "../site.ENconfig.ts";
+import { work as workFr } from "../site.FRconfig.ts";
+
+type GallerySlide = Awaited<ReturnType<typeof getImage>>;
+
+interface GalleryCaptionPair {
+	en: string;
+	fr: string;
+}
+
+interface Props {
+	galleryId: string;
+	dialogDomId: string;
+	titleDomId: string;
+	slides: GallerySlide[];
+	captionPairs: GalleryCaptionPair[];
+}
+
+const { galleryId, dialogDomId, titleDomId, slides, captionPairs } = Astro.props;
+const slideCount = slides.length;
+const lastSlide = slides[slideCount - 1];
+const firstSlide = slides[0];
+const lastCaption = captionPairs[slideCount - 1] ?? { en: "", fr: "" };
+const firstCaption = captionPairs[0] ?? { en: "", fr: "" };
+---
+
+<!--
+  Carrousel : viewport overflow hidden + bande flex ; position pilotée en JS (GSAP x),
+  pas scrollLeft (peu fiable dans <dialog>).
+-->
+<dialog
+	id={dialogDomId}
+	class="m-0 border-0 bg-transparent p-0 text-inherit shadow-none outline-none open:fixed open:inset-0 open:z-50 open:flex open:min-h-dvh open:w-full open:max-w-none open:flex-col open:items-center open:justify-center open:p-4 open:backdrop:bg-black/65 open:backdrop:backdrop-blur-[1px] sm:open:p-6 dark:open:backdrop:bg-black/70"
+	aria-labelledby={titleDomId}
+	data-project-gallery-dialog={galleryId}
+	data-gallery-real-slide-count={slideCount}
+>
+	<h2 id={titleDomId} class="sr-only">
+		<I18n en={workEn.workGalleryTitle} fr={workFr.workGalleryTitle} block />
+	</h2>
+	<button
+		type="button"
+		class="absolute inset-0 z-0 block min-h-dvh cursor-default border-0 bg-transparent p-0"
+		data-gallery-dismiss
+		tabindex="-1"
+		aria-hidden="true"
+	>
+	</button>
+	<div
+		class="relative z-10 flex w-full max-w-6xl flex-col items-center gap-5 pointer-events-none"
+		data-gallery-dialog-inner
+	>
+		<div
+			class="pointer-events-auto flex w-full flex-col items-center gap-5"
+			data-gallery-panel
+		>
+			<div
+				data-gallery-viewport
+				class="relative w-full max-h-[min(82vh,880px)] overflow-hidden"
+			>
+				<div
+					data-gallery-strip
+					class="flex flex-row flex-nowrap will-change-transform"
+				>
+					{
+						slideCount > 1 && (
+							<figure
+								data-gallery-slide
+								data-gallery-wrap-clone="prev"
+								class="flex min-h-0 shrink-0 basis-auto flex-col items-center justify-center gap-2"
+							>
+								<ProjectGallerySlideImage
+									src={lastSlide.src}
+									width={lastSlide.attributes.width}
+									height={lastSlide.attributes.height}
+									loading="lazy"
+								/>
+								<figcaption class="w-full max-w-4xl px-2 text-center text-sm leading-snug text-white/90">
+									<I18n en={lastCaption.en} fr={lastCaption.fr} />
+								</figcaption>
+							</figure>
+						)
+					}
+					{
+						slides.map((slide, index) => {
+							const cap = captionPairs[index] ?? { en: "", fr: "" };
+							return (
+								<figure
+									data-gallery-slide
+									class="flex min-h-0 shrink-0 basis-auto flex-col items-center justify-center gap-2"
+								>
+									<ProjectGallerySlideImage
+										src={slide.src}
+										width={slide.attributes.width}
+										height={slide.attributes.height}
+										loading={index === 0 ? "eager" : "lazy"}
+									/>
+									<figcaption class="w-full max-w-4xl px-2 text-center text-sm leading-snug text-white/90">
+										<I18n en={cap.en} fr={cap.fr} />
+									</figcaption>
+								</figure>
+							);
+						})
+					}
+					{
+						slideCount > 1 && (
+							<figure
+								data-gallery-slide
+								data-gallery-wrap-clone="next"
+								class="flex min-h-0 shrink-0 basis-auto flex-col items-center justify-center gap-2"
+							>
+								<ProjectGallerySlideImage
+									src={firstSlide.src}
+									width={firstSlide.attributes.width}
+									height={firstSlide.attributes.height}
+									loading="lazy"
+								/>
+								<figcaption class="w-full max-w-4xl px-2 text-center text-sm leading-snug text-white/90">
+									<I18n en={firstCaption.en} fr={firstCaption.fr} />
+								</figcaption>
+							</figure>
+						)
+					}
+				</div>
+			</div>
+			<div
+				class="flex w-full max-w-6xl shrink-0 flex-row flex-wrap items-center justify-center gap-2 px-1 pb-1 sm:gap-4"
+			>
+				{
+					slideCount > 1 && (
+						<button
+							type="button"
+							data-gallery-prev
+							class="inline-flex h-12 w-12 hover:scale-110 shrink-0 items-center justify-center dark:text-white hover:text-indigo-500 dark:hover:text-amber-500 text-white transition-colors duration-200"
+							aria-label={workEn.workGalleryPrevSlide}
+							data-i18n-aria-en={workEn.workGalleryPrevSlide}
+							data-i18n-aria-fr={workFr.workGalleryPrevSlide}
+						>
+							<i class="fa-solid fa-chevron-left text-sm" aria-hidden="true" />
+						</button>
+					)
+				}
+				<div
+					class="flex max-w-[min(100%,22rem)] flex-wrap items-center justify-center gap-2.5 sm:max-w-none"
+					role="tablist"
+					aria-label="Slides"
+				>
+					{
+						slides.map((_, i) => (
+							<button
+								type="button"
+								data-gallery-dot
+								data-gallery-dot-index={i}
+								class:list={[
+									"h-2.5 w-2.5 shrink-0 rounded-full transition-colors duration-200",
+									i === 0
+										? "bg-indigo-600 dark:bg-amber-500 ring-2 ring-indigo-500/60 dark:ring-amber-400/60"
+										: "bg-white/35 hover:bg-white/55",
+								]}
+								aria-label={`${i + 1} / ${slides.length}`}
+								aria-current={i === 0 ? "true" : "false"}
+							/>
+						))
+					}
+				</div>
+				{
+					slideCount > 1 && (
+						<button
+							type="button"
+							data-gallery-next
+							class="inline-flex h-12 w-12 hover:scale-110 shrink-0 items-center justify-center dark:text-white hover:text-indigo-500 dark:hover:text-amber-500 text-white transition-colors duration-200"
+							aria-label={workEn.workGalleryNextSlide}
+							data-i18n-aria-en={workEn.workGalleryNextSlide}
+							data-i18n-aria-fr={workFr.workGalleryNextSlide}
+						>
+							<i class="fa-solid fa-chevron-right text-sm" aria-hidden="true" />
+						</button>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</dialog>

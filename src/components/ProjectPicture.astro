@@ -1,0 +1,46 @@
+---
+import { Picture } from "astro:assets";
+import ImageLoaderShell from "./ImageLoaderShell.astro";
+import { getProjectCover, type ProjectId } from "../data/projectImages.ts";
+
+interface Props {
+	project: ProjectId;
+	/** Texte alternatif (si `aria-labelledby` est défini, utiliser `alt=""`) */
+	alt: string;
+	class?: string;
+	widths?: number[];
+	sizes?: string;
+	"aria-labelledby"?: string;
+}
+
+const props = Astro.props;
+const {
+	project,
+	alt,
+	class: className,
+	widths = [480, 960, 1280],
+	sizes = "(min-width: 1024px) 38rem, 100vw",
+} = props;
+
+const labelledBy = props["aria-labelledby"];
+const imgAlt = labelledBy ? "" : alt;
+
+const src = getProjectCover(project);
+
+const imgBase =
+	"relative z-0 opacity-0 transition-opacity duration-200 ease-out motion-reduce:duration-100";
+---
+
+<ImageLoaderShell variant="card" class="h-full w-full min-h-0">
+	<Picture
+		src={src}
+		alt={imgAlt}
+		aria-labelledby={labelledBy}
+		widths={widths}
+		sizes={sizes}
+		formats={["avif", "webp", "png"]}
+		loading="lazy"
+		decoding="async"
+		class:list={[imgBase, className]}
+	/>
+</ImageLoaderShell>

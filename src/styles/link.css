@@ -1,21 +1,21 @@
 @layer utilities {
 	.link-underline {
 		@apply relative inline-block no-underline;
-		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
+		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-indigo-600 dark:after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
 		@apply hover:after:scale-x-100;
 	}
 
 	/* For block/flex links (nav rail): underline spans full clickable width */
 	.link-underline-block {
 		@apply relative no-underline;
-		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
+		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-indigo-600 dark:after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
 		@apply hover:after:scale-x-100;
 	}
 
 	/* Underline reacts to parent `.group` hover/focus (useful for nav rail) */
 	.link-underline-group {
 		@apply relative inline-flex w-max no-underline;
-		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
+		@apply after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-px after:h-px after:rounded-sm after:bg-indigo-600 dark:after:bg-amber-500 after:origin-left after:scale-x-0 after:transition-transform after:duration-150;
 		@apply group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100;
 	}
 }

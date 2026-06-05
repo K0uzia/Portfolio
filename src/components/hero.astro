@@ -7,23 +7,27 @@ import I18n from "./I18n.astro";
 
 <section
 	id="home"
-	class="bg-white lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900"
+	class="bg-zinc-300 lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900"
 >
 	<div class="mx-auto w-full max-w-15xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 		<div class="mx-auto max-w-4xl text-start">
-			<h1 class="mb-5 font-mono text-lg font-bold text-gray-900 sm:text-xl dark:text-amber-500">
+			<div
+				data-hero-text
+				class="motion-safe:transform-gpu"
+			>
+				<h1 class="mb-5 font-mono text-lg font-bold text-indigo-600 sm:text-xl dark:text-amber-500 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 				<I18n en={heroEn.heroTitle} fr={heroFr.heroTitle} block />
-			</h1>
-			<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
+				</h1>
+				<h2 class="text-3xl font-bold text-zinc-900 sm:text-4xl dark:text-white motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 				<I18n en={heroEn.heroSubtitle} fr={heroFr.heroSubtitle} block />
-			</h2>
-			<h3 class="mb-6 text-3xl font-bold text-gray-900 sm:mb-10 sm:text-3xl lg:text-5xl dark:text-gray-400">
+				</h2>
+				<h3 class="mb-6 text-3xl font-bold text-zinc-600 sm:mb-10 sm:text-3xl lg:text-5xl dark:text-gray-400 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 				<I18n en={heroEn.heroDescription} fr={heroFr.heroDescription} block />
-			</h3>
-			<p class="max-w-1xl mb-6 text-base text-pretty text-gray-700 sm:mb-5 sm:text-lg/relaxed dark:text-gray-400">
+				</h3>
+				<p class="max-w-1xl mb-6 text-base text-pretty text-zinc-600 sm:mb-5 sm:text-lg/relaxed dark:text-gray-400 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985]">
 				<I18n en={heroEn.heroSubdescription} fr={heroFr.heroSubdescription} />
 				<a
-					class="link-underline text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-amber-500"
+					class="link-underline text-base text-pretty text-indigo-600 sm:text-lg/relaxed dark:text-amber-500"
 					target="_blank"
 					rel="noopener noreferrer"
 					href={heroEn.heroLink1}
@@ -34,7 +38,7 @@ import I18n from "./I18n.astro";
 				</a>
 					<I18n en={heroEn.heroSubdescription2} fr={heroFr.heroSubdescription2} />
 				<a
-					class="link-underline text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-amber-500"
+					class="link-underline text-base text-pretty text-indigo-600 sm:text-lg/relaxed dark:text-amber-500"
 					target="_blank"
 					rel="noopener noreferrer"
 					href={heroEn.heroLink2}
@@ -43,10 +47,31 @@ import I18n from "./I18n.astro";
 				>
 					<I18n en={heroEn.heroLink2Text} fr={heroFr.heroLink2Text} />
 				</a>
-			</p>
+				</p>
+			</div>
 			<a
 			href={withBase("#work")}
-			class="mt-8 inline-flex items-center justify-center rounded-md border border-amber-500 px-5 py-3 text-amber-500"
+			class="
+			mt-8
+			inline-flex 
+			items-center
+			justify-center
+			rounded-md border
+			px-5 py-3
+		  text-indigo-600
+		  border-indigo-600
+		  focus-visible:outline-indigo-600
+		  hover:text-indigo-600
+		  dark:text-amber-500
+		  dark:border-amber-500
+		  dark:focus-visible:outline-amber-500
+		  dark:hover:text-amber-500
+		    transition-[color,transform]
+			duration-200
+			motion-safe:hover:-translate-y-0.5
+			motion-safe:opacity-0
+			motion-safe:transform-gpu"
+			data-hero-cta
 			data-nav-hash="work"
 			data-i18n-title-en={heroEn.heroButton}
 			data-i18n-title-fr={heroFr.heroButton}

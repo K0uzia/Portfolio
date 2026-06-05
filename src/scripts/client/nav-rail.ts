@@ -1,8 +1,9 @@
 import { gsap } from "./register-gsap";
 import { ScrollTrigger } from "./register-gsap";
 import { reduce } from "./env";
+import { parsePathname, pathFor, sectionFromSlug, type SectionId, type SiteLang } from "../../lib/section-path";
 
-const SECTION_ORDER = ["home", "about", "work", "contact"] as const;
+const SECTION_ORDER = ["home", "about", "work"] as const;
 
 let activeScrollTween: gsap.core.Tween | null = null;
 let navCtx: gsap.Context | null = null;
@@ -20,17 +21,48 @@ function setActiveLink(links: HTMLAnchorElement[], id: string) {
 	}
 }
 
-function replaceUrlFromLink(a: HTMLAnchorElement) {
+function currentLangFromDocument(): SiteLang {
+	return document.documentElement.getAttribute("data-lang") === "fr" ? "fr" : "en";
+}
+
+function replaceUrlSection(lang: SiteLang, section: SectionId) {
+	const next = pathFor(lang, section);
 	try {
-		const u = new URL(a.href);
-		history.replaceState(null, "", `${u.pathname}${u.search}${u.hash}`);
+		const u = new URL(window.location.href);
+		history.replaceState(null, "", `${next}${u.search}`);
 	} catch {
-		history.replaceState(null, "", a.getAttribute("href") ?? "#");
+		history.replaceState(null, "", next);
 	}
 }
 
 function scrollYToElement(el: HTMLElement) {
 	return el.getBoundingClientRect().top + window.scrollY;
+}
+
+function isValidSectionId(id: string) {
+	return (SECTION_ORDER as readonly string[]).includes(id);
+}
+
+function pickActiveSectionFromViewportCenter() {
+	// Scrollspy "au centre" : on prend la section dont le centre est le plus
+	// proche du centre du viewport. Ça évite un switch trop tôt.
+	const viewportMid = window.scrollY + window.innerHeight / 2;
+	let best: (typeof SECTION_ORDER)[number] = "home";
+	let bestDist = Number.POSITIVE_INFINITY;
+
+	for (const id of SECTION_ORDER) {
+		const el = document.getElementById(id);
+		if (!(el instanceof HTMLElement)) continue;
+		const top = scrollYToElement(el);
+		const h = el.offsetHeight || 1;
+		const mid = top + h / 2;
+		const dist = Math.abs(mid - viewportMid);
+		if (dist < bestDist) {
+			bestDist = dist;
+			best = id;
+		}
+	}
+	return best;
 }
 
 export function killNavRail() {
@@ -44,27 +76,26 @@ export function killNavRail() {
 export function initNavRail() {
 	killNavRail();
 
-	const nav = document.getElementById("nav-rail");
-	if (!nav) return;
+	const navRail = document.getElementById("nav-rail");
+	const navMobile = document.getElementById("nav-mobile");
+	if (!navRail && !navMobile) return;
 
-	const links = Array.from(nav.querySelectorAll("a[data-nav-hash]")).filter(
-		(el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement,
-	);
+	const links = [
+		...Array.from(navRail?.querySelectorAll("a[data-nav-hash]") ?? []),
+		...Array.from(navMobile?.querySelectorAll("a[data-nav-hash]") ?? []),
+	].filter((el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement);
 	const valid = new Set<string>(SECTION_ORDER);
 
-	function idFromHash() {
+	function idFromPathOrFallback(): (typeof SECTION_ORDER)[number] {
+		const { lang, section } = parsePathname(window.location.pathname);
+		const fromPath = section;
+		if (fromPath && valid.has(fromPath)) return fromPath;
+
+		// Compat: si quelqu’un arrive encore via un vieux hash.
 		let h = (window.location.hash || "#home").replace(/^#/, "").toLowerCase();
-		if (!valid.has(h)) h = "home";
-		return h;
+		if (valid.has(h)) return h as (typeof SECTION_ORDER)[number];
+		return "home";
 	}
-
-	function syncFromHash() {
-		setActiveLink(links, idFromHash());
-	}
-
-	const onHashChange = () => syncFromHash();
-	window.addEventListener("hashchange", onHashChange);
-	disposers.push(() => window.removeEventListener("hashchange", onHashChange));
 
 	navCtx = gsap.context(() => {
 		for (const id of SECTION_ORDER) {
@@ -72,11 +103,18 @@ export function initNavRail() {
 			if (!(el instanceof HTMLElement)) continue;
 			ScrollTrigger.create({
 				trigger: el,
+				// Actif quand la section traverse le centre du viewport.
 				start: "top center",
 				end: "bottom center",
-				onToggle: (self) => {
-					if (!self.isActive) return;
+				onEnter: () => {
 					setActiveLink(links, id);
+					(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+					replaceUrlSection(currentLangFromDocument(), id);
+				},
+				onEnterBack: () => {
+					setActiveLink(links, id);
+					(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+					replaceUrlSection(currentLangFromDocument(), id);
 				},
 			});
 		}
@@ -85,12 +123,12 @@ export function initNavRail() {
 	const onNavClick = (e: MouseEvent) => {
 		const t = (e.target as Element | null)?.closest?.("a[data-nav-hash]");
 		if (!(t instanceof HTMLAnchorElement)) return;
-		const raw = t.getAttribute("href")?.split("#")[1];
-		if (!raw) return;
-		const id = raw.toLowerCase();
+		const id = (t.dataset.navHash ?? "").toLowerCase();
 		if (!valid.has(id)) return;
 		const target = document.getElementById(id);
 		if (!(target instanceof HTMLElement)) return;
+		if (e.button !== 0) return;
+		if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
 		e.preventDefault();
 		const y = scrollYToElement(target);
@@ -108,16 +146,33 @@ export function initNavRail() {
 			onComplete: () => {
 				activeScrollTween = null;
 				setActiveLink(links, id);
-				replaceUrlFromLink(t);
+				(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+				replaceUrlSection(currentLangFromDocument(), id as SectionId);
 				ScrollTrigger.refresh();
 			},
 		});
 	};
-	nav.addEventListener("click", onNavClick);
-	disposers.push(() => nav.removeEventListener("click", onNavClick));
+	document.addEventListener("click", onNavClick);
+	disposers.push(() => document.removeEventListener("click", onNavClick));
 
-	syncFromHash();
+	setActiveLink(links, idFromPathOrFallback());
 	requestAnimationFrame(() => {
 		ScrollTrigger.refresh();
+		// Si l’URL contient une section (/en/work), on y va.
+		const fromPath = idFromPathOrFallback();
+		const target = document.getElementById(fromPath);
+		if (target instanceof HTMLElement) {
+			window.scrollTo(0, scrollYToElement(target));
+			setActiveLink(links, fromPath);
+			(document.documentElement.dataset as { activeSection?: string }).activeSection = fromPath;
+			replaceUrlSection(currentLangFromDocument(), fromPath);
+			return;
+		}
+
+		// Sinon on fait foi de la position réelle.
+		const id = pickActiveSectionFromViewportCenter();
+		setActiveLink(links, id);
+		(document.documentElement.dataset as { activeSection?: string }).activeSection = id;
+		replaceUrlSection(currentLangFromDocument(), id);
 	});
 }

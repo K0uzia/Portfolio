@@ -22,4 +22,11 @@
 	html[data-lang="fr"] .i18n-pair.i18n-block .i18n-fr {
 		display: block;
 	}
+
+	/* FR : description projet en exactement 2 lignes (flex, voir work.astro) */
+	html[data-lang="fr"] .i18n-pair.work-desc-fr .i18n-fr {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
 }

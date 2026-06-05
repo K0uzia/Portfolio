@@ -4,28 +4,46 @@ import { nav as navEn } from "../site.ENconfig.ts";
 import { nav as navFr } from "../site.FRconfig.ts";
 import { withBase } from "../lib/paths";
 import I18n from "./I18n.astro";
+import { slugFromSection } from "../lib/section-path";
 
-/** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Variants arbitraires sur la structure du `<a>` (1er span = index, 2e = libellé). */
+/** Utilitaires Tailwind uniquement. Actif : `.is-active` (`nav-rail.ts`). Tout le rail en `text-xl` : l’actif ne change plus la boîte (seulement couleur + gras), donc plus de saut au refresh. */
 const navRailLinkClass =
-  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) [&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-xl [&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold [&.is-active]:[&>span:nth-child(2)]:text-xl";
+  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-start gap-1 whitespace-nowrap rounded-sm font-mono text-lg leading-none tracking-[0.14em] text-zinc-600 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:text-[#8b92b0] dark:focus-visible:outline-indigo-400 [&.is-active]:text-indigo-600 dark:[&.is-active]:text-amber-500 [&.is-active]:[&>span:nth-child(1)>span]:text-indigo-600 dark:[&.is-active]:[&>span:nth-child(1)>span]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:text-indigo-600 dark:[&.is-active]:[&>span:nth-child(2)]:text-amber-500 [&.is-active]:[&>span:nth-child(2)]:font-bold";
 const navRailIndexPartClass =
-  "text-amber-500 transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
+  "text-indigo-600 dark:text-amber-500 transition-colors duration-200 group-hover:text-indigo-600 dark:group-hover:text-amber-500 focus-visible:text-indigo-600 dark:focus-visible:text-amber-500";
 const navRailTitleClass =
-  "min-w-0 shrink text-left text-sm text-(--fg-dim) transition-colors duration-200 group-hover:text-amber-500 focus-visible:text-amber-500";
+  "min-w-0 shrink text-left text-md text-zinc-600 transition-colors duration-200 group-hover:text-indigo-600 dark:group-hover:text-amber-500 focus-visible:text-indigo-600 dark:focus-visible:text-amber-500 dark:text-[#8b92b0]";
+const navMobileLinkClass =
+  "group pointer-events-auto flex w-full min-w-0 flex-row items-center justify-center gap-2 whitespace-nowrap rounded-md font-mono text-xl leading-none tracking-[0.14em] text-white transition-colors duration-200 hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 [&.is-active]:text-indigo-600 dark:[&.is-active]:text-amber-500";
+const navMobileIndexPartClass =
+  "text-indigo-600 dark:text-amber-500 transition-colors duration-200";
+const navMobileTitleClass =
+  "min-w-0 shrink text-center text-md text-indigo-600 dark:text-amber-500 transition-colors duration-200";
 
-const mailAriaEn = `${navEn.buttonEmail} (${info.email})`;
-const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
+interface Props {
+	lang?: "fr" | "en";
+}
+
+const lang = Astro.props.lang ?? (Astro.locals as { lang?: "fr" | "en" } | undefined)?.lang ?? "en";
+const nav = lang === "fr" ? navFr : navEn;
+
+const mailAria = `${nav.buttonEmail} (${info.email})`;
+const langRoot = `/${lang}/`;
+const homePath = withBase(`${langRoot}${slugFromSection(lang, "home")}`);
+const aboutPath = withBase(`${langRoot}${slugFromSection(lang, "about")}`);
+const workPath = withBase(`${langRoot}${slugFromSection(lang, "work")}`);
 ---
 
 <section>
   <div
-    class="pointer-events-none fixed top-4 right-4 z-20 flex flex-row items-center gap-2.5 lg:top-10 lg:right-8 xl:right-13"
+    class="pointer-events-none fixed top-4 right-4 z-20 flex flex-row items-center gap-2.5 motion-safe:opacity-0 motion-safe:-translate-y-10 lg:top-10 lg:right-8 xl:right-13"
+    data-nav-appear="top-right"
   >
     <div class="pointer-events-auto flex flex-row items-center gap-2">
     <label
       for="nav-theme-toggle"
-      class="pointer-events-auto relative block h-6 w-10 shrink-0 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:transparent] has-checked:bg-amber-500 dark:bg-gray-600 dark:has-checked:bg-amber-500"
-      aria-label={navEn.titleSwitchTheme}
+      class="pointer-events-auto relative block h-6 w-10 shrink-0 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:transparent] has-checked:bg-indigo-600 dark:bg-gray-600 dark:has-checked:bg-amber-500"
+      aria-label={nav.titleSwitchTheme}
       data-i18n-title-en={navEn.titleSwitchTheme}
       data-i18n-title-fr={navFr.titleSwitchTheme}
       data-i18n-aria-en={navEn.titleSwitchTheme}
@@ -33,24 +51,22 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     >
       <span
         class="sr-only"
-        data-i18n-text-en={navEn.titleSwitchTheme}
-        data-i18n-text-fr={navFr.titleSwitchTheme}
       >
-        {navEn.titleSwitchTheme}
+        {nav.titleSwitchTheme}
       </span>
       <input type="checkbox" id="nav-theme-toggle" class="peer sr-only" />
       <span
-        class="pointer-events-none absolute inset-y-0 start-0 m-1 size-4 overflow-hidden rounded-full transition-[inset-inline-start] duration-200 motion-safe:transition-[inset-inline-start] peer-checked:start-4 peer-checked:[&_.knob-moon]:opacity-0 peer-checked:[&_.knob-sun]:opacity-100"
+        class="pointer-events-none absolute inset-y-0 inset-s-0 m-1 size-4 overflow-hidden rounded-full transition-[inset-inline-start] duration-200 motion-safe:transition-[inset-inline-start] peer-checked:inset-s-4 peer-checked:[&_.knob-moon]:opacity-0 peer-checked:[&_.knob-sun]:opacity-100"
         aria-hidden="true"
       >
         <span
           class="pointer-events-none absolute inset-0 grid place-items-center [&>i]:col-start-1 [&>i]:row-start-1 [&>i]:not-italic [&>i]:leading-none"
         >
           <i
-            class="knob-moon fa-solid fa-moon text-sm opacity-100 transition-opacity duration-200 dark:text-gray-200"
+            class="knob-moon fa-solid fa-moon text-sm opacity-100 transition-opacity duration-180 text-gray-200"
           ></i>
           <i
-            class="knob-sun fa-solid fa-sun text-sm opacity-0 transition-opacity duration-200 dark:text-amber-50"
+            class="knob-sun fa-solid fa-sun text-sm opacity-0 transition-opacity duration-180 text-amber-50"
           ></i>
         </span>
       </span>
@@ -58,7 +74,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       <button
         id="nav-burger"
         type="button"
-        class="pointer-events-auto grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) lg:hidden"
+        class="pointer-events-auto grid size-10 place-items-center rounded-md text-indigo-600 dark:text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400 lg:hidden"
         aria-label="Menu"
         aria-expanded="false"
         aria-controls="nav-mobile-panel"
@@ -69,25 +85,24 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         data-lang-switch
         role="group"
         class="pointer-events-auto hidden h-6 flex-row items-center gap-0 font-mono text-sm leading-none tracking-[0.14em] [-webkit-tap-highlight-color:transparent] lg:flex"
+        aria-label={nav.titleSwitchLang}
         data-i18n-title-en={navEn.titleSwitchLang}
         data-i18n-title-fr={navFr.titleSwitchLang}
-        aria-label={navEn.titleSwitchLang}
         data-i18n-aria-en={navEn.titleSwitchLang}
         data-i18n-aria-fr={navFr.titleSwitchLang}
       >
         <button
           type="button"
           data-lang-pick="en"
-          aria-current="true"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-zinc-600 transition-colors [-webkit-tap-highlight-color:transparent] hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 aria-current:text-indigo-600 dark:aria-current:text-amber-500 aria-current:hover:text-indigo-500 dark:aria-current:hover:text-amber-400 dark:text-[#8b92b0]"
         >
           EN
         </button>
-        <span class="flex h-6 items-center text-(--fg-dim) opacity-60 select-none" aria-hidden="true">|</span>
+        <span class="flex h-6 items-center text-zinc-600 opacity-60 select-none dark:text-[#8b92b0]" aria-hidden="true">|</span>
         <button
           type="button"
           data-lang-pick="fr"
-          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-(--fg-dim) transition-colors [-webkit-tap-highlight-color:transparent] hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 aria-[current=true]:text-amber-500 aria-[current=true]:hover:text-amber-400"
+          class="link-underline flex h-6 items-center border-0 bg-transparent p-0 text-zinc-600 transition-colors [-webkit-tap-highlight-color:transparent] hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 aria-current:text-indigo-600 dark:aria-current:text-amber-500 aria-current:hover:text-indigo-500 dark:aria-current:hover:text-amber-400 dark:text-[#8b92b0]"
         >
           FR
         </button>
@@ -99,124 +114,221 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
   <div class="lg:hidden">
     <div
       id="nav-mobile-overlay"
-      class="pointer-events-none fixed inset-0 z-30 bg-black/50 opacity-0 transition-opacity duration-200 [#nav-mobile-panel[data-open]+&]:pointer-events-auto [#nav-mobile-panel[data-open]+&]:opacity-100"
+      class="pointer-events-none fixed inset-0 z-30 bg-gray-900 opacity-0 transition-opacity duration-200 [#nav-mobile-panel[data-open]+&]:pointer-events-auto [#nav-mobile-panel[data-open]+&]:opacity-100"
       aria-hidden="true"
     ></div>
     <aside
       id="nav-mobile-panel"
-      class="fixed inset-y-0 right-0 z-40 w-[min(86vw,360px)] translate-x-full bg-(--void) shadow-2xl ring-1 ring-(--accent-dim) transition-transform duration-200 data-[open]:translate-x-0"
+      class="fixed inset-y-0 right-0 z-40 w-full translate-x-full bg-gray-900 shadow-2xl border-l border-gray-700 transition-transform duration-200 data-open:translate-x-0"
       aria-hidden="true"
     >
-      <div class="flex h-full flex-col p-5">
-        <div class="flex items-center justify-between">
-          <div class="font-mono text-sm tracking-[0.14em] text-(--fg-dim)">Menu</div>
+      <div class="flex h-full flex-col p-5 items-center">
+        <div class="flex w-full items-center justify-end">
           <button
             id="nav-mobile-close"
             type="button"
-            class="grid size-10 place-items-center rounded-md text-(--amber) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+            class="grid size-10 place-items-center rounded-md text-indigo-600 dark:text-amber-500 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
             aria-label="Fermer le menu"
           >
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
-
-        <nav class="mt-6 flex flex-col gap-4 font-mono text-base tracking-[0.14em]" aria-label={navEn.navAriaMain}>
-          <a
-            href={withBase("#home")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navHome}
-            data-i18n-title-fr={navFr.navHomeTitle}
-            data-i18n-aria-en={navEn.navHome}
-            data-i18n-aria-fr={navFr.navHomeTitle}
-            aria-label={navEn.navHome}
-          >
-            <I18n en={navEn.navHome} fr={navFr.navHome} />
-          </a>
-          <a
-            href={withBase("#about")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navAbout}
-            data-i18n-title-fr={navFr.navAboutTitle}
-            data-i18n-aria-en={navEn.navAbout}
-            data-i18n-aria-fr={navFr.navAboutTitle}
-            aria-label={navEn.navAbout}
-          >
-            <I18n en={navEn.navAbout} fr={navFr.navAbout} />
-          </a>
-          <a
-            href={withBase("#work")}
-            class="link-underline text-(--fg-dim) transition-colors hover:text-(--amber) focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-            data-i18n-title-en={navEn.navWork}
-            data-i18n-title-fr={navFr.navWorkTitle}
-            data-i18n-aria-en={navEn.navWork}
-            data-i18n-aria-fr={navFr.navWorkTitle}
-            aria-label={navEn.navWork}
-          >
-            <I18n en={navEn.navWork} fr={navFr.navWork} />
-          </a>
-        </nav>
-
-        <div class="mt-8">
+        <div class="mt-8 mb-8">
           <div
             data-lang-switch
             role="group"
-            class="flex h-7 flex-row items-center gap-2 font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim)"
-            data-i18n-title-en={navEn.titleSwitchLang}
-            data-i18n-title-fr={navFr.titleSwitchLang}
-            aria-label={navEn.titleSwitchLang}
-            data-i18n-aria-en={navEn.titleSwitchLang}
-            data-i18n-aria-fr={navFr.titleSwitchLang}
+            class="flex h-7 flex-row items-center justify-center gap-2 font-mono text-sm leading-none tracking-[0.14em] text-white"
+            aria-label={nav.titleSwitchLang}
+            title={nav.titleSwitchLang}
           >
             <button
               type="button"
               data-lang-pick="en"
-              aria-current="true"
-              class="link-underline px-1"
+              class="link-underline flex h-7 items-center border-0 bg-transparent px-1 text-white transition-colors [-webkit-tap-highlight-color:transparent] hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 aria-current:text-indigo-600 dark:aria-current:text-amber-500 aria-current:hover:text-indigo-500 dark:aria-current:hover:text-amber-400"
             >
               EN
             </button>
-            <button type="button" data-lang-pick="fr" class="link-underline px-1">
+            <span
+            class="m-1 block h-3 w-px shrink-0 bg-white/40"
+            aria-hidden="true"></span>
+            <button
+              type="button"
+              data-lang-pick="fr"
+              class="link-underline flex h-7 items-center border-0 bg-transparent px-1 text-white transition-colors [-webkit-tap-highlight-color:transparent] hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 aria-current:text-indigo-600 dark:aria-current:text-amber-500 aria-current:hover:text-indigo-500 dark:aria-current:hover:text-amber-400"
+            >
               FR
             </button>
+          </div>
+        </div>
+        <nav id="nav-mobile" class="mb-6 flex flex-col font-mono text-white items-center tracking-[0.14em]" aria-label={nav.navAriaMain}>
+        <a
+          href={homePath}
+          class={navMobileLinkClass}
+          data-nav-hash="home"
+          aria-label={nav.navHome}
+          data-i18n-title-en={navEn.navHome}
+          data-i18n-title-fr={navFr.navHomeTitle ?? navFr.navHome}
+          data-i18n-aria-en={navEn.navHome}
+          data-i18n-aria-fr={navFr.navHomeTitle ?? navFr.navHome}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>01</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navHome} fr={navFr.navHome} />
+            </span>
+          </span>
+        </a>
+          <span
+            class="my-2 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
+            aria-hidden="true"></span>
+        <a
+          href={aboutPath}
+          class={navMobileLinkClass}
+          data-nav-hash="about"
+          aria-label={nav.navAbout}
+          data-i18n-title-en={navEn.navAbout}
+          data-i18n-title-fr={navFr.navAboutTitle ?? navFr.navAbout}
+          data-i18n-aria-en={navEn.navAbout}
+          data-i18n-aria-fr={navFr.navAboutTitle ?? navFr.navAbout}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>02</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navAbout} fr={navFr.navAbout} />
+            </span>
+          </span>
+        </a>
+        <span
+          class="my-2 block h-3 w-px shrink-0 bg-zinc-400 dark:bg-[#8b92b0]/45"
+          aria-hidden="true"></span>
+  
+        <a
+          href={workPath}
+          class={navMobileLinkClass}
+          data-nav-hash="work"
+          aria-label={nav.navWork}
+          data-i18n-title-en={navEn.navWork}
+          data-i18n-title-fr={navFr.navWorkTitle ?? navFr.navWork}
+          data-i18n-aria-en={navEn.navWork}
+          data-i18n-aria-fr={navFr.navWorkTitle ?? navFr.navWork}
+        >
+          <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
+            <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
+              <span class={navMobileIndexPartClass}>03</span>
+              <span class={navMobileIndexPartClass}>.</span>
+            </span>
+            <span class={navMobileTitleClass}>
+              <I18n en={navEn.navWork} fr={navFr.navWork} />
+            </span>
+          </span>
+        </a>
+        </nav>
+
+        <div class="mt-8 flex flex-col items-center gap-3">
+          <div class="flex flex-row items-center justify-center gap-4">
+            <a
+              href={`mailto:${info.email}`}
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-colors duration-200 hover:text-indigo-600 dark:hover:text-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500"
+              aria-label={mailAria}
+              title={nav.buttonEmail}
+            >
+              <i class="fa-solid fa-envelope text-xl leading-none"></i>
+            </a>
+
+            <a
+              href={info.githubProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-[color,transform] duration-200 hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500"
+              aria-label={nav.buttonGithub}
+              title={nav.buttonGithub}
+            >
+              <svg
+                class="feather feather-github h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </a>
+
+            <a
+              href={info.linkedinProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pointer-events-auto grid size-10 place-items-center rounded-md text-white transition-[color,transform] duration-200 hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500"
+              aria-label={nav.buttonLinkedin}
+              title={nav.buttonLinkedin}
+            >
+              <svg
+                class="feather feather-linkedin h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
     </aside>
   </div>
   <div
-    class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 after:block after:h-32 after:w-px after:shrink-0 after:bg-(--fg-dim) after:opacity-55 after:content-[''] lg:flex xl:right-10"
+    class="pointer-events-none fixed bottom-0 right-8 z-10 hidden w-10 flex-col items-center gap-5 motion-safe:opacity-0 motion-safe:translate-y-10 after:block after:h-32 after:w-px after:shrink-0 after:bg-zinc-400 after:opacity-55 after:content-[''] dark:after:bg-[#8b92b0]/45 lg:flex xl:right-10"
+    data-nav-appear="bottom-right"
   >
     <a
-      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-(--fg-dim) transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-amber-500 motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-500"
+      class="pointer-events-auto flex w-10 shrink-0 flex-col items-center justify-center py-1 text-center font-mono text-sm leading-none tracking-[0.14em] text-zinc-600 transition-[color,transform] duration-200 [writing-mode:vertical-rl] hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:hover:translate-x-0.5 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:focus-visible:outline-amber-500 dark:text-[#8b92b0]"
       href={`mailto:${info.email}`}
+      aria-label={mailAria}
       data-i18n-title-en={navEn.buttonEmail}
       data-i18n-title-fr={navFr.buttonEmail}
-      data-i18n-aria-en={mailAriaEn}
-      data-i18n-aria-fr={mailAriaFr}
-      aria-label={mailAriaEn}
+      data-i18n-aria-en={`${navEn.buttonEmail} (${info.email})`}
+      data-i18n-aria-fr={`${navFr.buttonEmail} (${info.email})`}
     >
       {info.email}
     </a>
   </div>
   <div
     class="pointer-events-none fixed top-10 left-8 z-10 hidden w-auto min-w-10 flex-col items-center gap-2 overflow-visible lg:flex xl:left-13"
+    data-nav-appear="top-left"
   >
     <nav
       id="nav-rail"
       class="flex w-10 min-w-0 flex-col items-stretch self-stretch"
-      aria-label={navEn.navAriaMain}
-      data-i18n-aria-en={navEn.navAriaMain}
-      data-i18n-aria-fr={navFr.navAriaMain}
+      aria-label={nav.navAriaMain}
     >
       <a
-        href={withBase("#home")}
-        class={navRailLinkClass}
+        href={homePath}
+        class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="home"
+        aria-label={nav.navHome}
         data-i18n-title-en={navEn.navHome}
-        data-i18n-title-fr={navFr.navHomeTitle}
+        data-i18n-title-fr={navFr.navHomeTitle ?? navFr.navHome}
         data-i18n-aria-en={navEn.navHome}
-        data-i18n-aria-fr={navFr.navHomeTitle}
-        aria-label={navEn.navHome}
+        data-i18n-aria-fr={navFr.navHomeTitle ?? navFr.navHome}
       >
         <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
           <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
@@ -228,18 +340,18 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
           </span>
         </span>
       </a>
-      <span
-        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
-        aria-hidden="true"></span>
+        <span
+          class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-zinc-400 motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu dark:bg-[#8b92b0]/45"
+          aria-hidden="true"></span>
       <a
-        href={withBase("#about")}
-        class={navRailLinkClass}
+        href={aboutPath}
+        class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="about"
+        aria-label={nav.navAbout}
         data-i18n-title-en={navEn.navAbout}
-        data-i18n-title-fr={navFr.navAboutTitle}
+        data-i18n-title-fr={navFr.navAboutTitle ?? navFr.navAbout}
         data-i18n-aria-en={navEn.navAbout}
-        data-i18n-aria-fr={navFr.navAboutTitle}
-        aria-label={navEn.navAbout}
+        data-i18n-aria-fr={navFr.navAboutTitle ?? navFr.navAbout}
       >
         <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
           <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
@@ -252,18 +364,18 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
         </span>
       </a>
       <span
-        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-(--fg-dim)"
+        class="mb-1 ml-3 mt-1 block h-3 w-px shrink-0 bg-zinc-400 motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu dark:bg-[#8b92b0]/45"
         aria-hidden="true"></span>
 
       <a
-        href={withBase("#work")}
-        class={navRailLinkClass}
+        href={workPath}
+        class={`${navRailLinkClass} motion-safe:opacity-0 motion-safe:-translate-y-3 motion-safe:transform-gpu`}
         data-nav-hash="work"
+        aria-label={nav.navWork}
         data-i18n-title-en={navEn.navWork}
-        data-i18n-title-fr={navFr.navWorkTitle}
+        data-i18n-title-fr={navFr.navWorkTitle ?? navFr.navWork}
         data-i18n-aria-en={navEn.navWork}
-        data-i18n-aria-fr={navFr.navWorkTitle}
-        aria-label={navEn.navWork}
+        data-i18n-aria-fr={navFr.navWorkTitle ?? navFr.navWork}
       >
         <span class="link-underline-group flex-row items-baseline gap-1" aria-hidden="true">
           <span class="flex w-10 shrink-0 items-baseline justify-center gap-0">
@@ -279,18 +391,19 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
   </div>
 
   <div
-    class="pointer-events-none fixed bottom-0 left-8 z-10 hidden w-auto min-w-10 flex-col items-center gap-2 overflow-visible lg:flex xl:left-10"
+    class="pointer-events-none fixed bottom-0 left-8 z-10 hidden w-auto min-w-10 flex-col items-center gap-2 overflow-visible motion-safe:opacity-0 motion-safe:translate-y-10 lg:flex xl:left-10"
+    data-nav-appear="bottom-left"
   >
     <a
       href={info.githubProfileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
+      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-zinc-600 transition-[color,transform] duration-200 hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:hover:-translate-y-0.5 dark:text-[#8b92b0]"
+      aria-label={nav.buttonGithub}
       data-i18n-title-en={navEn.buttonGithub}
       data-i18n-title-fr={navFr.buttonGithub}
       data-i18n-aria-en={navEn.buttonGithub}
       data-i18n-aria-fr={navFr.buttonGithub}
-      aria-label={navEn.buttonGithub}
     >
       <svg
         class="feather feather-github h-6 w-6"
@@ -312,12 +425,12 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
       href={info.linkedinProfileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-(--fg-dim) transition-[color,transform] duration-200 hover:text-amber-500 motion-safe:hover:-translate-y-0.5"
+      class="pointer-events-auto flex size-10 shrink-0 items-center justify-center text-zinc-600 transition-[color,transform] duration-200 hover:text-indigo-600 dark:hover:text-amber-500 motion-safe:hover:-translate-y-0.5 dark:text-[#8b92b0]"
+      aria-label={nav.buttonLinkedin}
       data-i18n-title-en={navEn.buttonLinkedin}
       data-i18n-title-fr={navFr.buttonLinkedin}
       data-i18n-aria-en={navEn.buttonLinkedin}
       data-i18n-aria-fr={navFr.buttonLinkedin}
-      aria-label={navEn.buttonLinkedin}
     >
     <svg
       class="feather feather-linkedin h-6 w-6"
@@ -336,7 +449,7 @@ const mailAriaFr = `${navFr.buttonEmail} (${info.email})`;
     </svg>
   </a>
     <span
-      class="block h-32 w-px shrink-0 bg-(--fg-dim) opacity-55"
+      class="block h-32 w-px shrink-0 bg-zinc-400 opacity-55 dark:bg-[#8b92b0]/45"
       aria-hidden="true"></span>
   </div>
 </section>

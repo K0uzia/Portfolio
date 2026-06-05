@@ -1,0 +1,35 @@
+---
+/**
+ * Cadre commun : voile + spinner jusqu’au chargement de l’`<img>` enfant
+ * (voir `src/scripts/client/image-loader.ts`).
+ */
+interface Props {
+	/** Classes du conteneur (`relative` est toujours présent). */
+	class?: string;
+	/** Voile : carte (about/work) vs lightbox sombre. */
+	variant?: "card" | "dialog";
+}
+
+const { class: className, variant = "card" } = Astro.props;
+const veil =
+	variant === "dialog"
+		? "bg-black/15 dark:bg-black/30"
+		: "bg-gray-200/45 dark:bg-black/25";
+---
+
+<div data-img-loader-frame class:list={["relative", className]} aria-busy="true">
+	<div
+		data-img-loader
+		class:list={[
+			"absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ease-out",
+			veil,
+		]}
+		aria-hidden="true"
+	>
+		<i
+			class="fa-solid fa-spinner fa-spin text-2xl text-indigo-600/90 dark:text-amber-500/90 motion-reduce:animate-none"
+			aria-hidden="true"
+		></i>
+	</div>
+	<slot />
+</div>

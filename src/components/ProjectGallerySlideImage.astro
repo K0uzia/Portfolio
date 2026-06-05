@@ -1,0 +1,29 @@
+---
+/** Zone image lightbox : même loader que cartes / about (`image-loader.ts`). */
+import ImageLoaderShell from "./ImageLoaderShell.astro";
+
+interface Props {
+	src: string;
+	width: number;
+	height: number;
+	loading: "eager" | "lazy";
+}
+
+const { src, width, height, loading } = Astro.props;
+---
+
+<ImageLoaderShell
+	variant="dialog"
+	class="flex min-h-[min(62vh,640px)] w-full items-center justify-center"
+>
+	<img
+		{src}
+		{width}
+		{height}
+		class="relative z-0 max-h-[min(68vh,720px)] max-w-full object-contain opacity-0 transition-opacity duration-200 ease-out motion-reduce:duration-100"
+		alt=""
+		{loading}
+		decoding="async"
+		draggable="false"
+	/>
+</ImageLoaderShell>

@@ -1,15 +1,27 @@
 ---
 import { Picture } from "astro:assets";
-import profil from "../images/about/profil.webp";
+import ImageLoaderShell from "./ImageLoaderShell.astro";
+import profil from "../images/about/profil.jpg";
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const imgBase =
+	"relative z-0 h-full w-full object-cover opacity-0 transition-opacity duration-200 ease-out motion-reduce:duration-100";
 ---
 
-<Picture
-	src={profil}
-	alt="Profil"
-	widths={[250, 500]}
-	sizes="500px"
-	formats={["avif", "webp", "jpg"]}
-	loading="lazy"
-	decoding="async"
-	class="h-full w-full object-cover"
-/>
+<ImageLoaderShell variant="card" class="h-full w-full">
+	<Picture
+		src={profil}
+		alt="Profil"
+		widths={[250, 500]}
+		sizes="500px"
+		formats={["avif", "webp", "jpg"]}
+		loading="lazy"
+		decoding="async"
+		class:list={[imgBase, className]}
+	/>
+</ImageLoaderShell>

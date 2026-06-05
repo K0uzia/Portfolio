@@ -1,0 +1,50 @@
+---
+import { withBase } from "../lib/paths";
+import Footer from "./Footer.astro";
+import I18n from "./I18n.astro";
+import { notFound as notFoundEn } from "../site.ENconfig.ts";
+import { notFound as notFoundFr } from "../site.FRconfig.ts";
+---
+
+<div class="relative w-full min-h-dvh dark:bg-gray-900" data-page="404">
+	<main class="fixed inset-0 flex items-center justify-center px-4 py-60">
+		<div class="w-full max-w-xl text-center text-sm mx-auto">
+			<p
+				data-404-item
+				class="font-medium text-lg text-indigo-600 dark:text-amber-500 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985] motion-safe:transform-gpu"
+			>
+				<I18n en={notFoundEn.title} fr={notFoundFr.title} />
+			</p>
+			<h2
+				data-404-item
+				class="text-4xl font-semibold text-zinc-900 md:text-6xl dark:text-gray-300 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985] motion-safe:transform-gpu"
+			>
+				<I18n en={notFoundEn.heading} fr={notFoundFr.heading} block />
+			</h2>
+			<p
+				data-404-item
+				class="mt-4 text-base text-zinc-600 dark:text-gray-400 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985] motion-safe:transform-gpu"
+			>
+				<I18n en={notFoundEn.description} fr={notFoundFr.description} />
+			</p>
+			<div
+				data-404-item
+				class="mt-6 flex items-center justify-center gap-4 motion-safe:opacity-0 motion-safe:translate-y-6 motion-safe:scale-[0.985] motion-safe:transform-gpu"
+			>
+				<a
+					data-404-backhome
+					href={withBase("#home")}
+					target="_self"
+					class="group inline-flex items-center justify-center gap-2 rounded-md border border-indigo-600 px-7 py-2.5 text-indigo-600 transition-[transform,colors] active:scale-95 hover:bg-indigo-600/10 dark:border-amber-500 dark:text-amber-500 dark:hover:bg-transparent"
+				>
+					<i data-404-arrow class="fa-solid fa-arrow-left text-sm" aria-hidden="true"></i>
+					<I18n en={notFoundEn.backHome} fr={notFoundFr.backHome} />
+				</a>
+			</div>
+		</div>
+	</main>
+	<div class="fixed inset-x-0 bottom-0">
+		<Footer />
+	</div>
+</div>
+
