@@ -1,5 +1,5 @@
 /**
- * Polices exposées au thème Tailwind uniquement (@theme — pas de palette en variables).
+ * Polices exposées au thème Tailwind uniquement (@theme - pas de palette en variables).
  */
 @theme {
 	--font-sans: "Exo 2", ui-sans-serif, system-ui, sans-serif;

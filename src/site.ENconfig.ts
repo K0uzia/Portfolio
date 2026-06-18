@@ -77,32 +77,39 @@ export const work = {
     workCardDescriptionLine6:
         "Built for day-to-day use: inventory, intake, and lookups.",
 
-	/** Projet 2 — portfolio (`project2.astro`). */
-	workFeaturedLabel2: "This portfolio",
-	workCard2Title: "Personal portfolio",
+	/** Projet 2 - MocoSite (`project2.astro`). */
+	workFeaturedLabel2: "In production",
+	workCard2Title: "MocoSite - Morlaix Communauté",
 	workCard2DescriptionLine1:
-		"Presentation of my profile as a designer-developer and a curated set of projects that reflect how I work.",
+		"Youth resource center platform for Morlaix Communauté: books, games, pedagogical kits, and tools for youth professionals on the territory.",
 	workCard2DescriptionLine2:
-		"Give recruiters and collaborators a clear read, bilingual (English/French), with a comfortable light or dark viewing mode.",
+		"Browse and filter resources online; some items (books, games, kits) can be reserved by registered animators.",
 	workCard2DescriptionLine3:
-		"Frame each project with visuals and galleries, then lead to a straightforward way to get in touch with me.",
+		"Contact form, animator account area (login, sign-up, password reset), and downloadable prevention and workshop materials.",
+	workCard2StackPhp: "PHP",
+	workCard2StackMysql: "MySQL",
+	workCard2StackJavaScript: "JS",
+	workCard2StackCss: "CSS",
 
-	/** Projet 3 — ConvertAllLocal (`project3.astro`). */
-	workFeaturedLabel3: "In development",
-	workCard3Title: "ConvertAllLocal - CAL",
-    workCard3DescriptionLine1: "100% local application to convert all your media files.",
-    workCard3DescriptionLine2: "Supports essential video, image, and icon formats for the web",
-    workCard3DescriptionLine3: "and app development. Zero data sent: everything stays on your machine.",
+	/** Projet 3 - Converter / KouziaConverter (`project3.astro`). */
+	workFeaturedLabel3: "In production",
+	workCard3Title: "Converter",
+	workCard3DescriptionLine1:
+		"Free, open-source file converter: images, audio, documents and PDF processed locally in the browser, no upload, no account.",
+	workCard3DescriptionLine2:
+		"WebAssembly in the browser for everyday formats; Tauri desktop app in progress for video, heavy Office and large files.",
+	workCard3DescriptionLine3:
+		"Same tool, two environments: your files never leave your machine. No subscription, ads or hidden fees.",
 	workCard3StackAstro: "Astro",
-	workCard3StackTailwind: "Tailwind",
 	workCard3StackTypeScript: "TS",
-	workCard3StackGsap: "GSAP",
+	workCard3StackTauri: "Tauri",
+	workCard3StackWasm: "WASM",
 
-    workGithubIconTitle: "View code on GitHub",
-    workExternalLinkTitle: "View demo",
+    workGithubIconTitle: "View GitHub",
+    workExternalLinkTitle: "View website",
     workImageAlt1: "Workspace - screenshot",
-	workImageAlt2: "Personal portfolio - site preview",
-	workImageAlt3: "Operations toolkit - screenshot",
+	workImageAlt2: "MocoSite - Morlaix Communauté youth resource center preview",
+	workImageAlt3: "Converter - local file conversion in the browser",
 	workGalleryTitle: "Project screenshots",
 	workGalleryOpenLabel: "Open screenshots gallery",
 	workGalleryPrevSlide: "Previous screenshot",
@@ -120,8 +127,16 @@ export const work = {
 			"Workspace - History of batches/materials and their status",
 			"Workspace - Traceability of batches/materials by month and year",
 		],
-		2: ["Personal portfolio - site preview"],
-		3: ["Operations toolkit - screenshot"],
+		2: [
+			"MocoSite - Home page",
+			"MocoSite - Books catalog",
+			"MocoSite - Downloadable resources",
+		],
+		3: [
+			"Converter - Home page",
+			"Converter - Supported formats",
+			"Converter - Why Converter?",
+		],
 	} as const,
     workNodejs: "Node.js",
     workElectron: "Electron",

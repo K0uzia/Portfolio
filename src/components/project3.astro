@@ -5,44 +5,45 @@ import {
 	getProjectCardDescriptionLines,
 	getProjectCardTitle,
 } from "../lib/work-project.ts";
-import { withBase } from "../lib/paths";
 import I18n from "./I18n.astro";
 import ProjectWorkGallery from "./ProjectWorkGallery.astro";
-import ElectronIcon from "./icons/ElectronIcon.astro";
 
 /**
- * Shields : ConvertAllLocal (prévu). Affichage masqué ci-dessous (`false &&`) tant que le projet n’est pas démarré.
+ * Shields : stack Converter (clés `workCard3Stack*` - libellés côté config).
  */
 const stackShields = [
 	{
-		key: "electron",
-		fa: undefined as string | undefined,
-		stackEn: workEn.workElectron,
-		stackFr: workFr.workElectron,
-		stackColor: "#3D5A66",
+		key: "astro",
+		fa: "fa-solid fa-rocket",
+		stackEn: workEn.workCard3StackAstro,
+		stackFr: workFr.workCard3StackAstro,
+		stackColor: "#E04900",
 	},
 	{
-		key: "nodejs",
-		fa: "fa-brands fa-node-js",
-		stackEn: workEn.workNodejs,
-		stackFr: workFr.workNodejs,
-		stackColor: "#2E7D32",
+		key: "typescript",
+		fa: "fa-brands fa-js",
+		stackEn: workEn.workCard3StackTypeScript,
+		stackFr: workFr.workCard3StackTypeScript,
+		stackColor: "#1D4ED8",
 	},
 	{
-		key: "fontawesome",
-		fa: "fa-brands fa-font-awesome",
-		stackEn: workEn.workTailwind,
-		stackFr: workFr.workTailwind,
-		stackColor: "#1565C0",
+		key: "tauri",
+		fa: "fa-brands fa-rust",
+		stackEn: workEn.workCard3StackTauri,
+		stackFr: workFr.workCard3StackTauri,
+		stackColor: "#24C8DB",
+	},
+	{
+		key: "wasm",
+		fa: "fa-solid fa-microchip",
+		stackEn: workEn.workCard3StackWasm,
+		stackFr: workFr.workCard3StackWasm,
+		stackColor: "#5C3D9E",
 	},
 ] as const;
 
-const showStackShields = false;
-
 const cardTitle = getProjectCardTitle(3);
 const descriptionLines = getProjectCardDescriptionLines(3);
-
-const placeholderDemoHref = withBase("/404");
 ---
 
 <article
@@ -107,45 +108,39 @@ aria-labelledby="work-featured-heading"
             </p>
         </div>
 
-        {
-            showStackShields && (
-                <ul
-                    class="mb-5 flex max-w-full flex-wrap justify-end gap-1 sm:gap-1.5"
-                    aria-label={workEn.workStackAriaLabel}
-                    data-i18n-aria-en={workEn.workStackAriaLabel}
-                    data-i18n-aria-fr={workFr.workStackAriaLabel}
-                >
-                    {stackShields.map((s) => (
-                        <li class="shrink-0">
-                            <span class="inline-flex h-6 shrink-0 items-stretch overflow-hidden rounded-md font-mono text-[11px] font-semibold leading-none tracking-tight text-white shadow-sm ring-1 ring-inset ring-black/20 sm:h-6 sm:text-xs dark:ring-white/20">
-                                <span class="flex h-full w-8 shrink-0 items-center justify-center bg-zinc-800 text-white sm:w-9 dark:bg-zinc-700">
-                                    {s.fa ? (
-                                        <i
-                                            class={`${s.fa} text-[12px] sm:text-sm`}
-                                            aria-hidden="true"
-                                        />
-                                    ) : (
-                                        <ElectronIcon class="size-4 shrink-0 sm:size-[18px]" />
-                                    )}
-                                </span>
-                                <span
-                                    class="flex h-full min-w-0 items-center justify-center whitespace-nowrap px-2.5 py-1 text-center"
-                                    style={`background-color: ${s.stackColor}`}
-                                >
-                                    <I18n en={s.stackEn} fr={s.stackFr} />
-                                </span>
+        <ul
+            class="mb-5 flex max-w-full flex-wrap justify-end gap-1 sm:gap-1.5"
+            aria-label={workEn.workStackAriaLabel}
+            data-i18n-aria-en={workEn.workStackAriaLabel}
+            data-i18n-aria-fr={workFr.workStackAriaLabel}
+        >
+            {
+                stackShields.map((s) => (
+                    <li class="shrink-0">
+                        <span class="inline-flex h-6 shrink-0 items-stretch overflow-hidden rounded-md font-mono text-[11px] font-semibold leading-none tracking-tight text-white shadow-sm ring-1 ring-inset ring-black/20 sm:h-6 sm:text-xs dark:ring-white/20">
+                            <span class="flex h-full w-8 shrink-0 items-center justify-center bg-zinc-800 text-white sm:w-9 dark:bg-zinc-700">
+                                <i
+                                    class={`${s.fa} text-[12px] sm:text-sm`}
+                                    aria-hidden="true"
+                                ></i>
                             </span>
-                        </li>
-                    ))}
-                </ul>
-            )
-        }
+                            <span
+                                class="flex h-full min-w-0 items-center justify-center whitespace-nowrap px-2.5 py-1 text-center"
+                                style={`background-color: ${s.stackColor}`}
+                            >
+                                <I18n en={s.stackEn} fr={s.stackFr} />
+                            </span>
+                        </span>
+                    </li>
+                ))
+            }
+        </ul>
 
         <div
             class="flex gap-5 text-zinc-600 transition-colors dark:text-[#8b92b0] [&_a]:transition-[color,transform] [&_a]:duration-200 [&_a]:hover:text-indigo-600 dark:[&_a]:hover:text-amber-500 motion-safe:[&_a]:hover:-translate-y-0.5"
         >
             <a
-                href="https://github.com/K0uzia/ConvertAllLocal"
+                href="https://github.com/K0uzia/KouziaConverter"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
@@ -174,8 +169,8 @@ aria-labelledby="work-featured-heading"
                 </svg>
             </a>
             <a
-                href={placeholderDemoHref}
-                target="_self"
+                href="https://converter.kouzia.com"
+                target="_blank"
                 rel="noopener noreferrer"
                 class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
                 title={workEn.workExternalLinkTitle}

@@ -72,7 +72,7 @@ export const work = {
 	workTitle: "03. Mon travail",
 	workFeaturedLabel: "Projet mis en avant",
 
-	/** Projet 1 — carte + vignette (`project1.astro`). */
+	/** Projet 1 - carte + vignette (`project1.astro`). */
     workCardTitle: "Workspace",
     workCardDescriptionLine1:
         "Bureau virtuel (Electron) : un point d’accès pour les outils et liens internes.",
@@ -87,32 +87,39 @@ export const work = {
     workCardDescriptionLine6:
         "Conçu pour l’usage courant : inventaire, réception et consultation.",
 
-	/** Projet 2 — portfolio (`project2.astro`). */
-	workFeaturedLabel2: "Ce portfolio",
-	workCard2Title: "Portfolio personnel",
+	/** Projet 2 - MocoSite (`project2.astro`). */
+	workFeaturedLabel2: "Mise en avant",
+	workCard2Title: "MocoSite - Morlaix Communauté",
 	workCard2DescriptionLine1:
-		"Présentation de mon profil de designer-développeur et une sélection de réalisations représentatives de mon travail.",
+		"Plateforme du centre de ressources jeunesse de Morlaix Communauté : livres, jeux, malles pédagogiques et outils pour les professionnels du territoire.",
 	workCard2DescriptionLine2:
-		"Permet aux recruteurs et partenaires une lecture claire, en français ou en anglais, avec un confort visuel adapté (clair ou sombre).",
+		"Consultation et filtrage des ressources en ligne ; certains outils (livres, jeux, malles) sont réservables par les animateurs inscrits.",
 	workCard2DescriptionLine3:
-		"Met en contexte chaque projet avec des visuels, puis guider vers une prise de contact simple.",
+		"Formulaire de contact, espace animateur (connexion, inscription, mot de passe oublié) et ressources téléchargeables (prévention, ateliers…).",
+	workCard2StackPhp: "PHP",
+	workCard2StackMysql: "MySQL",
+	workCard2StackJavaScript: "JS",
+	workCard2StackCss: "CSS",
 
-	/** Projet 3 — ConvertAllLocal (`project3.astro`). */
-	workFeaturedLabel3: "En cours de développement",
-	workCard3Title: "ConvertAllLocal - CAL",
-    workCard3DescriptionLine1: "Application 100% locale pour convertir tous vos fichiers multimédias.",
-    workCard3DescriptionLine2: "Prend en charge les formats vidéo, image et icônes incontournables du web",
-    workCard3DescriptionLine3: "et du développement. Aucune donnée envoyée : tout reste sur votre machine.",
+	/** Projet 3 - Converter / KouziaConverter (`project3.astro`). */
+	workFeaturedLabel3: "En développement",
+	workCard3Title: "Converter",
+	workCard3DescriptionLine1:
+		"Convertisseur gratuit et open source : images, audio, documents et PDF traités localement dans le navigateur - sans téléversement ni compte.",
+	workCard3DescriptionLine2:
+		"WebAssembly dans le navigateur pour l’essentiel ; application desktop Tauri en cours pour la vidéo, Office lourd et gros fichiers.",
+	workCard3DescriptionLine3:
+		"Même outil, deux environnements : vos fichiers ne quittent jamais votre machine. Sans abonnement, publicité ni frais cachés.",
 	workCard3StackAstro: "Astro",
-	workCard3StackTailwind: "Tailwind",
 	workCard3StackTypeScript: "TS",
-	workCard3StackGsap: "GSAP",
+	workCard3StackTauri: "Tauri",
+	workCard3StackWasm: "WASM",
 
-	workGithubIconTitle: "Voir le code sur GitHub",
-	workExternalLinkTitle: "Voir la démo",
+	workGithubIconTitle: "Voir le GitHub",
+	workExternalLinkTitle: "Voir le site web",
 	workImageAlt1: "Workspace - capture d'écran",
-	workImageAlt2: "Portfolio personnel - aperçu du site",
-	workImageAlt3: "Boîte à outils opérationnelle - capture d'écran",
+	workImageAlt2: "MocoSite - aperçu du centre de ressources jeunesse Morlaix Communauté",
+	workImageAlt3: "Converter - conversion de fichiers locale dans le navigateur",
 	workGalleryTitle: "Captures du projet",
 	workGalleryOpenLabel: "Agrandir et parcourir les captures",
 	workGalleryPrevSlide: "Capture précédente",
@@ -127,8 +134,16 @@ export const work = {
 			"Workspace - Historique lots/matériels et leur état",
 			"Workspace - Traçabilité lots/matériels triés par mois et année",
 		],
-		2: ["Portfolio personnel - aperçu du site"],
-		3: ["Boîte à outils opérationnelle - capture d'écran"],
+		2: [
+			"MocoSite - Page d'accueil",
+			"MocoSite - Catalogue livres",
+			"MocoSite - Ressources à télécharger",
+		],
+		3: [
+			"Converter - Page d'accueil",
+			"Converter - Formats pris en charge",
+			"Converter - Conversion de fichiers",
+		],
 	} as const,
 	workNodejs: "Node.js",
 	workElectron: "Electron",

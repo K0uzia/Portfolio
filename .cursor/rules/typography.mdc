@@ -1,0 +1,31 @@
+---
+alwaysApply: true
+---
+
+# Typographie : pas de tiret cadratin
+
+**Ne jamais utiliser le tiret cadratin `—` (U+2014)** dans le code, les commentaires, les textes i18n, la doc ou les messages générés pour ce projet.
+
+## Alternatives selon le contexte
+
+| Contexte | À utiliser |
+|----------|------------|
+| Titre ou sous-titre | ` - ` (tiret simple entouré d’espaces) ou ` : ` |
+| Incise ou précision | virgule, parenthèses, ou ` - ` |
+| Séparation label / valeur | ` : ` |
+| Commentaire technique | ` - ` ou reformulation sans tiret long |
+
+## Exemples
+
+```
+❌ MocoSite — Morlaix Communauté
+✅ MocoSite - Morlaix Communauté
+
+❌ traités localement — sans téléversement
+✅ traités localement, sans téléversement
+
+❌ /** Projet 2 — MocoSite */
+✅ /** Projet 2 - MocoSite */
+```
+
+Cette règle s’applique aussi aux réponses de l’agent lorsqu’il rédige du contenu pour ce dépôt.

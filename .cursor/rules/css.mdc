@@ -3,7 +3,7 @@ description: Consulter la doc Tailwind CSS pour tout travail de styles (utilitai
 alwaysApply: true
 ---
 
-# Tailwind CSS — référence doc obligatoire
+# Tailwind CSS : référence doc obligatoire
 
 Dès qu’il s’agit d’ajouter ou de modifier du **style** (couleurs, espacements, états hover/focus, responsive, thème, etc.) :
 

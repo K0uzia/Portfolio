@@ -9,36 +9,36 @@ import I18n from "./I18n.astro";
 import ProjectWorkGallery from "./ProjectWorkGallery.astro";
 
 /**
- * Shields : stack du site (clés `workCard3Stack*` — libellés partagés côté config).
+ * Shields : stack MocoSite (clés `workCard2Stack*` - libellés côté config).
  */
 const stackShields = [
 	{
-		key: "astro",
-		fa: "fa-solid fa-rocket",
-		stackEn: workEn.workCard3StackAstro,
-		stackFr: workFr.workCard3StackAstro,
-		stackColor: "#E04900",
+		key: "php",
+		fa: "fa-brands fa-php",
+		stackEn: workEn.workCard2StackPhp,
+		stackFr: workFr.workCard2StackPhp,
+		stackColor: "#4F5B93",
 	},
 	{
-		key: "tailwind",
-		fa: "fa-solid fa-wind",
-		stackEn: workEn.workCard3StackTailwind,
-		stackFr: workFr.workCard3StackTailwind,
-		stackColor: "#0284C7",
+		key: "mysql",
+		fa: "fa-solid fa-database",
+		stackEn: workEn.workCard2StackMysql,
+		stackFr: workFr.workCard2StackMysql,
+		stackColor: "#00758F",
 	},
 	{
-		key: "typescript",
+		key: "javascript",
 		fa: "fa-brands fa-js",
-		stackEn: workEn.workCard3StackTypeScript,
-		stackFr: workFr.workCard3StackTypeScript,
-		stackColor: "#1D4ED8",
+		stackEn: workEn.workCard2StackJavaScript,
+		stackFr: workFr.workCard2StackJavaScript,
+		stackColor: "#CA8A04",
 	},
 	{
-		key: "gsap",
-		fa: "fa-solid fa-bolt",
-		stackEn: workEn.workCard3StackGsap,
-		stackFr: workFr.workCard3StackGsap,
-		stackColor: "#5C8A00",
+		key: "css",
+		fa: "fa-brands fa-css3-alt",
+		stackEn: workEn.workCard2StackCss,
+		stackFr: workFr.workCard2StackCss,
+		stackColor: "#1D4ED8",
 	},
 ] as const;
 
@@ -140,7 +140,7 @@ aria-labelledby="work-featured-heading"
             class="flex gap-5 text-zinc-600 transition-colors dark:text-[#8b92b0] [&_a]:transition-[color,transform] [&_a]:duration-200 [&_a]:hover:text-indigo-600 dark:[&_a]:hover:text-amber-500 motion-safe:[&_a]:hover:-translate-y-0.5"
         >
             <a
-                href="https://github.com/K0uzia/Portfolio"
+                href="https://github.com/K0uzia/MocoSite"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"
@@ -169,7 +169,7 @@ aria-labelledby="work-featured-heading"
                 </svg>
             </a>
             <a
-                href="https://portfolio.kouzia.com"
+                href="https://moco.lacapsule.org"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="grid place-items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:focus-visible:outline-indigo-400"

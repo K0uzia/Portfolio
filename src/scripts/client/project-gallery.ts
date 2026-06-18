@@ -330,7 +330,7 @@ function wireDialog(dialog: HTMLDialogElement): void {
 
 	/**
 	 * Fermer sauf clic sur une image ou une pastille (pas la zone lettre autour de l’image,
-	 * ni le fond — le fond touche `data-gallery-dismiss` ou le dialogue hors « safe »).
+	 * ni le fond : le fond touche `data-gallery-dismiss` ou le dialogue hors « safe »).
 	 */
 	function clickKeepsGalleryOpen(target: EventTarget | null): boolean {
 		const el = target as HTMLElement | null;
